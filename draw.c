@@ -88,7 +88,8 @@ void	draw_player(t_scene *sc)
 	//printf("posX = %d\n ", sc->player->posX);
 	int	x;
 	int	y;
-	
+	int	p1[2]; 
+	int	p2[2];
 	//draw_background(sc);
 	x = -(sc->player->size / 2);
 	y = 0;
@@ -102,5 +103,12 @@ void	draw_player(t_scene *sc)
 		}
 		y++;
 	}
+	p1[0] = sc->player->posX;
+	p1[1] = sc->player->posY;
+	p2[0] = p1[0] + sc->player->deltaX * 5;
+	p2[1] = p1[1] + sc->player->deltaY * 5;
+	
+	// disegna linea direzione POV
+	draw_line(sc, p1, p2);
 	mlx_put_image_to_window(sc->mlx, sc->win, sc->img, 0, 0);
 }

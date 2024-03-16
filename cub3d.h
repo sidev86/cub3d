@@ -1,13 +1,19 @@
 #include "mlx_linux/mlx.h"
 #include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
 
 #define W_WIDTH 800
 #define W_HEIGHT 600
+#define PI 3.1415926535
 
 typedef struct s_player
 {
 	int posX;
 	int posY;
+	int deltaX;
+	int deltaY;
+	float angle;
 	int size;
 }	t_player;
 
@@ -40,6 +46,7 @@ typedef struct s_scene
 
 //DRAW
 void	put_pixel(t_scene *sc, int x, int y, int color);
+void	draw_line(t_scene *sc, int *p1, int *p2);
 void	draw_background(t_scene *sc);
 void	draw_tile_map(t_scene *sc, int x, int y, int mapSize);
 void	draw_map_2D(t_scene *sc);

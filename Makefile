@@ -4,6 +4,7 @@ FLAGS    := -g -Wall -Wextra -Werror
 
 SRCS        :=      cub3d.c \
 			draw.c \
+			draw_line.c \
   			controls.c \
 			utils.c
                        

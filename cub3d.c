@@ -1,6 +1,6 @@
 
 #include "cub3d.h"
-#include <stdio.h>
+
 
 
 
@@ -14,7 +14,9 @@ int	main()
 	s.player->posX = 400;
 	s.player->posY = 300;
 	s.player->size = 10;
-	
+	s.player->angle = - PI / 2;
+	s.player->deltaX = cos(s.player->angle) * 5;
+	s.player->deltaY = sin(s.player->angle) * 5;
 	s.map = malloc(sizeof(t_map));
 	s.map->mapX = 8;
 	s.map->mapY = 8;
