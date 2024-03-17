@@ -27,6 +27,19 @@ typedef struct s_map
 }	t_map;
 
 
+typedef struct	s_ray
+{
+	int mx;
+	int my;
+	int mp;
+	int dof;
+	float rx;
+	float ry;
+	float angle;
+	float xo;
+	float yo;
+}	t_ray;
+
 typedef struct s_scene
 {
 	void	*mlx;
@@ -39,7 +52,10 @@ typedef struct s_scene
 	//int	player[3];
 	t_player	*player;
 	t_map		*map;
+	t_ray		*ray;
 }	t_scene;
+
+
 
 
 
@@ -51,6 +67,7 @@ void	draw_background(t_scene *sc);
 void	draw_tile_map(t_scene *sc, int x, int y, int mapSize);
 void	draw_map_2D(t_scene *sc);
 void	draw_player(t_scene *sc);
+void	draw_rays_3D(t_scene *sc);
 
 //CONTROLS
 int	key_press(int keycode, void *param);

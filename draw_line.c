@@ -26,6 +26,65 @@ static int	*absolute_delta(int p1x, int p1y, int p2x, int p2y)
 	return (delta);
 }
 
+void	draw_rays_3D(t_scene *sc)
+{
+	float aTan;
+	int p1[2];
+	int p2[2];
+	
+	sc->ray->angle = sc->player->angle;
+	p1[0] = sc->player->posX;
+	p1[1] = sc->player->posY;
+	p2[0] = p1[0] + sc->player->deltaX * 5;
+	p2[1] = p1[1] + sc->player->deltaY * 5;
+	for (int r = 0; r < 1; r++)
+	{
+		sc->ray->dof = 0;
+		aTan = -1/(tan(sc->ray->angle));
+		if (sc->ray->angle > PI)
+		{
+			sc->ray->ry = (((int)sc->player->posY >> 6) << 6) -0.0001; 
+			sc->ray->rx = (sc->player->posY - sc->ray->ry) * aTan + sc->player->posX;
+			sc->ray->yo = -64;
+			sc->ray->xo = -(sc->ray->yo) * aTan;
+		}	
+		if (sc->ray->angle < PI)
+		{
+			sc->ray->ry = (((int)sc->player->posY >> 6) << 6) + 64; 
+			sc->ray->rx = (sc->player->posY - sc->ray->ry) * aTan + sc->player->posX;
+			sc->ray->yo = 64;
+			sc->ray->xo = -(sc->ray->yo) * aTan;
+		}	
+		if (sc->ray->angle == 0 || sc->ray->angle == PI)
+		{
+			sc->ray->rx = sc->player->posX;
+			sc->ray->ry = sc->player->posY;
+			sc->ray->dof = 8;
+		}
+		while (sc->ray->dof < 8)
+		{
+			sc->ray->mx = (int)(sc->ray->rx) >> 6;
+			sc->ray->my = (int)(sc->ray->ry) >> 6;
+			sc->ray->mp = (sc->ray->my * sc->map->mapX) + sc->ray->mx;
+			if (sc->ray->mp < sc->map->mapX * sc->map->mapY && sc->map->values[sc->ray->mp] == 1)
+				sc->ray->dof = 8;
+			else
+			{
+				sc->ray->rx += sc->ray->xo;
+				sc->ray->ry += sc->ray->yo;
+				sc->ray->dof += 1;
+			}
+		}
+		p1[0] = sc->player->posX;
+		p1[1] = sc->player->posY;
+		p2[0] = sc->ray->rx;
+		p2[1] = sc->ray->ry;
+		draw_line(sc, p1, p2);
+	}
+
+
+}
+
 void	draw_line(t_scene *sc, int *p1, int *p2)
 {
 	int *delta;
@@ -41,7 +100,7 @@ void	draw_line(t_scene *sc, int *p1, int *p2)
 	cur[1] = p1[1]; 
 	while (cur[0] != p2[0] || cur[1] != p2[1])
 	{
-		put_pixel(sc, cur[0], cur[1], 0xFF0000);
+		put_pixel(sc, cur[0], cur[1], 0x00FF00);
 		e2 = e1 * 2;
 		if (e2 > -delta[1])
 		{

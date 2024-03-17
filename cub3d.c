@@ -17,11 +17,15 @@ int	main()
 	s.player->angle = - PI / 2;
 	s.player->deltaX = cos(s.player->angle) * 5;
 	s.player->deltaY = sin(s.player->angle) * 5;
+	
 	s.map = malloc(sizeof(t_map));
 	s.map->mapX = 8;
 	s.map->mapY = 8;
 	s.map->mapSize = 64;
 	s.map->values = malloc(sizeof(int) * s.map->mapSize);
+	
+	s.ray = malloc(sizeof(t_ray));
+	
 	
 	
 	while (i < s.map->mapSize)
@@ -67,6 +71,7 @@ int	main()
 	
 	draw_map_2D(&s);
 	draw_player(&s); 
+	
 	mlx_hook(s.win, 2, 1L << 0, key_press, &s); 
 	mlx_loop(s.mlx);
 
