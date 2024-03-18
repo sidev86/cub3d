@@ -100,13 +100,11 @@ void	draw_player(t_scene *sc)
 		x = -(sc->player->size / 2);
 		while (x < sc->player->size / 2)
 		{
-			put_pixel(sc, sc->player->posX + x, sc->player->posY + y, 0xFFFF00);
+			put_pixel(sc, (int)(sc->player->posX) + x, (int)(sc->player->posY) + y, 0xFFFF00);
 			x++;
 		}
 		y++;
 	}
-	
-	
 	// disegna linea direzione POV
 	//draw_line(sc, p1, p2);
 	draw_rays_3D(sc);

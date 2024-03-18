@@ -5,6 +5,8 @@ int	key_press(int keycode, void *param)
 {
 	t_scene *sc = (t_scene *)param;
 	printf("keycode = %d\n ", keycode); 
+	//printf("player posX = %f\n", sc->player->posX);
+	//printf("player posY = %f\n", sc->player->posY);
 	if (keycode == 119) // W
 	{
 		sc->player->posX += sc->player->deltaX;

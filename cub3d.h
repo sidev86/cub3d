@@ -9,10 +9,10 @@
 
 typedef struct s_player
 {
-	int posX;
-	int posY;
-	int deltaX;
-	int deltaY;
+	float posX;
+	float posY;
+	float deltaX;
+	float deltaY;
 	float angle;
 	int size;
 }	t_player;
@@ -32,9 +32,16 @@ typedef struct	s_ray
 	int mx;
 	int my;
 	int mp;
+	
 	int dof;
+	float disH;
+	float disV;
 	float rx;
 	float ry;
+	float hx;
+	float hy;
+	float vx; 
+	float vy;
 	float angle;
 	float xo;
 	float yo;

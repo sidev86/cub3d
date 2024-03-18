@@ -1,9 +1,6 @@
 
 #include "cub3d.h"
 
-
-
-
 int	main()
 {
 	t_scene s;
@@ -11,10 +8,10 @@ int	main()
 	
 	
 	s.player = malloc(sizeof(t_player));
-	s.player->posX = 400;
-	s.player->posY = 300;
+	s.player->posX = 400.0f;
+	s.player->posY = 300.0f;
 	s.player->size = 10;
-	s.player->angle = - PI / 2;
+	s.player->angle = 3 / 2 * PI;
 	s.player->deltaX = cos(s.player->angle) * 5;
 	s.player->deltaY = sin(s.player->angle) * 5;
 	
