@@ -39,12 +39,17 @@ void	draw_rays_3D(t_scene *sc)
 	int p1[2];
 	int p2[2];
 	
-	sc->ray->angle = sc->player->angle;
+	sc->ray->angle = sc->player->angle - DGR * 30;
+	sc->color = 0xFFFF00;
+	if (sc->ray->angle < 0)
+		sc->ray->angle += 2 * PI;
+	if (sc->ray->angle > 2 * PI)
+		sc->ray->angle -= 2 * PI;
 	//p1[0] = sc->player->posX;
 	//p1[1] = sc->player->posY;
 	//p2[0] = p1[0] + sc->player->deltaX * 5;
 	//p2[1] = p1[1] + sc->player->deltaY * 5;
-	for (int r = 0; r < 1; r++)
+	for (int r = 0; r < 60; r++)
 	{
 		
 		//Check wall horizontal lines
@@ -146,19 +151,46 @@ void	draw_rays_3D(t_scene *sc)
 		{
 			sc->ray->rx = sc->ray->vx; 
 			sc->ray->ry = sc->ray->vy;
+			sc->ray->disT = sc->ray->disV;
+			sc->color = 0x008800;
 		}
 		if (sc->ray->disH < sc->ray->disV)
 		{
 			sc->ray->rx = sc->ray->hx; 
 			sc->ray->ry = sc->ray->hy;
+			sc->ray->disT = sc->ray->disH;
+			sc->color = 0x00FF00;
 		}
-		
 		p1[0] = (int)sc->player->posX;
 		p1[1] = (int)sc->player->posY;
 		p2[0] = (int)sc->ray->rx;
 		p2[1] = (int)sc->ray->ry;
+		//draw_line(sc, p1, p2);
 		
-		draw_line(sc, p1, p2);
+		//Draw Walls 3D
+		sc->ray->cAng = sc->player->angle - sc->ray->angle;
+		if (sc->ray->cAng < 0)
+			sc->ray->cAng += 2 * PI;
+		if (sc->ray->cAng> 2 * PI)
+			sc->ray->cAng -= 2 * PI;
+		sc->ray->disT *= cos(sc->ray->cAng);	
+		sc->ray->lineH = (sc->map->mapSize * (W_WIDTH/ 3)) / sc->ray->disT;
+		sc->ray->lineO = (W_WIDTH / 3) - (sc->ray->lineH / 2);
+		if (sc->ray->lineH > W_WIDTH/3)
+			sc->ray->lineH = W_WIDTH / 3;
+		for (int x = 0; x < 8; x++)
+		{
+			p1[0] = r * 8 + 530 + x;
+			p1[1] = sc->ray->lineO;
+			p2[0] = r * 8 + 530 + x;
+			p2[1] = (int)(sc->ray->lineH + sc->ray->lineO);
+			draw_line(sc, p1, p2);
+		}
+		sc->ray->angle += DGR;
+		if (sc->ray->angle < 0)
+			sc->ray->angle += 2 * PI;
+		if (sc->ray->angle > 2 * PI)
+			sc->ray->angle -= 2 * PI;	
 	}
 
 
@@ -179,7 +211,7 @@ void	draw_line(t_scene *sc, int *p1, int *p2)
 	cur[1] = p1[1]; 
 	while (cur[0] != p2[0] || cur[1] != p2[1])
 	{
-		put_pixel(sc, cur[0], cur[1], 0x00FF00);
+		put_pixel(sc, cur[0], cur[1], sc->color);
 		e2 = e1 * 2;
 		if (e2 > -delta[1])
 		{

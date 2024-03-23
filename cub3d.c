@@ -14,6 +14,7 @@ int	main()
 	s.player->angle = 3 / 2 * PI;
 	s.player->deltaX = cos(s.player->angle) * 5;
 	s.player->deltaY = sin(s.player->angle) * 5;
+	s.color = 0xFFFF00;
 	
 	s.map = malloc(sizeof(t_map));
 	s.map->mapX = 8;

@@ -3,9 +3,10 @@
 #include <math.h>
 #include <stdio.h>
 
-#define W_WIDTH 800
-#define W_HEIGHT 600
+#define W_WIDTH 1280
+#define W_HEIGHT 720
 #define PI 3.1415926535
+#define DGR 0.0174533
 
 typedef struct s_player
 {
@@ -36,15 +37,19 @@ typedef struct	s_ray
 	int dof;
 	float disH;
 	float disV;
+	float disT;
 	float rx;
 	float ry;
 	float hx;
 	float hy;
 	float vx; 
 	float vy;
+	float cAng;
 	float angle;
 	float xo;
 	float yo;
+	float lineH;
+	float lineO;
 }	t_ray;
 
 typedef struct s_scene
@@ -56,6 +61,7 @@ typedef struct s_scene
 	int	bpp;
 	int	endian;
 	int	line_width;
+	int	color;
 	//int	player[3];
 	t_player	*player;
 	t_map		*map;
