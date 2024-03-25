@@ -6,6 +6,8 @@ SRCS        :=      cub3d.c \
 			draw.c \
 			draw_line.c \
   			controls.c \
+  			get_next_line.c \
+  			get_next_line_utils.c \
 			utils.c
                        
                           

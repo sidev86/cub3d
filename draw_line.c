@@ -165,19 +165,19 @@ void	draw_rays_3D(t_scene *sc)
 		p1[1] = (int)sc->player->posY;
 		p2[0] = (int)sc->ray->rx;
 		p2[1] = (int)sc->ray->ry;
-		//draw_line(sc, p1, p2);
+		draw_line(sc, p1, p2);
 		
 		//Draw Walls 3D
 		sc->ray->cAng = sc->player->angle - sc->ray->angle;
 		if (sc->ray->cAng < 0)
 			sc->ray->cAng += 2 * PI;
-		if (sc->ray->cAng> 2 * PI)
+		if (sc->ray->cAng > 2 * PI)
 			sc->ray->cAng -= 2 * PI;
 		sc->ray->disT *= cos(sc->ray->cAng);	
-		sc->ray->lineH = (sc->map->mapSize * (W_WIDTH/ 3)) / sc->ray->disT;
-		sc->ray->lineO = (W_WIDTH / 3) - (sc->ray->lineH / 2);
-		if (sc->ray->lineH > W_WIDTH/3)
-			sc->ray->lineH = W_WIDTH / 3;
+		sc->ray->lineH = (sc->map->mapSize * 320) / sc->ray->disT;
+		sc->ray->lineO = 160 - sc->ray->lineH / 2;
+		if (sc->ray->lineH > 320)
+			sc->ray->lineH = 320;
 		for (int x = 0; x < 8; x++)
 		{
 			p1[0] = r * 8 + 530 + x;

@@ -1,10 +1,12 @@
 #include "mlx_linux/mlx.h"
+#include "get_next_line.h"
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
+#include <fcntl.h>
 
-#define W_WIDTH 1280
-#define W_HEIGHT 720
+#define W_WIDTH 1024
+#define W_HEIGHT 768
 #define PI 3.1415926535
 #define DGR 0.0174533
 
@@ -25,6 +27,7 @@ typedef struct s_map
 	int mapY;
 	int mapSize;
 	int *values;
+	int valIndex;
 }	t_map;
 
 
