@@ -26,173 +26,111 @@ static int	*absolute_delta(int p1x, int p1y, int p2x, int p2y)
 	return (delta);
 }
 
-static float dist(float ax, float ay, float bx, float by)
+/*static float dist(float ax, float ay, float bx, float by)
 {
 	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
-}
+}*/
 
 
 void	draw_rays_3D(t_scene *sc)
 {
-	float aTan;
-	float nTan;
+	int x;
 	int p1[2];
 	int p2[2];
-	
-	sc->ray->angle = sc->player->angle - DGR * 30;
-	sc->color = 0xFFFF00;
-	if (sc->ray->angle < 0)
-		sc->ray->angle += 2 * PI;
-	if (sc->ray->angle > 2 * PI)
-		sc->ray->angle -= 2 * PI;
-	//p1[0] = sc->player->posX;
-	//p1[1] = sc->player->posY;
-	//p2[0] = p1[0] + sc->player->deltaX * 5;
-	//p2[1] = p1[1] + sc->player->deltaY * 5;
-	for (int r = 0; r < 60; r++)
+
+	// Ciclo per ogni colonna della schermata
+	for (x = 0; x < W_WIDTH; x++)
 	{
-		
-		//Check wall horizontal lines
-		sc->ray->dof = 0;
-		sc->ray->disH = 1000000;
-		sc->ray->hx = sc->player->posX;
-		sc->ray->hy = sc->player->posY;
-		aTan = -1/(tan(sc->ray->angle));
-		if (sc->ray->angle > PI)
-		{
-			sc->ray->ry = (((int)sc->player->posY >> 6) << 6) -0.0001; 
-			sc->ray->rx = (sc->player->posY - sc->ray->ry) * aTan + sc->player->posX;
-			sc->ray->yo = -64;
-			sc->ray->xo = -(sc->ray->yo) * aTan;
-		}	
-		if (sc->ray->angle < PI)
-		{
-			sc->ray->ry = (((int)sc->player->posY >> 6) << 6) + 64; 
-			sc->ray->rx = (sc->player->posY - sc->ray->ry) * aTan + sc->player->posX;
-			sc->ray->yo = 64;
-			sc->ray->xo = -(sc->ray->yo) * aTan;
-		}	
-		if (sc->ray->angle == 0 || sc->ray->angle == PI)
-		{
-			sc->ray->rx = sc->player->posX;
-			sc->ray->ry = sc->player->posY;
-			sc->ray->dof = 8;
-		}
+	// Calcolo la posizione della colonna sulla telecamera
+	sc->cam->x = 2 * x / (float)W_WIDTH - 1;
 
-		while (sc->ray->dof < 8)
-		{
-			sc->ray->mx = (int)(sc->ray->rx) >> 6;
-			sc->ray->my = (int)(sc->ray->ry) >> 6;
-			sc->ray->mp = (sc->ray->my * sc->map->mapX) + sc->ray->mx;
-			if (sc->ray->mp < sc->map->mapX * sc->map->mapY && sc->ray->mp > 0 && sc->map->values[sc->ray->mp] == 1)
-			{
-				sc->ray->hx = sc->ray->rx;
-				sc->ray->hy = sc->ray->ry;
-				sc->ray->disH = dist(sc->player->posX, sc->player->posY, sc->ray->hx, sc->ray->hy);
-				sc->ray->dof = 8;
-			}
-			else
-			{
-				sc->ray->rx += sc->ray->xo;
-				sc->ray->ry += sc->ray->yo;
-				sc->ray->dof += 1;
-			}
-		}
-		
-		
-		//Check wall vertical lines
-		sc->ray->dof = 0;
-		sc->ray->disV = 1000000;
-		sc->ray->vx = sc->player->posX;
-		sc->ray->vy = sc->player->posY;
-		nTan = -tan(sc->ray->angle);
-		if (sc->ray->angle > PI / 2 && sc->ray->angle < 3 * PI / 2)
-		{
-			sc->ray->rx = (((int)sc->player->posX >> 6) << 6) -0.0001; 
-			sc->ray->ry = (sc->player->posX - sc->ray->rx) * nTan + sc->player->posY;
-			sc->ray->xo = -64;
-			sc->ray->yo = -(sc->ray->xo) * nTan;
-		}	
-		if (sc->ray->angle < PI / 2 || sc->ray->angle > 3 * PI / 2)
-		{
-			sc->ray->rx = (((int)sc->player->posX >> 6) << 6) + 64; 
-			sc->ray->ry = (sc->player->posX - sc->ray->rx) * nTan + sc->player->posY;
-			sc->ray->xo = 64;
-			sc->ray->yo = -(sc->ray->xo) * nTan;
-		}	
-		if (sc->ray->angle == 0 || sc->ray->angle == PI)
-		{
-			sc->ray->rx = sc->player->posX;
-			sc->ray->ry = sc->player->posY;
-			sc->ray->dof = 8;
-		}
+	// Direzione del raggio dal giocatore alla colonna della schermata
+	sc->ray->dirX = sc->player->dirX + sc->cam->planeX * sc->cam->x;
+	sc->ray->dirY = sc->player->dirY + sc->cam->planeY * sc->cam->x;
 
-		while (sc->ray->dof < 8)
-		{
-			sc->ray->mx = (int)(sc->ray->rx) >> 6;
-			sc->ray->my = (int)(sc->ray->ry) >> 6;
-			sc->ray->mp = (sc->ray->my * sc->map->mapX) + sc->ray->mx;
-			if (sc->ray->mp < sc->map->mapX * sc->map->mapY && sc->ray->mp > 0 && sc->map->values[sc->ray->mp] == 1)
-			{
-				sc->ray->vx = sc->ray->rx;
-				sc->ray->vy = sc->ray->ry;
-				sc->ray->disV = dist(sc->player->posX, sc->player->posY, sc->ray->vx, sc->ray->vy);
-				sc->ray->dof = 8;
-			}
-			else
-			{
-				sc->ray->rx += sc->ray->xo;
-				sc->ray->ry += sc->ray->yo;
-				sc->ray->dof += 1;
-			}
-		}
-		
-		if (sc->ray->disV < sc->ray->disH)
-		{
-			sc->ray->rx = sc->ray->vx; 
-			sc->ray->ry = sc->ray->vy;
-			sc->ray->disT = sc->ray->disV;
-			sc->color = 0x008800;
-		}
-		if (sc->ray->disH < sc->ray->disV)
-		{
-			sc->ray->rx = sc->ray->hx; 
-			sc->ray->ry = sc->ray->hy;
-			sc->ray->disT = sc->ray->disH;
-			sc->color = 0x00FF00;
-		}
-		p1[0] = (int)sc->player->posX;
-		p1[1] = (int)sc->player->posY;
-		p2[0] = (int)sc->ray->rx;
-		p2[1] = (int)sc->ray->ry;
-		draw_line(sc, p1, p2);
-		
-		//Draw Walls 3D
-		sc->ray->cAng = sc->player->angle - sc->ray->angle;
-		if (sc->ray->cAng < 0)
-			sc->ray->cAng += 2 * PI;
-		if (sc->ray->cAng > 2 * PI)
-			sc->ray->cAng -= 2 * PI;
-		sc->ray->disT *= cos(sc->ray->cAng);	
-		sc->ray->lineH = (sc->map->mapSize * 320) / sc->ray->disT;
-		sc->ray->lineO = 160 - sc->ray->lineH / 2;
-		if (sc->ray->lineH > 320)
-			sc->ray->lineH = 320;
-		for (int x = 0; x < 8; x++)
-		{
-			p1[0] = r * 8 + 530 + x;
-			p1[1] = sc->ray->lineO;
-			p2[0] = r * 8 + 530 + x;
-			p2[1] = (int)(sc->ray->lineH + sc->ray->lineO);
-			draw_line(sc, p1, p2);
-		}
-		sc->ray->angle += DGR;
-		if (sc->ray->angle < 0)
-			sc->ray->angle += 2 * PI;
-		if (sc->ray->angle > 2 * PI)
-			sc->ray->angle -= 2 * PI;	
+	// Posizione della mappa del giocatore
+	sc->map->mapX = (int)sc->player->posX;
+	sc->map->mapY = (int)sc->player->posY;
+
+	
+
+	// Lunghezza del raggio dall'attuale posizione alla prossima linea x o y della griglia, considerando solo una unità di griglia
+	sc->ray->deltaDistX = fabs(1 / sc->ray->dirX);
+	sc->ray->deltaDistY = fabs(1 / sc->ray->dirY);
+
+	
+
+	sc->ray->hit = 0; // Flag per indicare se il raggio ha colpito un muro
+
+	// Calcolo del passo della mappa e della distanza al primo muro in x e y
+	if (sc->ray->dirX < 0)
+	{
+	    sc->ray->stepX = -1;
+	    sc->ray->sideDistX = (sc->player->posX - sc->map->mapX) * sc->ray->deltaDistX;
+	}
+	else
+	{
+	    sc->ray->stepX = 1;
+	    sc->ray->sideDistX = (sc->map->mapX + 1.0f - sc->player->posX) * sc->ray->deltaDistX;
+	}
+	if (sc->ray->dirY < 0)
+	{
+	    sc->ray->stepY = -1;
+	    sc->ray->sideDistY = (sc->player->posY - sc->map->mapY) * sc->ray->deltaDistY;
+	}
+	else
+	{
+	    sc->ray->stepY = 1;
+	    sc->ray->sideDistY = (sc->map->mapY + 1.0 - sc->player->posY) * sc->ray->deltaDistY;
 	}
 
+	// Algoritmo DDA
+	while (!sc->ray->hit)
+	{
+	    // Sposta il raggio alla prossima cella x o y
+	    if (sc->ray->sideDistX < sc->ray->sideDistY)
+	    {
+		sc->ray->sideDistX += sc->ray->deltaDistX;
+		sc->map->mapX += sc->ray->stepX;
+		sc->ray->side = 0; // L'intersezione è orizzontale
+	    }
+	    else
+	    {
+		sc->ray->sideDistY += sc->ray->deltaDistY;
+		sc->map->mapY += sc->ray->stepY;
+		sc->ray->side = 1; // L'intersezione è verticale
+	    }
+	    
+	    // Controlla se il raggio ha colpito un muro
+	    if (sc->map->room[sc->map->mapX][sc->map->mapY] > 0)
+		sc->ray->hit = 1;
+	}
+
+	// Calcola la distanza perpendicolare dal giocatore al muro, in base alla direzione del raggio e al tipo di intersezione
+	if (sc->ray->side == 0)
+	    sc->ray->perpWallDist = (sc->map->mapX - sc->player->posX + (1 - sc->ray->stepX) / 2) / sc->ray->dirX;
+	else
+	    sc->ray->perpWallDist = (sc->map->mapY - sc->player->posY + (1 - sc->ray->stepY) / 2) / sc->ray->dirY;
+
+	// Calcola l'altezza della linea da disegnare sulla schermata
+	sc->ray->lineHeight = (int)(W_HEIGHT / sc->ray->perpWallDist);
+
+	// Calcola le coordinate di inizio e fine della linea da disegnare
+	sc->ray->drawStart = -sc->ray->lineHeight / 2 + W_HEIGHT / 2;
+	if (sc->ray->drawStart < 0)
+	    sc->ray->drawStart = 0;
+	sc->ray->drawEnd = sc->ray->lineHeight / 2 + W_HEIGHT / 2;
+	if (sc->ray->drawEnd >= W_HEIGHT)
+	    sc->ray->drawEnd = W_HEIGHT - 1;
+	
+	p1[0] = x;
+	p1[1] = sc->ray->drawStart;
+	p2[0] = x;
+	p2[1] = sc->ray->drawEnd;
+	// Disegna la linea sulla schermata
+	sc->color = (sc->ray->side == 0) ? 0x00FF00 : 0x008800; // Colore della linea
+	draw_line(sc, p1, p2);
+	}
 
 }
 

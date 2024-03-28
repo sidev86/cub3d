@@ -1,77 +1,150 @@
 
 #include "cub3d.h"
 
-void	init_scene(t_scene *sc)
+void	init_player(t_scene *sc)
 {
 	sc->player = malloc(sizeof(t_player));
-	sc->player->posX = 400.0f;
-	sc->player->posY = 300.0f;
+	sc->player->posX = 2.0f;
+	sc->player->posY = 7.0f;
+	sc->player->dirX = -1;
+	sc->player->dirY = 0;
 	sc->player->size = 10;
 	sc->player->angle = (3 * PI) / 2;
 	sc->player->deltaX = cos(sc->player->angle) * 5;
 	sc->player->deltaY = sin(sc->player->angle) * 5;
-	sc->color = 0xFFFF00;
+}
+
+
+int	count_map_cols(char *r)
+{
+	int i;
+	int cols;
 	
+	i = 0;
+	cols = 0;
+	while (r[i] != '\0' && r[i] != '\n')
+	{
+		while (r[i] == ' ' || r[i] == '\t')
+			i++; 
+		if (r[i] == '0' || r[i] == '1' || r[i] == 'N' || r[i] == 'S' || r[i] == 'E' || r[i] == 'W')
+			cols++;
+		i++;
+	}
+	return (cols);
+}
+
+void	init_map(t_scene *sc, char *path)
+{
+	
+	int fd;
+	char *row;
+	int rows;
+	int cols;
+	int i = 0;
+	
+	cols = 0;
+	rows = 0;
 	sc->map = malloc(sizeof(t_map));
-	sc->map->mapX = 8;
-	sc->map->mapY = 8;
-	sc->map->mapSize = sc->map->mapX * sc->map->mapY;
-	sc->map->valIndex = 0;
-	sc->map->values = malloc(sizeof(int) * sc->map->mapSize);
 	
+	fd = open(path, O_RDONLY);
+	while (fd != -1)
+	{
+		row = get_next_line(fd);
+		if (row)
+			rows++;
+		else
+			break;
+		if (rows == 1)
+			cols = count_map_cols(row);
+	}
+	
+	sc->map->room = (int **)malloc(sizeof(int *) * rows);
+	while (i < rows)
+	{
+		sc->map->room[i] = (int *)malloc(sizeof(int) * cols);
+		i++;
+	}
+	sc->map->mapX = rows;
+	sc->map->mapY = cols;
+	sc->map->mapSize = cols * rows;
+	close(fd);
+}
+
+void	init_scene(t_scene *sc, char *path)
+{
+	sc->color = 0xFFFF00;
+	init_player(sc);
+	init_map(sc, path);
+	
+	//init cam
+	sc->cam = malloc(sizeof(t_camera));
+	sc->cam->planeX = 0;
+	sc->cam->planeY = 0.66f;
+
 	sc->ray = malloc(sizeof(t_ray));
 }
 
-void put_player_on_map(t_scene *sc, char dir, int idx)
+void put_player_on_map(t_scene *sc, char dir, int x, int y)
 {
 	
 	if (dir == 'N')
-		sc->player->angle = (3 * PI) / 2;
+	{
+		sc->player->dirX = -1;
+		sc->player->dirY = 0;
+		sc->cam->planeX = 0;
+		sc->cam->planeY = 0.66f;
+		//sc->player->angle = (3 * PI) / 2;
+	}
 	else if (dir == 'S')
-		sc->player->angle = PI / 2;
+	{
+		sc->player->dirX = 1;
+		sc->player->dirY = 0;
+		sc->cam->planeX = 0;
+		sc->cam->planeY = -0.66f;
+		//sc->player->angle = PI / 2;
+	}
 	else if (dir == 'W')
-		sc->player->angle = PI;
+	{
+		sc->player->dirX = 0;
+		sc->player->dirY = -1;
+		sc->cam->planeX = -0.66f;
+		sc->cam->planeY = 0;
+		//sc->player->angle = PI;
+	}
 	else if (dir == 'E')
-		sc->player->angle = 0;
-	sc->player->posY = (idx / sc->map->mapX) * sc->map->mapSize + (sc->map->mapSize / 2) - (sc->player->size / 2);
-	sc->player->posX = (idx % sc->map->mapX) * sc->map->mapSize + (sc->map->mapSize / 2) + (sc->player->size / 2);
+	{
+		sc->player->dirX = 0;
+		sc->player->dirY = 1;
+		sc->cam->planeX = 0.66f;
+		sc->cam->planeY = 0;
+		//sc->player->angle = 0;
+	}
+	sc->player->posX = (float)x + 0.2f;
+	sc->player->posY = (float)y;
+	
 }
 
 
-void	save_row_values(t_scene *sc, char *row)
+void	save_map_row_values(t_scene *sc, char *row, int x)
 {
-	int i = 0;
-	int j;
-	int len = 0;
-	j = sc->map->valIndex;
 	
-	while(row[i])
+	int y = 0;
+	
+	while (y < sc->map->mapY)
 	{
-		len++;
-		i++;
-	}
-	//printf("num elementi riga = %d\n", len);
-	i = 0;
-	while (row[i] != '\n' && row[i] != '\0')
-	{
-		while (row[i] == ' ' || row[i] == '\t')
-			i++;
-		if (row[i] == '0')
-			sc->map->values[j] = 0;
-		else if (row[i] == '1')
-			sc->map->values[j] = 1;
-		else if (row[i] == 'N' || row[i] == 'S' || row[i] == 'W' || row[i] == 'E')
+		while (row[y] == ' ' || row[y] == '\t')
+			y++;
+		if (row[y] == '0')
+			sc->map->room[x][y] = 0;
+		else if (row[y] == '1')
+			sc->map->room[x][y] = 1;
+		else if (row[y] == 'N' || row[y] == 'S' || row[y] == 'W' || row[y] == 'E')
 		{
-			sc->map->values[j] = 0;
-			put_player_on_map(sc, row[i], j);	
+			sc->map->room[x][y] = 0;
+			put_player_on_map(sc, row[y], x, y);
 		}
-		
-		printf("%d", sc->map->values[j]);
-		i++;
-		j++;
+		y++;
 	}
-	printf("\n");
-	sc->map->valIndex = j;
 }
 
 
@@ -79,11 +152,13 @@ int	read_map(char *path, t_scene *sc)
 {
 	
 	int	fd;
+	int	num_row;
 	char *row;
 	
+	num_row = 0; 
 	fd = open(path, O_RDONLY);
 	
-	// faccio ciclo che legge tutte li righe della tabella
+	// faccio ciclo che legge tutte le righe della tabella
 	// salvo ogni valore all' interno del mio array
 	
 	while (fd != -1)
@@ -93,11 +168,27 @@ int	read_map(char *path, t_scene *sc)
 		if (row)
 		{
 			//check_row_validity(row);
-			save_row_values(sc, row);
+			save_map_row_values(sc, row, num_row);
 		}
 		else 
 			break;
+		num_row++;
 		free(row);
+	}
+	
+	int i = 0; 
+	int j = 0;
+	
+	while (i < sc->map->mapX)
+	{
+		j = 0;
+		while(j < sc->map->mapY)
+		{
+			printf("%d", sc->map->room[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
 	}
 	return (1);
 }
@@ -108,25 +199,9 @@ int	main(int argc, char **argv)
 	t_scene s;
 	//int i = 0;
 	
-	
-	
 	if (argc == 2)
 	{
-		init_scene(&s);
-		
-		// IMPOSTA MAPPA
-		/*while (i < s.map->mapSize)
-		{
-			if((i >= 0 && i < 8) || (i >= 56 && i < 64))
-				s.map->values[i] = 1; 
-			else if((i % 8) == 0 || (i+1) % 8 == 0)
-				s.map->values[i] = 1;
-			else if (i == 10 || i == 18 || i == 26 || i == 21)
-				s.map->values[i] = 1;
-			else
-				s.map->values[i] = 0; 
-			i++;
-		}*/
+		init_scene(&s, argv[1]);
 		
 		read_map(argv[1], &s);
 
@@ -158,7 +233,7 @@ int	main(int argc, char **argv)
 			return (1);
 		}
 		
-		draw_map_2D(&s);
+		//draw_map_2D(&s);
 		draw_player(&s); 
 		
 		mlx_hook(s.win, 2, 1L << 0, key_press, &s); 

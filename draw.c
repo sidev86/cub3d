@@ -59,12 +59,13 @@ void draw_map_2D(t_scene *sc)
 {
 	int x, y, x0, y0;
 	
+
 	draw_background(sc);
-	for (y = 0; y < sc->map->mapY; y++)
+	for (x = 0; x < sc->map->mapX; x++)
 	{
-		for (x = 0; x < sc->map->mapX; x++)
+		for (y = 0; y < sc->map->mapY; y++)
 		{
-			if (sc->map->values[y * (sc->map->mapX) + x] == 1)
+			if (sc->map->room[x][y] == 1)
 			{
 				x0 = x * sc->map->mapSize;
 				y0 = y * sc->map->mapSize;
@@ -78,7 +79,7 @@ void draw_map_2D(t_scene *sc)
 			
 		}
 	}
-	//mlx_put_image_to_window(sc->mlx, sc->win, sc->img, 0, 0);
+	mlx_put_image_to_window(sc->mlx, sc->win, sc->img, 0, 0);
 }
 
 
@@ -92,7 +93,7 @@ void	draw_player(t_scene *sc)
 	int	y;
 	//int	p1[2]; 
 	//int	p2[2];
-	//draw_background(sc);
+	draw_background(sc);
 	x = -(sc->player->size / 2);
 	y = 0;
 	while (y < sc->player->size)

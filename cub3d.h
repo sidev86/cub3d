@@ -14,8 +14,12 @@ typedef struct s_player
 {
 	float posX;
 	float posY;
+	float dirX; 
+	float dirY;
 	float deltaX;
 	float deltaY;
+	//float planeX; 
+	//float planeY;
 	float angle;
 	int size;
 }	t_player;
@@ -26,34 +30,36 @@ typedef struct s_map
 	int mapX; 
 	int mapY;
 	int mapSize;
-	int *values;
+	int **room;
 	int valIndex;
 }	t_map;
 
 
 typedef struct	s_ray
 {
-	int mx;
-	int my;
-	int mp;
-	
-	int dof;
-	float disH;
-	float disV;
-	float disT;
-	float rx;
-	float ry;
-	float hx;
-	float hy;
-	float vx; 
-	float vy;
-	float cAng;
-	float angle;
-	float xo;
-	float yo;
-	float lineH;
-	float lineO;
+	float dirX;
+	float dirY;
+	float sideDistX;
+	float sideDistY;
+	float deltaDistX;
+	float deltaDistY;
+	float perpWallDist;
+	int stepX;
+	int stepY;
+	int hit;
+	int side;
+	int lineHeight;
+	int drawStart;
+	int drawEnd;
 }	t_ray;
+
+typedef struct s_camera
+{
+	float x;
+	float y;
+	float planeX;
+	float planeY;
+}	t_camera;
 
 typedef struct s_scene
 {
@@ -69,11 +75,8 @@ typedef struct s_scene
 	t_player	*player;
 	t_map		*map;
 	t_ray		*ray;
+	t_camera	*cam;
 }	t_scene;
-
-
-
-
 
 
 //DRAW
