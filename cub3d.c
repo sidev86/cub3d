@@ -70,16 +70,112 @@ void	init_map(t_scene *sc, char *path)
 	close(fd);
 }
 
+void	clear_buffer(t_scene *sc)
+{
+	int x;
+	int y;
+	
+	x = 0;
+	y = 0;
+	
+	while (x < W_HEIGHT)
+	{
+		y = 0;
+		while(y < W_WIDTH)
+		{
+			sc->buff[x][y] = 0;
+			y++;
+		}
+		x++;
+	}
+}
+
+void	load_image(t_scene *sc, int *texture, char *path, t_img *img)
+{
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
+	img->img = mlx_xpm_file_to_image(sc->mlx, path, &img->img_w, &img->img_h);
+	img->data_addr = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->line_width, &img->endian);
+	while (y < img->img_h)
+	{
+		x = 0;
+		while (x < img->img_w)
+		{
+			texture[img->img_w * y + x] = img->data_addr[img->img_w * y + x];
+			x++;
+		}
+		y++;
+	}
+	mlx_destroy_image(sc->mlx, img->img);
+}
+
+void	load_texture(t_scene *sc)
+{
+	t_img	img;
+	load_image(sc, sc->texture[0], "textures/eagle.xpm", &img);
+	load_image(sc, sc->texture[1], "textures/redbrick.xpm", &img);
+	load_image(sc, sc->texture[2], "textures/purplestone.xpm", &img);
+	load_image(sc, sc->texture[3], "textures/greystone.xpm", &img);
+	load_image(sc, sc->texture[4], "textures/bluestone.xpm", &img);
+	load_image(sc, sc->texture[5], "textures/mossy.xpm", &img);
+	load_image(sc, sc->texture[6], "textures/wood.xpm", &img);
+	load_image(sc, sc->texture[7], "textures/colorstone.xpm", &img);
+}
+
+void texture_cycle(t_scene *sc)
+{
+
+	int i;
+	int j;
+	
+	i = 0;
+	j = 0;
+	while (i < 8)
+	{
+		sc->texture[i] = (int *)malloc(sizeof(int) * (T_WIDTH * T_HEIGHT));
+		if (!sc->texture[i])
+			printf("Error in texture allocation\n");
+		i++;
+	}
+	i = 0;
+	while (i < 8)
+	{
+		j = 0;
+		while (j < T_WIDTH * T_HEIGHT)
+		{
+			sc->texture[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
+}
+
+void	init_texture(t_scene *sc)
+{
+	
+	sc->texture = (int **)malloc(sizeof(int *) * 8);
+	if (!sc->texture)
+		printf("Error in texture allocation\n");
+	texture_cycle(sc);
+	load_texture(sc);
+}
+
 void	init_scene(t_scene *sc, char *path)
 {
 	sc->color = 0xFFFF00;
+	sc->re_buf = 0;
 	init_player(sc);
 	init_map(sc, path);
-	
+	clear_buffer(sc);
+	init_texture(sc);
 	//init cam
 	sc->cam = malloc(sizeof(t_camera));
 	sc->cam->planeX = 0;
 	sc->cam->planeY = 0.66f;
+	sc->cam->x = 0;
 
 	sc->ray = malloc(sizeof(t_ray));
 }
@@ -119,8 +215,8 @@ void put_player_on_map(t_scene *sc, char dir, int x, int y)
 		sc->cam->planeY = 0;
 		//sc->player->angle = 0;
 	}
-	sc->player->posX = (float)x + 0.2f;
-	sc->player->posY = (float)y;
+	sc->player->posX = (double)x + 0.2f;
+	sc->player->posY = (double)y;
 	
 }
 
@@ -193,6 +289,33 @@ int	read_map(char *path, t_scene *sc)
 	return (1);
 }
 
+void	draw_scene(t_scene *sc)
+{
+	int x; 
+	int y; 
+	
+	x = 0;
+	y = 0;
+	while (y < W_HEIGHT)
+	{
+		while(x < W_WIDTH)
+		{
+		
+			sc->img.data_addr[y * W_WIDTH + x] = sc->buff[y][x];
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	mlx_put_image_to_window(sc->mlx, sc->win, sc->img.img, 0, 0);
+}
+
+int scene_loop(t_scene *sc)
+{
+	calculate_rays(sc);
+	draw_scene(sc);
+	return (1);
+}
 
 int	main(int argc, char **argv)
 {
@@ -201,11 +324,12 @@ int	main(int argc, char **argv)
 	
 	if (argc == 2)
 	{
+		s.mlx = mlx_init();
 		init_scene(&s, argv[1]);
 		
 		read_map(argv[1], &s);
 
-		s.mlx = mlx_init();
+		
 		if (!s.mlx)
 		{
 			printf("Errore durante l'inizializzazione di mlx\n");
@@ -219,23 +343,24 @@ int	main(int argc, char **argv)
 			return (1);
 		}
 
-		s.img = mlx_new_image(s.mlx, W_WIDTH, W_HEIGHT);
-		if (!s.img)
+		s.img.img = mlx_new_image(s.mlx, W_WIDTH, W_HEIGHT);
+		if (!s.img.img)
 		{
 			printf("Errore durante la creazione dell'immagine\n");
 			return (1);
 		}
 
-		s.data_addr = mlx_get_data_addr(s.img, &(s.bpp), &(s.line_width), &(s.endian));
-		if (!s.data_addr)
+		s.img.data_addr = (int *)mlx_get_data_addr(s.img.img, &(s.img.bpp), &(s.img.line_width), &(s.img.endian));
+		if (!s.img.data_addr)
 		{
 			printf("Errore durante l'ottenimento dell'indirizzo dei dati dell'immagine\n");
 			return (1);
 		}
 		
 		//draw_map_2D(&s);
-		draw_player(&s); 
+		//draw_player(&s); 
 		
+		mlx_loop_hook(s.mlx, &scene_loop, &s);
 		mlx_hook(s.win, 2, 1L << 0, key_press, &s); 
 		mlx_loop(s.mlx);
 	}

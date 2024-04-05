@@ -42,7 +42,8 @@ int	key_press(int keycode, void *param)
 	}
 	
 	//draw_map_2D(sc);
-	draw_player(sc);
-
+	//draw_player(sc);
+	mlx_clear_window(sc->mlx, sc->win);
+	scene_loop(sc);
 	return (0);
 }

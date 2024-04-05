@@ -5,22 +5,22 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-#define W_WIDTH 1024
-#define W_HEIGHT 768
+#define W_WIDTH 640
+#define W_HEIGHT 480
+#define T_WIDTH 64
+#define T_HEIGHT 64
 #define PI 3.1415926535
 #define DGR 0.0174533
 
 typedef struct s_player
 {
-	float posX;
-	float posY;
-	float dirX; 
-	float dirY;
-	float deltaX;
-	float deltaY;
-	//float planeX; 
-	//float planeY;
-	float angle;
+	double posX;
+	double posY;
+	double dirX; 
+	double dirY;
+	double deltaX;
+	double deltaY;
+	double angle;
 	int size;
 }	t_player;
 
@@ -37,13 +37,13 @@ typedef struct s_map
 
 typedef struct	s_ray
 {
-	float dirX;
-	float dirY;
-	float sideDistX;
-	float sideDistY;
-	float deltaDistX;
-	float deltaDistY;
-	float perpWallDist;
+	double dirX;
+	double dirY;
+	double sideDistX;
+	double sideDistY;
+	double deltaDistX;
+	double deltaDistY;
+	double perpWallDist;
 	int stepX;
 	int stepY;
 	int hit;
@@ -55,27 +55,46 @@ typedef struct	s_ray
 
 typedef struct s_camera
 {
-	float x;
-	float y;
-	float planeX;
-	float planeY;
+	double x;
+	double y;
+	double planeX;
+	double planeY;
 }	t_camera;
+
+
+typedef struct	s_img
+{
+	void	*img;
+	int		*data_addr;
+
+	int		line_width;
+	int		bpp;
+	int		endian;
+	int		img_w;
+	int		img_h;
+}				t_img;
 
 typedef struct s_scene
 {
 	void	*mlx;
 	void	*win;
-	void	*img;
-	char	*data_addr;
-	int	bpp;
-	int	endian;
-	int	line_width;
+	
 	int	color;
-	//int	player[3];
+	int	buff[W_HEIGHT][W_WIDTH];
+	int	**texture;
+	int	 texNum;
+	int texX; 
+	int texY;
+	int re_buf;
+	double wallX;
+	double step;
+	double texPos;
+	
 	t_player	*player;
 	t_map		*map;
 	t_ray		*ray;
 	t_camera	*cam;
+	t_img		img;
 }	t_scene;
 
 
@@ -86,12 +105,15 @@ void	draw_background(t_scene *sc);
 void	draw_tile_map(t_scene *sc, int x, int y, int mapSize);
 void	draw_map_2D(t_scene *sc);
 void	draw_player(t_scene *sc);
-void	draw_rays_3D(t_scene *sc);
+void	calculate_rays(t_scene *sc);
 
 //CONTROLS
 int	key_press(int keycode, void *param);
 
 //UTILS
 void	ft_bzero(void *s, size_t n);
+
+void	clear_buffer(t_scene *sc);
+int scene_loop(t_scene *sc);
 
 

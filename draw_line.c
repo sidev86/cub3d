@@ -26,23 +26,20 @@ static int	*absolute_delta(int p1x, int p1y, int p2x, int p2y)
 	return (delta);
 }
 
-/*static float dist(float ax, float ay, float bx, float by)
+void	calculate_rays(t_scene *sc)
 {
-	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
-}*/
+	int x = 0;
 
-
-void	draw_rays_3D(t_scene *sc)
-{
-	int x;
-	int p1[2];
-	int p2[2];
+	if (sc->re_buf == 1)
+	{
+		clear_buffer(sc);
+	}
 
 	// Ciclo per ogni colonna della schermata
-	for (x = 0; x < W_WIDTH; x++)
+	while (x < W_WIDTH)
 	{
 	// Calcolo la posizione della colonna sulla telecamera
-	sc->cam->x = 2 * x / (float)W_WIDTH - 1;
+	sc->cam->x = 2 * x / (double)W_WIDTH - 1;
 
 	// Direzione del raggio dal giocatore alla colonna della schermata
 	sc->ray->dirX = sc->player->dirX + sc->cam->planeX * sc->cam->x;
@@ -123,13 +120,39 @@ void	draw_rays_3D(t_scene *sc)
 	if (sc->ray->drawEnd >= W_HEIGHT)
 	    sc->ray->drawEnd = W_HEIGHT - 1;
 	
-	p1[0] = x;
-	p1[1] = sc->ray->drawStart;
-	p2[0] = x;
-	p2[1] = sc->ray->drawEnd;
-	// Disegna la linea sulla schermata
-	sc->color = (sc->ray->side == 0) ? 0x00FF00 : 0x008800; // Colore della linea
-	draw_line(sc, p1, p2);
+	sc->texNum = sc->map->room[sc->map->mapX][sc->map->mapY];
+
+		// calculate value of wallX
+		if (sc->ray->side == 0)
+			sc->wallX = sc->player->posY + sc->ray->perpWallDist * sc->ray->dirY;
+		else
+			sc->wallX = sc->player->posX + sc->ray->perpWallDist * sc->ray->dirX;
+		sc->wallX -= floor(sc->wallX);
+
+		// x coordinate on the texture
+		sc->texX = (int)(sc->wallX * (double)T_WIDTH);
+		if (sc->ray->side == 0 && sc->ray->dirX > 0)
+			sc->texX = T_WIDTH - sc->texX - 1;
+		if (sc->ray->side == 1 && sc->ray->dirY < 0)
+			sc->texX = T_WIDTH - sc->texX - 1;
+
+		// How much to increase the texture coordinate perscreen pixel
+		sc->step = 1.0 * T_HEIGHT / sc->ray->lineHeight;
+		// Starting texture coordinate
+		sc->texPos = (sc->ray->drawStart - W_HEIGHT / 2 + sc->ray->lineHeight / 2) * sc->step;
+		for (int y = sc->ray->drawStart; y < sc->ray->drawEnd; y++)
+		{
+			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+			sc->texY = (int)sc->texPos & (T_HEIGHT - 1);
+			sc->texPos += sc->step;
+			sc->color = sc->texture[0][T_HEIGHT * sc->texY + sc->texX];
+			if (sc->ray->side == 1)
+				sc->color = (sc->color >> 1) & 8355711;
+			sc->buff[y][x] = sc->color;
+			sc->re_buf = 1;
+		}
+		x++;
+	
 	}
 
 }

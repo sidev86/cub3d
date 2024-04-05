@@ -2,19 +2,19 @@
 
 void	put_pixel(t_scene *sc, int x, int y, int color)
 {
-	char	*pixel;
+	int	*pixel;
 	int		i;
 
 	if (x >= 0 && x < W_WIDTH && y >= 0 && y < W_HEIGHT)
 	{
-		i = sc->bpp - 8;
-		pixel = sc->data_addr + (y * sc->line_width + x * sc->bpp / 8);
+		i = sc->img.bpp - 8;
+		pixel = sc->img.data_addr + (y * sc->img.line_width + x * sc->img.bpp / 8);
 		while (i >= 0)
 		{
-			if (sc->endian != 0)
+			if (sc->img.endian != 0)
 				*pixel++ = (color >> i) & 0xFF;
 			else
-				*pixel++ = (color >> (sc->bpp - 8 - i)) & 0xFF;
+				*pixel++ = (color >> (sc->img.bpp - 8 - i)) & 0xFF;
 			i -= 8;
 		}
 	}
@@ -26,8 +26,8 @@ void	draw_background(t_scene *sc)
 	int	*image;
 	int	i;
 
-	ft_bzero(sc->data_addr, W_WIDTH * W_HEIGHT * (sc->bpp / 8));
-	image = (int *)(sc->data_addr);
+	ft_bzero(sc->img.data_addr, W_WIDTH * W_HEIGHT * (sc->img.bpp / 8));
+	image = (int *)(sc->img.data_addr);
 	i = 0;
 	while (i < W_HEIGHT * W_WIDTH)
 	{
@@ -79,7 +79,7 @@ void draw_map_2D(t_scene *sc)
 			
 		}
 	}
-	mlx_put_image_to_window(sc->mlx, sc->win, sc->img, 0, 0);
+	mlx_put_image_to_window(sc->mlx, sc->win, sc->img.img, 0, 0);
 }
 
 
@@ -108,6 +108,6 @@ void	draw_player(t_scene *sc)
 	}
 	// disegna linea direzione POV
 	//draw_line(sc, p1, p2);
-	draw_rays_3D(sc);
-	mlx_put_image_to_window(sc->mlx, sc->win, sc->img, 0, 0);
+	calculate_rays(sc);
+	mlx_put_image_to_window(sc->mlx, sc->win, sc->img.img, 0, 0);
 }
