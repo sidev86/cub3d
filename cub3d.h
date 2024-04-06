@@ -82,7 +82,6 @@ typedef struct s_scene
 	int	color;
 	int	buff[W_HEIGHT][W_WIDTH];
 	int	**texture;
-	int	 texNum;
 	int texX; 
 	int texY;
 	int re_buf;
@@ -98,6 +97,10 @@ typedef struct s_scene
 }	t_scene;
 
 
+//INIT
+void	init_scene(t_scene *sc, char *path);
+
+
 //DRAW
 void	put_pixel(t_scene *sc, int x, int y, int color);
 void	draw_line(t_scene *sc, int *p1, int *p2);
@@ -106,6 +109,14 @@ void	draw_tile_map(t_scene *sc, int x, int y, int mapSize);
 void	draw_map_2D(t_scene *sc);
 void	draw_player(t_scene *sc);
 void	calculate_rays(t_scene *sc);
+
+//MAP
+int	read_map(char *path, t_scene *sc);
+int	count_map_cols(char *r);
+
+//TEXTURES
+void	texture_cycle(t_scene *sc);
+void	load_texture(t_scene *sc);
 
 //CONTROLS
 int	key_press(int keycode, void *param);

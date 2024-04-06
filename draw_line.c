@@ -120,7 +120,6 @@ void	calculate_rays(t_scene *sc)
 	if (sc->ray->drawEnd >= W_HEIGHT)
 	    sc->ray->drawEnd = W_HEIGHT - 1;
 	
-	sc->texNum = sc->map->room[sc->map->mapX][sc->map->mapY];
 
 		// calculate value of wallX
 		if (sc->ray->side == 0)
@@ -145,7 +144,17 @@ void	calculate_rays(t_scene *sc)
 			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 			sc->texY = (int)sc->texPos & (T_HEIGHT - 1);
 			sc->texPos += sc->step;
-			sc->color = sc->texture[0][T_HEIGHT * sc->texY + sc->texX];
+			
+			//quale texture disegnare? (4 sides)
+			if (sc->ray->side == 0 && sc->map->mapX >= sc->player->posX)
+				sc->color = sc->texture[0][T_HEIGHT * sc->texY + sc->texX];
+			else if (sc->ray->side == 0 && sc->map->mapX < sc->player->posX)
+				sc->color = sc->texture[1][T_HEIGHT * sc->texY + sc->texX];
+			else if (sc->ray->side == 1 && sc->map->mapY >= sc->player->posY)
+				sc->color = sc->texture[2][T_HEIGHT * sc->texY + sc->texX];
+			else if (sc->ray->side == 1 && sc->map->mapY < sc->player->posY)
+				sc->color = sc->texture[3][T_HEIGHT * sc->texY + sc->texX];
+			
 			if (sc->ray->side == 1)
 				sc->color = (sc->color >> 1) & 8355711;
 			sc->buff[y][x] = sc->color;
