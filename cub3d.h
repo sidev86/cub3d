@@ -111,12 +111,14 @@ void	draw_player(t_scene *sc);
 void	calculate_rays(t_scene *sc);
 
 //MAP
-int	read_map(char *path, t_scene *sc);
+int	read_map(t_scene *sc, char *path);
 int	count_map_cols(char *r);
+int	empty_line(char *row);
 
 //TEXTURES
 void	texture_cycle(t_scene *sc);
 void	load_texture(t_scene *sc);
+void	read_texture_file_data(t_scene *sc, int *fd);
 
 //CONTROLS
 int	key_press(int keycode, void *param);

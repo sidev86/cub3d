@@ -79,23 +79,49 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 	}
 }
 
-int	read_map(char *path, t_scene *sc)
+
+
+
+int	empty_line(char *row)
+{
+	int i;
+	
+	i = 0;
+	if (!row)
+		return (0);
+	while (row[i] == ' ' || row[i] == '\t')
+		i++;
+	if (row[i] == '\n')
+		return(1);
+	else
+		return(0);
+}
+
+int	read_map(t_scene *sc, char *path)
 {
 	
 	int	fd;
 	int	num_row;
 	char *row;
+	int i;
+	int j;
+	
+	i = 0;
 	
 	num_row = 0; 
-	fd = open(path, O_RDONLY);
-	
 	// faccio ciclo che legge tutte le righe della tabella
 	// salvo ogni valore all' interno del mio array
-	
+	fd = open(path, O_RDONLY);
+	while (i++ < 4)
+		row = get_next_line(fd);
 	while (fd != -1)
 	{
 		row = get_next_line(fd);
-	
+		while(empty_line(row))
+		{
+			free(row); 
+			row = get_next_line(fd); 
+		}
 		if (row)
 		{
 			//check_row_validity(row);
@@ -107,8 +133,8 @@ int	read_map(char *path, t_scene *sc)
 		free(row);
 	}
 	
-	int i = 0; 
-	int j = 0;
+	i = 0; 
+	j = 0;
 	
 	while (i < sc->map->mapX)
 	{

@@ -13,20 +13,22 @@ void	init_player(t_scene *sc)
 	sc->player->deltaY = sin(sc->player->angle) * 5;
 }
 
-void	init_texture(t_scene *sc)
+void	init_texture(t_scene *sc, char *path, int *fd)
 {
-	
+	*fd = open(path, O_RDONLY);
+	if (*fd == -1)
+		printf("Error while opening file\n");
 	sc->texture = (int **)malloc(sizeof(int *) * 8);
 	if (!sc->texture)
 		printf("Error in texture allocation\n");
 	texture_cycle(sc);
-	load_texture(sc);
+	read_texture_file_data(sc, fd);
+	//load_texture(sc);
 }
 
-void	init_map(t_scene *sc, char *path)
+void	init_map(t_scene *sc, int *fd)
 {
 	
-	int fd;
 	char *row;
 	int rows;
 	int cols;
@@ -36,10 +38,15 @@ void	init_map(t_scene *sc, char *path)
 	rows = 0;
 	sc->map = malloc(sizeof(t_map));
 	
-	fd = open(path, O_RDONLY);
-	while (fd != -1)
+	
+	while (*fd != -1)
 	{
-		row = get_next_line(fd);
+		row = get_next_line(*fd);
+		while(empty_line(row))
+		{
+			free(row); 
+			row = get_next_line(*fd); 
+		}
 		if (row)
 			rows++;
 		else
@@ -57,17 +64,19 @@ void	init_map(t_scene *sc, char *path)
 	sc->map->mapX = rows;
 	sc->map->mapY = cols;
 	sc->map->mapSize = cols * rows;
-	close(fd);
+	close(*fd);
 }
 
 void	init_scene(t_scene *sc, char *path)
 {
+	int fd;
 	sc->color = 0xFFFF00;
 	sc->re_buf = 0;
 	init_player(sc);
-	init_map(sc, path);
+	init_texture(sc, path, &fd);
+	init_map(sc, &fd);
 	clear_buffer(sc);
-	init_texture(sc);
+	
 	//init cam
 	sc->cam = malloc(sizeof(t_camera));
 	sc->cam->planeX = 0;

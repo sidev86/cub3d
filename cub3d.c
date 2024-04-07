@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 		s.mlx = mlx_init();
 		init_scene(&s, argv[1]);
 		
-		read_map(argv[1], &s);
+		read_map(&s, argv[1]);
 
 		
 		if (!s.mlx)

@@ -82,10 +82,6 @@ void draw_map_2D(t_scene *sc)
 	mlx_put_image_to_window(sc->mlx, sc->win, sc->img.img, 0, 0);
 }
 
-
-
-
-
 void	draw_player(t_scene *sc)
 {
 	//printf("posX = %d\n ", sc->player->posX);
