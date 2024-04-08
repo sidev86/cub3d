@@ -53,6 +53,7 @@ void	init_map(t_scene *sc, int *fd)
 			break;
 		if (rows == 1)
 			cols = count_map_cols(row);
+		free(row);
 	}
 	
 	sc->map->room = (int **)malloc(sizeof(int *) * rows);
@@ -67,6 +68,69 @@ void	init_map(t_scene *sc, int *fd)
 	close(*fd);
 }
 
+void	get_rgb_values(t_scene *sc, char *row, int i, char type)
+{
+	int t = 0; 
+	int j = 0;
+	char rgb_str[3];
+	while (t < 3)
+	{
+		while (row[i] == ' ' || row[i] == '\t')
+			i++;
+		while (row[i] != ',' && row[i] != '\n' && row[i] != '\0')
+			rgb_str[j++] = row[i++];
+		i++;
+		if (type == 'f')
+			sc->floor[t] = atoi(rgb_str);
+		else if (type == 'c')
+			sc->ceil[t] = atoi(rgb_str);
+		j = 0;
+		while (j < 3)
+			rgb_str[j++] = 0;
+		j = 0;
+		t++;
+	}
+
+}
+
+void	save_floor_ceiling_colors(t_scene *sc, char *row)
+{
+	int i = 0; 
+	
+	if (row[i] == 'F')
+		get_rgb_values(sc, row, ++i, 'f');
+	else if (row[i] == 'C')
+		get_rgb_values(sc, row, ++i, 'c');
+}
+
+void	init_floor_ceiling(t_scene *sc, int fd)
+{
+	char *row;
+	int i = 0;
+	int lines = 0;
+	
+	while (fd != -1)
+	{
+		i = 0;
+		row = get_next_line(fd);
+		while (empty_line(row))
+		{
+			free(row);
+			row = get_next_line(fd);
+		}
+		if (row[i] == 'F' || row[i] == 'C')
+		{
+			save_floor_ceiling_colors(sc, row);
+			lines++;
+		}
+		free(row);
+		if (lines == 2)
+			break;
+	}
+
+}
+
+
 void	init_scene(t_scene *sc, char *path)
 {
 	int fd;
@@ -74,6 +138,7 @@ void	init_scene(t_scene *sc, char *path)
 	sc->re_buf = 0;
 	init_player(sc);
 	init_texture(sc, path, &fd);
+	init_floor_ceiling(sc, fd);
 	init_map(sc, &fd);
 	clear_buffer(sc);
 	

@@ -112,8 +112,22 @@ int	read_map(t_scene *sc, char *path)
 	// faccio ciclo che legge tutte le righe della tabella
 	// salvo ogni valore all' interno del mio array
 	fd = open(path, O_RDONLY);
-	while (i++ < 4)
+	// skippo righe texture e floor/ceiling
+	while (i < 6)
+	{
 		row = get_next_line(fd);
+		while(empty_line(row))
+		{
+			free(row); 
+			row = get_next_line(fd); 
+		}
+		if(row)
+		{
+			free(row);
+			i++;
+		}
+	}
+	
 	while (fd != -1)
 	{
 		row = get_next_line(fd);

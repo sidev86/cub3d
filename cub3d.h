@@ -85,6 +85,8 @@ typedef struct s_scene
 	int texX; 
 	int texY;
 	int re_buf;
+	unsigned int floor[3];
+	unsigned int ceil[3];
 	double wallX;
 	double step;
 	double texPos;

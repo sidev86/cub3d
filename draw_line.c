@@ -26,6 +26,32 @@ static int	*absolute_delta(int p1x, int p1y, int p2x, int p2y)
 	return (delta);
 }
 
+unsigned int rgb_to_hex(int r, int g, int b)
+{
+	return (r << 16 | g << 8 | b);
+}
+
+void	draw_floor_ceiling(t_scene *sc)
+{
+	int x = 0; 
+	int y = 0; 
+	unsigned int floor_hex = rgb_to_hex(sc->floor[0], sc->floor[1], sc->floor[2]);
+	unsigned int ceil_hex = rgb_to_hex(sc->ceil[0], sc->ceil[1], sc->ceil[2]);
+	while(y < W_HEIGHT)
+	{
+		while(x < W_WIDTH)
+		{
+			sc->buff[y][x] = floor_hex;
+			sc->buff[W_HEIGHT - y -1][x] = ceil_hex;
+			x++;
+		}
+		x = 0; 
+		y++;
+	
+	}
+
+}
+
 void	calculate_rays(t_scene *sc)
 {
 	int x = 0;
@@ -34,7 +60,8 @@ void	calculate_rays(t_scene *sc)
 	{
 		clear_buffer(sc);
 	}
-
+	
+	draw_floor_ceiling(sc);
 	// Ciclo per ogni colonna della schermata
 	while (x < W_WIDTH)
 	{
