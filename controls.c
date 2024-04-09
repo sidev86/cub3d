@@ -16,22 +16,20 @@ int	key_press(int keycode, void *param)
 	}
 	else if (keycode == 97) // A
 	{
-		double oldDirX = sc->player->dirX;
-		sc->player->dirX = sc->player->dirX * cos(0.1f) - sc->player->dirY * sin(0.1f);
-		sc->player->dirY = oldDirX * sin(0.1f) + sc->player->dirY * cos(0.1f);
-		double oldPlaneX = sc->cam->planeX;
-		sc->cam->planeX = sc->cam->planeX * cos(0.1f) - sc->cam->planeY * sin(0.1f);
-		sc->cam->planeY = oldPlaneX * sin(0.1f) + sc->cam->planeY * cos(0.1f);
+		if(sc->map->room[(int)(sc->player->posX - sc->player->dirY)][(int)(sc->player->posY)] == 0) 
+			sc->player->posX -= sc->player->dirY;
+      		if(sc->map->room[(int)(sc->player->posX)][(int)(sc->player->posY + sc->player->dirX)] == 0) 
+			sc->player->posY += sc->player->dirX;
 	}
 	else if (keycode == 100) // D
 	{
-		double oldDirX = sc->player->dirX;
-		sc->player->dirX = sc->player->dirX * cos(-0.1f) - sc->player->dirY * sin(-0.1f);
-		sc->player->dirY = oldDirX * sin(-0.1f) + sc->player->dirY * cos(-0.1f);
-		double oldPlaneX = sc->cam->planeX;
-		sc->cam->planeX = sc->cam->planeX * cos(-0.1f) - sc->cam->planeY * sin(-0.1f);
-		sc->cam->planeY = oldPlaneX * sin(-0.1f) + sc->cam->planeY * cos(-0.1f);
+		printf("posX = %d\n", (int)sc->player->posX);
+		if(sc->map->room[(int)(sc->player->posX + sc->player->dirY)][(int)(sc->player->posY)] == 0) 
+			sc->player->posX += sc->player->dirY;
+		if(sc->map->room[(int)(sc->player->posX)][(int)(sc->player->posY - sc->player->dirX)] == 0) 
+			sc->player->posY -= sc->player->dirX;
 	}
+	
 	else if (keycode == 115) // S
 	{
 		if(sc->map->room[(int)(sc->player->posX - sc->player->dirX)][(int)(sc->player->posY)] == 0) 
@@ -39,6 +37,24 @@ int	key_press(int keycode, void *param)
       		if(sc->map->room[(int)(sc->player->posX)][(int)(sc->player->posY - sc->player->dirY)] == 0) 
 			sc->player->posY -= sc->player->dirY;
 		
+	}
+	else if (keycode == 65361) // left arrow
+	{
+		double oldDirX = sc->player->dirX;
+		sc->player->dirX = sc->player->dirX * cos(0.1f) - sc->player->dirY * sin(0.1f);
+		sc->player->dirY = oldDirX * sin(0.1f) + sc->player->dirY * cos(0.1f);
+		double oldPlaneX = sc->cam->planeX;
+		sc->cam->planeX = sc->cam->planeX * cos(0.1f) - sc->cam->planeY * sin(0.1f);
+		sc->cam->planeY = oldPlaneX * sin(0.1f) + sc->cam->planeY * cos(0.1f);
+	}
+	else if (keycode == 65363) // right arrow
+	{
+		double oldDirX = sc->player->dirX;
+		sc->player->dirX = sc->player->dirX * cos(-0.1f) - sc->player->dirY * sin(-0.1f);
+		sc->player->dirY = oldDirX * sin(-0.1f) + sc->player->dirY * cos(-0.1f);
+		double oldPlaneX = sc->cam->planeX;
+		sc->cam->planeX = sc->cam->planeX * cos(-0.1f) - sc->cam->planeY * sin(-0.1f);
+		sc->cam->planeY = oldPlaneX * sin(-0.1f) + sc->cam->planeY * cos(-0.1f);
 	}
 	
 	//draw_map_2D(sc);
