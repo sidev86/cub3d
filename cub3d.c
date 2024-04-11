@@ -41,6 +41,17 @@ void	draw_scene(t_scene *sc)
 	mlx_put_image_to_window(sc->mlx, sc->win, sc->img.img, 0, 0);
 }
 
+int	close_window(void *param)
+{
+	t_scene *s = (t_scene *)param;
+	
+	mlx_destroy_image(s->mlx, s->img.img);
+	mlx_destroy_window(s->mlx, s->win);
+	mlx_destroy_display(s->mlx);
+
+	exit(0);
+}
+
 int scene_loop(t_scene *sc)
 {
 	calculate_rays(sc);
@@ -93,6 +104,7 @@ int	main(int argc, char **argv)
 		
 		mlx_loop_hook(s.mlx, &scene_loop, &s);
 		mlx_hook(s.win, 2, 1L << 0, key_press, &s); 
+		mlx_hook(s.win, 17, 0, &close_window, &s);
 		mlx_loop(s.mlx);
 	}
 	

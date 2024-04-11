@@ -85,6 +85,7 @@ typedef struct s_scene
 	int texX; 
 	int texY;
 	int re_buf;
+	int init_tex;
 	unsigned int floor[3];
 	unsigned int ceil[3];
 	double wallX;
@@ -119,8 +120,7 @@ int	empty_line(char *row);
 
 //TEXTURES
 void	texture_cycle(t_scene *sc);
-void	load_texture(t_scene *sc);
-void	read_texture_file_data(t_scene *sc, int *fd);
+void	read_texture_file_data(t_scene *sc, char *row);
 
 //CONTROLS
 int	key_press(int keycode, void *param);
@@ -128,7 +128,9 @@ int	key_press(int keycode, void *param);
 //UTILS
 void	ft_bzero(void *s, size_t n);
 
+
 void	clear_buffer(t_scene *sc);
-int scene_loop(t_scene *sc);
+int	scene_loop(t_scene *sc);
+int	close_window(void *param);
 
 

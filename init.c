@@ -13,16 +13,19 @@ void	init_player(t_scene *sc)
 	sc->player->deltaY = sin(sc->player->angle) * 5;
 }
 
-void	init_texture(t_scene *sc, char *path, int *fd)
+void	init_texture(t_scene *sc,char *row)
 {
-	*fd = open(path, O_RDONLY);
-	if (*fd == -1)
-		printf("Error while opening file\n");
-	sc->texture = (int **)malloc(sizeof(int *) * 8);
-	if (!sc->texture)
-		printf("Error in texture allocation\n");
-	texture_cycle(sc);
-	read_texture_file_data(sc, fd);
+	static int init_tex = 0;
+	
+	if (!init_tex)
+	{
+		init_tex = 1; 
+		sc->texture = (int **)malloc(sizeof(int *) * 8);
+		if (!sc->texture)
+			printf("Error in texture allocation\n");
+		texture_cycle(sc);
+	}
+	read_texture_file_data(sc, row);
 	//load_texture(sc);
 }
 
@@ -93,9 +96,8 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 
 }
 
-void	save_floor_ceiling_colors(t_scene *sc, char *row)
+void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
 {
-	int i = 0; 
 	
 	if (row[i] == 'F')
 		get_rgb_values(sc, row, ++i, 'f');
@@ -103,33 +105,44 @@ void	save_floor_ceiling_colors(t_scene *sc, char *row)
 		get_rgb_values(sc, row, ++i, 'c');
 }
 
-void	init_floor_ceiling(t_scene *sc, int fd)
+void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 {
+	int i;
 	char *row;
-	int i = 0;
 	int lines = 0;
 	
-	while (fd != -1)
+	i = 0;
+	*fd = open(path, O_RDONLY);
+	if (*fd == -1)
+		printf("Error while opening file\n");
+	
+	while (*fd != -1)
 	{
 		i = 0;
-		row = get_next_line(fd);
+		row = get_next_line(*fd);
 		while (empty_line(row))
 		{
 			free(row);
-			row = get_next_line(fd);
+			row = get_next_line(*fd);
 		}
+		while (row[i] == ' ' || row[i] == '\t')
+			i++;
 		if (row[i] == 'F' || row[i] == 'C')
 		{
-			save_floor_ceiling_colors(sc, row);
+			init_floor_ceiling_colors(sc, row, i);
+			lines++;
+		}
+		else if (row[i] == 'N' || row[i] == 'S' || row[i] == 'W' || row[i] == 'E')
+		{
+			init_texture(sc, row);
 			lines++;
 		}
 		free(row);
-		if (lines == 2)
+		if (lines == 6)
 			break;
+		
 	}
-
 }
-
 
 void	init_scene(t_scene *sc, char *path)
 {
@@ -137,8 +150,7 @@ void	init_scene(t_scene *sc, char *path)
 	sc->color = 0xFFFF00;
 	sc->re_buf = 0;
 	init_player(sc);
-	init_texture(sc, path, &fd);
-	init_floor_ceiling(sc, fd);
+	read_data_before_map(sc, path, &fd);
 	init_map(sc, &fd);
 	clear_buffer(sc);
 	

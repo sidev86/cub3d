@@ -56,6 +56,8 @@ int	key_press(int keycode, void *param)
 		sc->cam->planeX = sc->cam->planeX * cos(-0.1f) - sc->cam->planeY * sin(-0.1f);
 		sc->cam->planeY = oldPlaneX * sin(-0.1f) + sc->cam->planeY * cos(-0.1f);
 	}
+	else if (keycode == 65307)
+		close_window(sc);
 	
 	//draw_map_2D(sc);
 	//draw_player(sc);
