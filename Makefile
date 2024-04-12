@@ -5,6 +5,8 @@ FLAGS    := -g -Wall -Wextra -Werror
 SRCS        :=      cub3d.c \
 			draw.c \
 			draw_line.c \
+			draw_extra.c \
+			rays.c \
 			controls.c \
 			init.c \
 			map.c \

@@ -80,22 +80,46 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 }
 
 
-
-
-int	empty_line(char *row)
+void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 {
 	int i;
+	char *row;
+	int lines = 0;
 	
 	i = 0;
-	if (!row)
-		return (0);
-	while (row[i] == ' ' || row[i] == '\t')
-		i++;
-	if (row[i] == '\n')
-		return(1);
-	else
-		return(0);
+	*fd = open(path, O_RDONLY);
+	if (*fd == -1)
+		printf("Error while opening file\n");
+	
+	while (*fd != -1)
+	{
+		i = 0;
+		row = get_next_line(*fd);
+		while (empty_line(row))
+		{
+			free(row);
+			row = get_next_line(*fd);
+		}
+		while (row[i] == ' ' || row[i] == '\t')
+			i++;
+		if (row[i] == 'F' || row[i] == 'C')
+		{
+			init_floor_ceiling_colors(sc, row, i);
+			lines++;
+		}
+		else if (row[i] == 'N' || row[i] == 'S' || row[i] == 'W' || row[i] == 'E')
+		{
+			init_texture(sc, row);
+			lines++;
+		}
+		free(row);
+		if (lines == 6)
+			break;
+		
+	}
 }
+
+
 
 int	read_map(t_scene *sc, char *path)
 {

@@ -102,7 +102,8 @@ typedef struct s_scene
 
 //INIT
 void	init_scene(t_scene *sc, char *path);
-
+void	init_floor_ceiling_colors(t_scene *sc, char *row, int i);
+void	init_texture(t_scene *sc,char *row);
 
 //DRAW
 void	put_pixel(t_scene *sc, int x, int y, int color);
@@ -115,12 +116,17 @@ void	calculate_rays(t_scene *sc);
 
 //MAP
 int	read_map(t_scene *sc, char *path);
+void 	read_data_before_map(t_scene *sc, char *path, int *fd);
 int	count_map_cols(char *r);
 int	empty_line(char *row);
 
 //TEXTURES
 void	texture_cycle(t_scene *sc);
 void	read_texture_file_data(t_scene *sc, char *row);
+
+//FLOOR - CEILING
+void	draw_floor_ceiling(t_scene *sc);
+void	get_rgb_values(t_scene *sc, char *row, int i, char type);
 
 //CONTROLS
 int	key_press(int keycode, void *param);

@@ -71,31 +71,6 @@ void	init_map(t_scene *sc, int *fd)
 	close(*fd);
 }
 
-void	get_rgb_values(t_scene *sc, char *row, int i, char type)
-{
-	int t = 0; 
-	int j = 0;
-	char rgb_str[3];
-	while (t < 3)
-	{
-		while (row[i] == ' ' || row[i] == '\t')
-			i++;
-		while (row[i] != ',' && row[i] != '\n' && row[i] != '\0')
-			rgb_str[j++] = row[i++];
-		i++;
-		if (type == 'f')
-			sc->floor[t] = atoi(rgb_str);
-		else if (type == 'c')
-			sc->ceil[t] = atoi(rgb_str);
-		j = 0;
-		while (j < 3)
-			rgb_str[j++] = 0;
-		j = 0;
-		t++;
-	}
-
-}
-
 void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
 {
 	
@@ -103,45 +78,6 @@ void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
 		get_rgb_values(sc, row, ++i, 'f');
 	else if (row[i] == 'C')
 		get_rgb_values(sc, row, ++i, 'c');
-}
-
-void 	read_data_before_map(t_scene *sc, char *path, int *fd)
-{
-	int i;
-	char *row;
-	int lines = 0;
-	
-	i = 0;
-	*fd = open(path, O_RDONLY);
-	if (*fd == -1)
-		printf("Error while opening file\n");
-	
-	while (*fd != -1)
-	{
-		i = 0;
-		row = get_next_line(*fd);
-		while (empty_line(row))
-		{
-			free(row);
-			row = get_next_line(*fd);
-		}
-		while (row[i] == ' ' || row[i] == '\t')
-			i++;
-		if (row[i] == 'F' || row[i] == 'C')
-		{
-			init_floor_ceiling_colors(sc, row, i);
-			lines++;
-		}
-		else if (row[i] == 'N' || row[i] == 'S' || row[i] == 'W' || row[i] == 'E')
-		{
-			init_texture(sc, row);
-			lines++;
-		}
-		free(row);
-		if (lines == 6)
-			break;
-		
-	}
 }
 
 void	init_scene(t_scene *sc, char *path)
