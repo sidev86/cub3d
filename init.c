@@ -13,7 +13,7 @@ void	init_player(t_scene *sc)
 	sc->player->deltaY = sin(sc->player->angle) * 5;
 }
 
-void	init_texture(t_scene *sc,char *row)
+void	init_texture(t_scene *sc,char *row, int i)
 {
 	static int init_tex = 0;
 	
@@ -25,7 +25,7 @@ void	init_texture(t_scene *sc,char *row)
 			printf("Error in texture allocation\n");
 		texture_cycle(sc);
 	}
-	read_texture_file_data(sc, row);
+	read_texture_file_data(sc, row, i);
 	//load_texture(sc);
 }
 

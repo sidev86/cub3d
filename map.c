@@ -100,6 +100,11 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 			free(row);
 			row = get_next_line(*fd);
 		}
+		if (!row)
+		{
+			printf("Error in data file read: empty file\n");
+			exit(0);
+		}
 		while (row[i] == ' ' || row[i] == '\t')
 			i++;
 		if (row[i] == 'F' || row[i] == 'C')
@@ -109,14 +114,18 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 		}
 		else if (row[i] == 'N' || row[i] == 'S' || row[i] == 'W' || row[i] == 'E')
 		{
-			init_texture(sc, row);
+			init_texture(sc, row, i);
 			lines++;
+		}
+		else if (lines < 6)
+		{
+			printf("Error in data file read: missing some setting row for texture and/or color rgb\n");
+			exit(0);
 		}
 		free(row);
 		if (lines == 6)
-			break;
-		
-	}
+			break;	
+	}	
 }
 
 

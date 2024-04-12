@@ -58,15 +58,15 @@ int	get_len(char *row, int i)
 	return (len);
 
 }
-char *get_texture_path(char *row)
+char *get_texture_path(char *row, int i)
 {
-	int i = 0;
+	//int i = 0;
 	int j = 0;
 	char *path; 
 	
-	while (row[i] != ' ')
+	while (row[i] != ' ' && row[i] != '\t')
 		i++;
-	while (row[i] == ' ')
+	while (row[i] == ' ' || row[i] == '\t')
 		i++;
 	path = malloc(sizeof(char) * get_len(row, i));
 	while (row[i] != ' ' && row[i] != '\t' && row[i] != '\n')
@@ -75,25 +75,25 @@ char *get_texture_path(char *row)
 	return (path);
 }
 
-void	read_texture_file_data(t_scene *sc, char *row)
+void	read_texture_file_data(t_scene *sc, char *row, int i)
 {
 	//char *row; 
 	char *t_path;
 	//int i = 0;
-	int j = 0;
+	//int j = 0;
 	t_img img;
 	
 	
-	t_path = get_texture_path(row);
-	while(row[j] == ' ' || row[j] == '\t')
-		j++;
-	if (row[j] == 'N' && row[j + 1] == 'O')
+	t_path = get_texture_path(row, i);
+	while(row[i] == ' ' || row[i] == '\t')
+		i++;
+	if (row[i] == 'N' && row[i + 1] == 'O')
 		load_image(sc, sc->texture[1], t_path, &img);
-	else if (row[j] == 'S' && row[j + 1] == 'O')
+	else if (row[i] == 'S' && row[i + 1] == 'O')
 		load_image(sc, sc->texture[0], t_path, &img);
-	else if (row[j] == 'E' && row[j + 1] == 'A')
+	else if (row[i] == 'E' && row[i + 1] == 'A')
 		load_image(sc, sc->texture[2], t_path, &img);
-	else if (row[j] == 'W' && row[j + 1] == 'E')
+	else if (row[i] == 'W' && row[i + 1] == 'E')
 		load_image(sc, sc->texture[3], t_path, &img);
 	else 
 		printf("error while loading texture data\n");

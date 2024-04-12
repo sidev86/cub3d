@@ -23,6 +23,11 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 			sc->floor[t] = atoi(rgb_str);
 		else if (type == 'c')
 			sc->ceil[t] = atoi(rgb_str);
+		if (sc->floor[t] < 0 || sc->ceil[t] < 0)
+		{
+			printf("Error in file data read! invalid rgb color values\n");
+			exit(0);
+		}
 		j = 0;
 		while (j < 3)
 			rgb_str[j++] = 0;

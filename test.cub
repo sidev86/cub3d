@@ -1,13 +1,12 @@
 WE textures/purplestone.xpm
-
-F 0,0,0
-
-
 NO textures/bookshelf.xpm
-C 255,255,255
-SO textures/redbrick.xpm
 
 EA textures/mossy.xpm
+
+F 0,0,0
+C 255,255,255
+
+SO textures/redbrick.xpm
 
 1111111111111111111
 1000000000000000001

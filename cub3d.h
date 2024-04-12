@@ -86,8 +86,8 @@ typedef struct s_scene
 	int texY;
 	int re_buf;
 	int init_tex;
-	unsigned int floor[3];
-	unsigned int ceil[3];
+	int floor[3];
+	int ceil[3];
 	double wallX;
 	double step;
 	double texPos;
@@ -103,7 +103,7 @@ typedef struct s_scene
 //INIT
 void	init_scene(t_scene *sc, char *path);
 void	init_floor_ceiling_colors(t_scene *sc, char *row, int i);
-void	init_texture(t_scene *sc,char *row);
+void	init_texture(t_scene *sc,char *row, int i);
 
 //DRAW
 void	put_pixel(t_scene *sc, int x, int y, int color);
@@ -122,7 +122,7 @@ int	empty_line(char *row);
 
 //TEXTURES
 void	texture_cycle(t_scene *sc);
-void	read_texture_file_data(t_scene *sc, char *row);
+void	read_texture_file_data(t_scene *sc, char *row, int j);
 
 //FLOOR - CEILING
 void	draw_floor_ceiling(t_scene *sc);
