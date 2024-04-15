@@ -88,6 +88,12 @@ typedef struct s_scene
 	int init_tex;
 	int floor[3];
 	int ceil[3];
+	int f;
+	int c;
+	int no; 
+	int so; 
+	int we;
+	int ea;
 	double wallX;
 	double step;
 	double texPos;

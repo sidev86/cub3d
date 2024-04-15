@@ -1,4 +1,4 @@
-NAME        := cub3d
+NAME        := cub3D
 CC        := gcc
 FLAGS    := -g -Wall -Wextra -Werror 
 

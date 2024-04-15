@@ -92,16 +92,31 @@ void	read_texture_file_data(t_scene *sc, char *row, int i)
 	t_path = get_texture_path(row, i);
 	while(row[i] == ' ' || row[i] == '\t')
 		i++;
-	if (row[i] == 'N' && row[i + 1] == 'O')
+	if (row[i] == 'N' && row[i + 1] == 'O' && sc->no == 0)
+	{
+		sc->no = 1;
 		load_image(sc, sc->texture[1], t_path, &img);
-	else if (row[i] == 'S' && row[i + 1] == 'O')
+	}
+	else if (row[i] == 'S' && row[i + 1] == 'O' && sc->so == 0)
+	{
+		sc->so = 1;
 		load_image(sc, sc->texture[0], t_path, &img);
-	else if (row[i] == 'E' && row[i + 1] == 'A')
+	}
+	else if (row[i] == 'E' && row[i + 1] == 'A' && sc->ea == 0)
+	{
+		sc->ea = 1;
 		load_image(sc, sc->texture[2], t_path, &img);
-	else if (row[i] == 'W' && row[i + 1] == 'E')
+	}
+	else if (row[i] == 'W' && row[i + 1] == 'E' && sc->we == 0)
+	{
+		sc->we = 1;
 		load_image(sc, sc->texture[3], t_path, &img);
-	else 
-		printf("error while loading texture data\n");
+	}
+	else
+	{ 
+		printf("Error! Double key row(textures)\n");
+		exit(0);
+	}
 	//free(row);
 	free(t_path);
 		

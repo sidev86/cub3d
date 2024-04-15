@@ -74,10 +74,32 @@ void	init_map(t_scene *sc, int *fd)
 void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
 {
 	
-	if (row[i] == 'F')
+	if (row[i] == 'F' && sc->f == 0)
+	{
+		sc->f = 1;
 		get_rgb_values(sc, row, ++i, 'f');
-	else if (row[i] == 'C')
+	}
+	else if (row[i] == 'C' && sc->c == 0)
+	{
+		sc->c = 1;
 		get_rgb_values(sc, row, ++i, 'c');
+	}
+	else
+	{
+		printf("Error! Double key rows(floor/ceiling)\n");
+		exit(0);
+	}
+}
+
+
+void	init_config_flags(t_scene *sc)
+{
+	sc->f = 0;
+	sc->c = 0;
+	sc->no = 0;
+	sc->so = 0;
+	sc->we = 0;
+	sc->ea = 0;
 }
 
 void	init_scene(t_scene *sc, char *path)
@@ -85,6 +107,7 @@ void	init_scene(t_scene *sc, char *path)
 	int fd;
 	sc->color = 0xFFFF00;
 	sc->re_buf = 0;
+	init_config_flags(sc);
 	init_player(sc);
 	read_data_before_map(sc, path, &fd);
 	init_map(sc, &fd);

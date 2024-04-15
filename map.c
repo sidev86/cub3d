@@ -80,6 +80,20 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 }
 
 
+int	is_texture_row(char *row, int i)
+{
+	if (row[i] == 'N' && row[i + 1] == 'O')
+		return(1);
+	else if (row[i] == 'S' && row[i + 1] == 'O')
+		return(1);
+	else if (row[i] == 'E' && row[i + 1] == 'A')
+		return(1);
+	else if (row[i] == 'W' && row[i + 1] == 'E')
+		return(1);
+	else
+		return(0);
+}
+
 void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 {
 	int i;
@@ -112,14 +126,14 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 			init_floor_ceiling_colors(sc, row, i);
 			lines++;
 		}
-		else if (row[i] == 'N' || row[i] == 'S' || row[i] == 'W' || row[i] == 'E')
+		else if (is_texture_row(row,i))
 		{
 			init_texture(sc, row, i);
 			lines++;
 		}
 		else if (lines < 6)
 		{
-			printf("Error in data file read: missing some setting row for texture and/or color rgb\n");
+			printf("Error in data file read: missing or wrong key row in texture and/or floor-ceiling config\n");
 			exit(0);
 		}
 		free(row);
