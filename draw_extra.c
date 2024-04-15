@@ -18,12 +18,17 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 			i++;
 		while (row[i] != ',' && row[i] != '\n' && row[i] != '\0')
 			rgb_str[j++] = row[i++];
+		if (row[i] == '\0')
+		{
+			printf("Error in file data read! Missing color\n");
+			exit(0);
+		}
 		i++;
 		if (type == 'f')
 			sc->floor[t] = atoi(rgb_str);
 		else if (type == 'c')
 			sc->ceil[t] = atoi(rgb_str);
-		if (sc->floor[t] < 0 || sc->ceil[t] < 0)
+		if (sc->floor[t] < 0 || sc->ceil[t] < 0 || sc->floor[t] > 255 || sc->ceil[t] > 255)
 		{
 			printf("Error in file data read! invalid rgb color values\n");
 			exit(0);
