@@ -94,6 +94,35 @@ int	is_texture_row(char *row, int i)
 		return(0);
 }
 
+void	check_file_extension(char *path)
+{
+	int i = 0;
+	
+	while(path[i] != '.' && path[i])
+		i++;
+	if (path[i] == '.')
+	{
+		if (path[i+1] == 'c' && path[i+2] == 'u' && path[i+3] == 'b')
+		{
+			if (path[i+4] != '\0' && path[i+4] != ' ')
+			{
+				printf("Error! Invalid file map format (.cub extension needed)\n");
+				exit(0);
+			}		
+		}
+		else
+		{
+			printf("Error! Invalid file map format (.cub extension needed)\n");
+			exit(0);
+		}
+	}
+	else
+	{
+		printf("Error! Invalid file map format (.cub extension needed)\n");
+		exit(0);
+	}
+}
+
 void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 {
 	int i;
@@ -104,7 +133,7 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 	*fd = open(path, O_RDONLY);
 	if (*fd == -1)
 		printf("Error while opening file\n");
-	
+	check_file_extension(path);
 	while (*fd != -1)
 	{
 		i = 0;
