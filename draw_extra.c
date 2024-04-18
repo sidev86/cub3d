@@ -25,6 +25,21 @@ int no_value(char *row, int i)
 	return(0);
 }
 
+int	missing_commas(char *row)
+{
+	int	i = 0;
+	int commas = 0;
+	while (row[i] != '\n')
+	{
+		if (row[i] == ',')
+			commas++;
+		i++;
+	}
+	if (commas < 2)
+		return(1);
+	return(0);
+}
+
 void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 {
 	int t = 0; 
@@ -37,7 +52,7 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 		while (row[i] != ',' && row[i] != '\n' && row[i] != '\0')
 			rgb_str[j++] = row[i++];
 		i++;
-		if (no_value(row, i))
+		if (no_value(row, i) || missing_commas(row))
 		{
 			printf("Error in file data read! Missing color\n");
 			exit(0);
