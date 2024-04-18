@@ -36,6 +36,7 @@ void	init_map(t_scene *sc, int *fd)
 	int rows;
 	int cols;
 	int i = 0;
+	int map_present = 0;
 	
 	cols = 0;
 	rows = 0;
@@ -50,8 +51,16 @@ void	init_map(t_scene *sc, int *fd)
 			free(row); 
 			row = get_next_line(*fd); 
 		}
+		if (!row && !map_present)
+		{
+			printf("Error! missing map\n");
+			exit(0);
+		}
 		if (row)
+		{
+			map_present = 1;
 			rows++;
+		}
 		else
 			break;
 		if (rows == 1)

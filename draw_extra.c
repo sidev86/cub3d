@@ -10,8 +10,10 @@ unsigned int rgb_to_hex(int r, int g, int b)
 int no_value(char *row, int i)
 {
 	int value = 0;
+	
 	while (row[i] == ' ' || row[i] == '\t' || row[i] == '-')
 		i++;
+	
 	while(row[i] != ',')
 	{
 		if(row[i] >= '0' && row[i] <= '9')
@@ -34,7 +36,7 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 			i++;
 		while (row[i] != ',' && row[i] != '\n' && row[i] != '\0')
 			rgb_str[j++] = row[i++];
-		i++; 
+		i++;
 		if (no_value(row, i))
 		{
 			printf("Error in file data read! Missing color\n");
