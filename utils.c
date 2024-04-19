@@ -12,11 +12,30 @@ void	ft_bzero(void *s, size_t n)
 int	close_window(void *param)
 {
 	t_scene *s = (t_scene *)param;
+	int i = 0;
 	
+	while(i < s->map->mapX + 1)
+		free(s->map->room[i++]);
+	
+	free(s->map->room);
+	i = 0;
+	while (i < 8)
+	{
+		free(s->texture[i]);
+		i++;
+
+	}
+	free(s->map);
+	free(s->cam);
+	free(s->player);
+	free(s->texture);
+	free(s->ray);
 	mlx_destroy_image(s->mlx, s->img.img);
 	mlx_destroy_window(s->mlx, s->win);
 	mlx_destroy_display(s->mlx);
-
+	
+	free(s->mlx);
+	
 	exit(0);
 }
 
