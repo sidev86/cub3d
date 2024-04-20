@@ -94,7 +94,7 @@ int	is_texture_row(char *row, int i)
 		return(0);
 }
 
-void	check_file_extension(char *path)
+void	check_file_extension(t_scene *sc, char *path)
 {
 	int i = 0;
 	
@@ -107,6 +107,12 @@ void	check_file_extension(char *path)
 			if (path[i+4] != '\0' && path[i+4] != ' ')
 			{
 				printf("Error! Invalid file map format (.cub extension needed)\n");
+				
+				//free(row);
+				//close(*fd);
+				free(sc->player);
+				mlx_destroy_display(sc->mlx);
+				free(sc->mlx);
 				exit(0);
 			}		
 		}
@@ -133,7 +139,7 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 	*fd = open(path, O_RDONLY);
 	if (*fd == -1)
 		printf("Error while opening file\n");
-	check_file_extension(path);
+	check_file_extension(sc, path);
 	while (*fd != -1)
 	{
 		i = 0;
@@ -146,6 +152,9 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 		if (!row)
 		{
 			printf("Error in data file read: empty file\n");
+			mlx_destroy_display(sc->mlx);
+			free(sc->player);
+			free(sc->mlx);
 			exit(0);
 		}
 		while (row[i] == ' ' || row[i] == '\t')
@@ -163,6 +172,20 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 		else if (lines < 6)
 		{
 			printf("Error in data file read: missing or wrong key row in texture and/or floor-ceiling config\n");
+			i = 0;
+			while (i < 8)
+			{
+				free(sc->texture[i]);
+				i++;
+
+			}
+			free(sc->texture);
+			free(row);
+			close(*fd);
+			free(sc->player);
+			mlx_destroy_display(sc->mlx);
+			free(sc->mlx);
+			
 			exit(0);
 		}
 		free(row);

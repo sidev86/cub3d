@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	load_image(t_scene *sc, int *texture, char *path, t_img *img)
+void	load_image(t_scene *sc, int *texture, char *path, t_img *img, char *row)
 {
 	int x;
 	int y;
@@ -11,6 +11,19 @@ void	load_image(t_scene *sc, int *texture, char *path, t_img *img)
 	if (img->img == NULL)
 	{
 		printf("Error while loading texture! missing file or invalid path\n");
+		int i = 0;
+		while (i < 8)
+		{
+			free(sc->texture[i]);
+			i++;
+
+		}
+		free(sc->texture);
+		mlx_destroy_display(sc->mlx);
+		free(sc->mlx);
+		free(sc->player);
+		free(row);
+		free(path);
 		exit(0);
 	}
 	img->data_addr = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->line_width, &img->endian);
@@ -95,26 +108,39 @@ void	read_texture_file_data(t_scene *sc, char *row, int i)
 	if (row[i] == 'N' && row[i + 1] == 'O' && sc->no == 0)
 	{
 		sc->no = 1;
-		load_image(sc, sc->texture[1], t_path, &img);
+		load_image(sc, sc->texture[1], t_path, &img, row);
 	}
 	else if (row[i] == 'S' && row[i + 1] == 'O' && sc->so == 0)
 	{
 		sc->so = 1;
-		load_image(sc, sc->texture[0], t_path, &img);
+		load_image(sc, sc->texture[0], t_path, &img, row);
 	}
 	else if (row[i] == 'E' && row[i + 1] == 'A' && sc->ea == 0)
 	{
 		sc->ea = 1;
-		load_image(sc, sc->texture[2], t_path, &img);
+		load_image(sc, sc->texture[2], t_path, &img, row);
 	}
 	else if (row[i] == 'W' && row[i + 1] == 'E' && sc->we == 0)
 	{
 		sc->we = 1;
-		load_image(sc, sc->texture[3], t_path, &img);
+		load_image(sc, sc->texture[3], t_path, &img, row);
 	}
 	else
 	{ 
 		printf("Error! Double key row(textures)\n");
+		int i = 0;
+		while (i < 8)
+		{
+			free(sc->texture[i]);
+			i++;
+
+		}
+		free(sc->texture);
+		mlx_destroy_display(sc->mlx);
+		free(sc->mlx);
+		free(sc->player);
+		free(row);
+		free(t_path);
 		exit(0);
 	}
 	//free(row);
