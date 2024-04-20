@@ -69,12 +69,15 @@ void	init_map(t_scene *sc, int *fd)
 	}
 	
 	sc->map->room = (int **)malloc(sizeof(int *) * rows);
+	i = 0;
 	while (i < rows)
 	{
 		sc->map->room[i] = (int *)malloc(sizeof(int) * cols);
 		i++;
 	}
+	//printf("map rows = %d\n", rows);
 	sc->map->mapX = rows;
+	sc->rows = rows;
 	sc->map->mapY = cols;
 	sc->map->mapSize = cols * rows;
 	close(*fd);
@@ -109,6 +112,13 @@ void	init_config_flags(t_scene *sc)
 	sc->so = 0;
 	sc->we = 0;
 	sc->ea = 0;
+	int i = 0;
+	while (i < 3)
+	{
+		sc->floor[i] = 0;
+		sc->ceil[i] = 0;
+		i++;
+	}
 }
 
 void	init_scene(t_scene *sc, char *path)

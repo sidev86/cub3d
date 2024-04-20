@@ -13,11 +13,12 @@ int	close_window(void *param)
 {
 	t_scene *s = (t_scene *)param;
 	int i = 0;
-	
-	while(i < s->map->mapX + 1)
+	printf("map rows = %d\n", s->rows);
+	while(i < s->rows)
 		free(s->map->room[i++]);
 	
 	free(s->map->room);
+	s->map->room = NULL;
 	i = 0;
 	while (i < 8)
 	{

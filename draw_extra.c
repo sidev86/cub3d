@@ -45,6 +45,10 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 	int t = 0; 
 	int j = 0;
 	char rgb_str[3];
+	
+	while (j < 3)
+		rgb_str[j++] = 0;
+	j = 0;
 	while (t < 3)
 	{
 		while (row[i] == ' ' || row[i] == '\t')

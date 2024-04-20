@@ -94,6 +94,7 @@ typedef struct s_scene
 	int so; 
 	int we;
 	int ea;
+	int rows;
 	double wallX;
 	double step;
 	double texPos;
