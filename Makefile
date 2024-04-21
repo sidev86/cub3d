@@ -13,7 +13,8 @@ SRCS        :=      cub3d.c \
 			textures.c \
   			get_next_line.c \
   			get_next_line_utils.c \
-			utils.c
+			utils.c \
+			free.c
                        
                           
 OBJS        := $(SRCS:.c=.o)

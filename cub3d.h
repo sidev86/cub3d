@@ -141,6 +141,15 @@ int	key_press(int keycode, void *param);
 //UTILS
 void	ft_bzero(void *s, size_t n);
 
+//FREE
+void	free_doublerow_ceilfloor(t_scene *sc, char *row);
+void	free_doublerow_texture(t_scene *sc, char *row, char *path);
+void	free_wrong_key(t_scene *sc, char *row);
+void	free_missing_map(t_scene *sc, char *row);
+void	free_empty_file(t_scene *sc);
+void	free_invalid_map(t_scene *sc);
+void	free_missing_file(t_scene *sc, char *row, char *path);
+
 
 void	clear_buffer(t_scene *sc);
 int	scene_loop(t_scene *sc);

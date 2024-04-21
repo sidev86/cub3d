@@ -3,7 +3,8 @@
 void	init_player(t_scene *sc)
 {
 	sc->player = malloc(sizeof(t_player));
-	//TODO: errore allocazione sc->player
+	if (!sc->player)
+		printf("Error in player allocation\n");
 	sc->player->posX = 2.0f;
 	sc->player->posY = 7.0f;
 	sc->player->dirX = -1;
@@ -55,20 +56,7 @@ void	init_map(t_scene *sc, int *fd)
 		if (!row && !map_present)
 		{
 			printf("Error! missing map\n");
-			i = 0;
-			while (i < 8)
-			{
-				free(sc->texture[i]);
-				i++;
-
-			}
-			free(sc->texture);
-			mlx_destroy_display(sc->mlx);
-			free(sc->mlx);
-			free(sc->player);
-			free(sc->map);
-			free(row);
-			//free(path);
+			free_missing_map(sc, row);
 			exit(0);
 		}
 		if (row)
@@ -114,19 +102,7 @@ void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
 	else
 	{
 		printf("Error! Double key rows(floor/ceiling)\n");
-		i = 0;
-		while (i < 8)
-		{
-			free(sc->texture[i]);
-			i++;
-
-		}
-		free(sc->texture);
-		mlx_destroy_display(sc->mlx);
-		free(sc->mlx);
-		free(sc->player);
-		//free(sc->map);
-		free(row);
+		free_doublerow_ceilfloor(sc, row);
 		exit(0);
 	}
 }

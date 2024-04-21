@@ -11,19 +11,7 @@ void	load_image(t_scene *sc, int *texture, char *path, t_img *img, char *row)
 	if (img->img == NULL)
 	{
 		printf("Error while loading texture! missing file or invalid path\n");
-		int i = 0;
-		while (i < 8)
-		{
-			free(sc->texture[i]);
-			i++;
-
-		}
-		free(sc->texture);
-		mlx_destroy_display(sc->mlx);
-		free(sc->mlx);
-		free(sc->player);
-		free(row);
-		free(path);
+		free_missing_file(sc, row, path);
 		exit(0);
 	}
 	img->data_addr = (int *)mlx_get_data_addr(img->img, &img->bpp, &img->line_width, &img->endian);
@@ -128,19 +116,7 @@ void	read_texture_file_data(t_scene *sc, char *row, int i)
 	else
 	{ 
 		printf("Error! Double key row(textures)\n");
-		int i = 0;
-		while (i < 8)
-		{
-			free(sc->texture[i]);
-			i++;
-
-		}
-		free(sc->texture);
-		mlx_destroy_display(sc->mlx);
-		free(sc->mlx);
-		free(sc->player);
-		free(row);
-		free(t_path);
+		free_doublerow_texture(sc, row, t_path);
 		exit(0);
 	}
 	//free(row);
