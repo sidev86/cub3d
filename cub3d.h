@@ -31,6 +31,9 @@ typedef struct s_map
 	int mapY;
 	int mapSize;
 	int **room;
+	int rows;
+	int cols; 
+	int map_present;
 	int valIndex;
 }	t_map;
 

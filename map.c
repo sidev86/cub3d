@@ -105,24 +105,22 @@ void	check_file_extension(t_scene *sc, char *path)
 		if (path[i+1] == 'c' && path[i+2] == 'u' && path[i+3] == 'b')
 		{
 			if (path[i+4] != '\0' && path[i+4] != ' ')
-			{
-				perror("Error! Invalid file map format (.cub extension needed)");
-				free_invalid_map(sc);
-				exit(0);
-			}		
+				free_invalid_map(sc);	
 		}
 		else
-		{
-			perror("Error! Invalid file map format (.cub extension needed)\n");
 			free_invalid_map(sc);
-			exit(0);
-		}
 	}
 	else
-	{
-		perror("Error! Invalid file map format (.cub extension needed)\n");
 		free_invalid_map(sc);
-		exit(0);
+	
+}
+
+void	skip_empty_lines(char *row, int *fd)
+{
+	while (empty_line(row))
+	{
+		free(row);
+		row = get_next_line(*fd);
 	}
 }
 
@@ -141,17 +139,14 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 	{
 		i = 0;
 		row = get_next_line(*fd);
+		//skip_empty_lines(row, fd);
 		while (empty_line(row))
 		{
 			free(row);
 			row = get_next_line(*fd);
 		}
 		if (!row)
-		{
-			printf("Error in data file read: empty file\n");
 			free_empty_file(sc);
-			exit(0);
-		}
 		while (row[i] == ' ' || row[i] == '\t')
 			i++;
 		if (row[i] == 'F' || row[i] == 'C')
@@ -165,11 +160,7 @@ void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 			lines++;
 		}
 		else if (lines < 6)
-		{
-			printf("Error in data file read: missing or wrong key row in texture and/or floor-ceiling config\n");
 			free_wrong_key(sc, row);
-			exit(0);
-		}
 		free(row);
 		if (lines == 6)
 			break;	

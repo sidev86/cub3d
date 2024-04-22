@@ -31,20 +31,8 @@ void	init_texture(t_scene *sc,char *row, int i)
 	//load_texture(sc);
 }
 
-void	init_map(t_scene *sc, int *fd)
+void	read_map_for_init(t_scene *sc, char *row, int *fd)
 {
-	
-	char *row;
-	int rows;
-	int cols;
-	int i = 0;
-	int map_present = 0;
-	
-	cols = 0;
-	rows = 0;
-	sc->map = malloc(sizeof(t_map));
-	
-	
 	while (*fd != -1)
 	{
 		row = get_next_line(*fd);
@@ -53,7 +41,7 @@ void	init_map(t_scene *sc, int *fd)
 			free(row); 
 			row = get_next_line(*fd); 
 		}
-		if (!row && !map_present)
+		if (!row && !sc->map->map_present)
 		{
 			printf("Error! missing map\n");
 			free_missing_map(sc, row);
@@ -61,28 +49,45 @@ void	init_map(t_scene *sc, int *fd)
 		}
 		if (row)
 		{
-			map_present = 1;
-			rows++;
+			sc->map->map_present = 1;
+			sc->map->rows++;
 		}
 		else
 			break;
-		if (rows == 1)
-			cols = count_map_cols(row);
+		if (sc->map->rows == 1)
+			sc->map->cols = count_map_cols(row);
 		free(row);
 	}
+}
+
+
+void	init_map(t_scene *sc, int *fd)
+{
 	
-	sc->map->room = (int **)malloc(sizeof(int *) * rows);
+	char *row;
+	int i;
+	
+	row = NULL;
+	sc->map = malloc(sizeof(t_map));
+	sc->map->rows = 0;
+	sc->map->cols = 0;
+	sc->map->map_present = 0;
+	
+	read_map_for_init(sc, row, fd);
+	
+	
+	sc->map->room = (int **)malloc(sizeof(int *) * sc->map->rows);
 	i = 0;
-	while (i < rows)
+	while (i < sc->map->rows)
 	{
-		sc->map->room[i] = (int *)malloc(sizeof(int) * cols);
+		sc->map->room[i] = (int *)malloc(sizeof(int) * sc->map->cols);
 		i++;
 	}
 	//printf("map rows = %d\n", rows);
-	sc->map->mapX = rows;
-	sc->rows = rows;
-	sc->map->mapY = cols;
-	sc->map->mapSize = cols * rows;
+	sc->map->mapX = sc->map->rows;
+	//sc->rows = sc->map->rows;
+	sc->map->mapY = sc->map->cols;
+	sc->map->mapSize = sc->map->cols * sc->map->rows;
 	close(*fd);
 }
 

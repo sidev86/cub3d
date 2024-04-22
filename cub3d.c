@@ -29,6 +29,37 @@ int	scene_loop(t_scene *sc)
 	return (1);
 }
 
+void	init_mlx(t_scene *sc)
+{
+	if (!sc->mlx)
+	{
+		printf("Errore durante l'inizializzazione di mlx\n");
+		exit (1);
+	}
+
+	sc->win = mlx_new_window(sc->mlx, W_WIDTH, W_HEIGHT, "cub3d");
+	if (!sc->win)
+	{
+		printf("Errore durante la creazione della finestra\n");
+		exit (1);
+	}
+
+	sc->img.img = mlx_new_image(sc->mlx, W_WIDTH, W_HEIGHT);
+	if (!sc->img.img)
+	{
+		printf("Errore durante la creazione dell'immagine\n");
+		exit (1);
+	}
+
+	sc->img.data_addr = (int *)mlx_get_data_addr(sc->img.img, &(sc->img.bpp), &(sc->img.line_width), &(sc->img.endian));
+	if (!sc->img.data_addr)
+	{
+		printf("Errore durante l'ottenimento dell'indirizzo dei dati dell'immagine\n");
+		exit (1);
+	}
+}
+
+
 int	main(int argc, char **argv)
 {
 	t_scene s;
@@ -38,37 +69,8 @@ int	main(int argc, char **argv)
 	{
 		s.mlx = mlx_init();
 		init_scene(&s, argv[1]);
-		
 		read_map(&s, argv[1]);
-
-		
-		if (!s.mlx)
-		{
-			printf("Errore durante l'inizializzazione di mlx\n");
-			return (1);
-		}
-
-		s.win = mlx_new_window(s.mlx, W_WIDTH, W_HEIGHT, "cub3d");
-		if (!s.win)
-		{
-			printf("Errore durante la creazione della finestra\n");
-			return (1);
-		}
-
-		s.img.img = mlx_new_image(s.mlx, W_WIDTH, W_HEIGHT);
-		if (!s.img.img)
-		{
-			printf("Errore durante la creazione dell'immagine\n");
-			return (1);
-		}
-
-		s.img.data_addr = (int *)mlx_get_data_addr(s.img.img, &(s.img.bpp), &(s.img.line_width), &(s.img.endian));
-		if (!s.img.data_addr)
-		{
-			printf("Errore durante l'ottenimento dell'indirizzo dei dati dell'immagine\n");
-			return (1);
-		}
-		
+		init_mlx(&s);
 		//draw_map_2D(&s);
 		//draw_player(&s); 
 		
@@ -80,6 +82,5 @@ int	main(int argc, char **argv)
 	
 	else 
 		printf("Error: invalid number of arguments-> Exit Program\n");
-
 	return (0);
 }

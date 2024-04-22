@@ -1,90 +1,96 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/21 11:19:33 by sibrahim          #+#    #+#             */
-/*   Updated: 2022/11/21 11:37:08 by sibrahim         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stddef.h>
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 2
-#endif
-
-static void	ft_read_buf(char **str, char *buf, int fd)
+int	ft_malloc_count(char *stock)
 {
-	int		i;
-	char	*tmp;
+	int	i;
 
-	if (!ft_strchr(*str, '\n') || !*str)
-		i = read(fd, buf, BUFFER_SIZE);
-	else
-		i = ft_strlen(*str);
-	while (i > 0 && !ft_strchr(*str, '\n'))
-	{
-		buf[i] = 0;
-		if (!*str)
-			*str = ft_substr(buf, 0, i);
-		else
-		{
-			tmp = *str;
-			*str = ft_strjoin(*str, buf);
-			free(tmp);
-		}
-		if (ft_strchr(*str, '\n') || i < BUFFER_SIZE)
-			break ;
-		i = read(fd, buf, BUFFER_SIZE);
-	}
-	free(buf);
+	i = 0;
+	if (f_strchr(stock, '\n') == NULL)
+		return (ft_strlen(stock));
+	while (stock[i] != '\n' && stock[i] != '\0')
+		i++;
+	return (i + 1);
 }
 
-static char	*ft_extract_line(char **str)
+char	*ft_get_the_line(char *stock)
 {
 	char	*line;
-	char	*tmp;
-	int		s_len;
-	int		al_bytes;
+	int		i;
+	int		len;
 
 	line = NULL;
-	if (ft_strchr(*str, '\n'))
+	len = ft_malloc_count(stock);
+	line = malloc(sizeof(char) * (len + 1));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (stock[i] && i < len)
 	{
-		s_len = ft_strlen(*str);
-		al_bytes = ft_strlen(ft_strchr(*str, '\n'));
-		line = ft_substr(*str, 0, s_len - al_bytes + 1);
-		tmp = *str;
-		*str = ft_substr(*str, s_len - al_bytes + 1, al_bytes - 1);
-		free(tmp);
-		return (line);
+		line[i] = stock[i];
+		i++;
 	}
-	line = ft_substr(*str, 0, ft_strlen(*str));
-	free(*str);
-	*str = 0;
+	line[i] = '\0';
+	return (line);
+}
+
+void	ft_get_the_spare(char *buffer)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (buffer[i] != '\n')
+		i++;
+	i = i + 1;
+	j = 0;
+	while (i < BUFFER_SIZE)
+	{
+		buffer[j] = buffer[i];
+		i++;
+		j++;
+	}
+	buffer[j] = '\0';
+}
+
+char	*ft_line_results(int ret, char *stock, char *buffer)
+{
+	char		*line;
+
+	line = NULL;
+	if (ft_strlen(stock) == 0)
+	{
+		free(stock);
+		return (NULL);
+	}
+	line = ft_get_the_line(stock);
+	if (ret > 0)
+		ft_get_the_spare(buffer);
+	free(stock);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
-	char		*buf;
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*stock;
+	int			ret;
 
-	buf = malloc(sizeof(*buf) * BUFFER_SIZE + 1);
-	if (!buf)
+	stock = NULL;
+	if ((read(fd, buffer, 0) == -1) || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (fd == -1 || BUFFER_SIZE < 1)
+	ret = 1;
+	stock = f_strjoin(stock, buffer);
+	while (f_strchr(stock, '\n') == NULL && ret > 0)
 	{
-		free(buf);
-		return (NULL);
+		ret = read(fd, buffer, BUFFER_SIZE);
+		if (ret < 0)
+		{
+			free(stock);
+			return (NULL);
+		}
+		buffer[ret] = '\0';
+		stock = f_strjoin(stock, buffer);
 	}
-	ft_read_buf(&str, buf, fd);
-	if (str && ft_strlen(str) > 0)
-		return (ft_extract_line(&str));
-	free(str);
-	str = 0;
-	return (NULL);
+	return (ft_line_results(ret, stock, buffer));
 }
