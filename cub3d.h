@@ -18,6 +18,8 @@ typedef struct s_player
 	double posY;
 	double dirX; 
 	double dirY;
+	double oldDirX; 
+	double oldPlaneX;
 	double deltaX;
 	double deltaY;
 	double angle;
@@ -101,6 +103,7 @@ typedef struct s_scene
 	double wallX;
 	double step;
 	double texPos;
+	char *t_path;
 	
 	t_player	*player;
 	t_map		*map;
@@ -125,7 +128,7 @@ void	draw_player(t_scene *sc);
 void	calculate_rays(t_scene *sc);
 
 //MAP
-int	read_map(t_scene *sc, char *path);
+void	read_map(t_scene *sc, char *path);
 void 	read_data_before_map(t_scene *sc, char *path, int *fd);
 int	count_map_cols(char *r);
 int	empty_line(char *row);

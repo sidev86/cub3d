@@ -13,10 +13,9 @@ int	close_window(void *param)
 {
 	t_scene *s = (t_scene *)param;
 	int i = 0;
-	printf("map rows = %d\n", s->rows);
-	while(i < s->rows)
+	//printf("map rows = %d\n", s->map->rows);
+	while(i < s->map->rows)
 		free(s->map->room[i++]);
-	
 	free(s->map->room);
 	s->map->room = NULL;
 	i = 0;
@@ -34,9 +33,7 @@ int	close_window(void *param)
 	mlx_destroy_image(s->mlx, s->img.img);
 	mlx_destroy_window(s->mlx, s->win);
 	mlx_destroy_display(s->mlx);
-	
 	free(s->mlx);
-	
 	exit(0);
 }
 

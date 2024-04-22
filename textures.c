@@ -81,46 +81,44 @@ char *get_texture_path(char *row, int i)
 	return (path);
 }
 
-void	read_texture_file_data(t_scene *sc, char *row, int i)
+void	texture_to_load(t_scene *sc, char **row, int i, t_img *img)
 {
-	//char *row; 
-	char *t_path;
-	//int i = 0;
-	//int j = 0;
-	t_img img;
-	
-	
-	t_path = get_texture_path(row, i);
-	while(row[i] == ' ' || row[i] == '\t')
+	while(*row[i] == ' ' || *row[i] == '\t')
 		i++;
-	if (row[i] == 'N' && row[i + 1] == 'O' && sc->no == 0)
+	if (*row[i] == 'N' && (*row)[i + 1] == 'O' && sc->no == 0)
 	{
 		sc->no = 1;
-		load_image(sc, sc->texture[1], t_path, &img, row);
+		load_image(sc, sc->texture[1], sc->t_path, img, *row);
 	}
-	else if (row[i] == 'S' && row[i + 1] == 'O' && sc->so == 0)
+	else if (*row[i] == 'S' && (*row)[i + 1] == 'O' && sc->so == 0)
 	{
 		sc->so = 1;
-		load_image(sc, sc->texture[0], t_path, &img, row);
+		load_image(sc, sc->texture[0], sc->t_path, img, *row);
 	}
-	else if (row[i] == 'E' && row[i + 1] == 'A' && sc->ea == 0)
+	else if (*row[i] == 'E' && (*row)[i + 1] == 'A' && sc->ea == 0)
 	{
 		sc->ea = 1;
-		load_image(sc, sc->texture[2], t_path, &img, row);
+		load_image(sc, sc->texture[2], sc->t_path, img, *row);
 	}
-	else if (row[i] == 'W' && row[i + 1] == 'E' && sc->we == 0)
+	else if (*row[i] == 'W' && (*row)[i + 1] == 'E' && sc->we == 0)
 	{
 		sc->we = 1;
-		load_image(sc, sc->texture[3], t_path, &img, row);
+		load_image(sc, sc->texture[3], sc->t_path, img, *row);
 	}
-	else
-	{ 
-		printf("Error! Double key row(textures)\n");
-		free_doublerow_texture(sc, row, t_path);
-		exit(0);
-	}
-	//free(row);
-	free(t_path);
-		
+	else	
+		free_doublerow_texture(sc, *row, sc->t_path);
+}
+
+void	read_texture_file_data(t_scene *sc, char *row, int i)
+{
+	t_img img;
+	//char *t_path;
+	sc->t_path = 0;
+	sc->t_path = get_texture_path(row, i);
+	
+	texture_to_load(sc, &row, i, &img);
+	
+	
+	free(sc->t_path);		
 }
 

@@ -28,12 +28,14 @@ void free_doublerow_ceilfloor(t_scene *sc, char *row)
 
 void free_doublerow_texture(t_scene *sc, char *row, char *path)
 {
+	printf("Error! Double key row(textures)\n");
 	free_texture(sc);
 	free(sc->player);
 	free(row);
 	free(path);
 	mlx_destroy_display(sc->mlx);
 	free(sc->mlx);
+	exit(0);
 }
 
 void free_wrong_key(t_scene *sc, char *row)

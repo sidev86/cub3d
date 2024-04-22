@@ -1,42 +1,51 @@
 #include "cub3d.h"
 
+
+void	set_player_north(t_scene *sc)
+{
+	sc->player->dirX = -1;
+	sc->player->dirY = 0;
+	sc->cam->planeX = 0;
+	sc->cam->planeY = 0.66f;
+}
+
+
+void	set_player_south(t_scene *sc)
+{
+	sc->player->dirX = 1;
+	sc->player->dirY = 0;
+	sc->cam->planeX = 0;
+	sc->cam->planeY = -0.66f;
+}
+
+void	set_player_west(t_scene *sc)
+{
+	sc->player->dirX = 0;
+	sc->player->dirY = -1;
+	sc->cam->planeX = -0.66f;
+	sc->cam->planeY = 0;
+}
+
+void	set_player_east(t_scene *sc)
+{
+	sc->player->dirX = 0;
+	sc->player->dirY = 1;
+	sc->cam->planeX = 0.66f;
+	sc->cam->planeY = 0;
+}
+
 void put_player_on_map(t_scene *sc, char dir, int x, int y)
 {
 	if (dir == 'N')
-	{
-		sc->player->dirX = -1;
-		sc->player->dirY = 0;
-		sc->cam->planeX = 0;
-		sc->cam->planeY = 0.66f;
-		//sc->player->angle = (3 * PI) / 2;
-	}
+		set_player_north(sc);
 	else if (dir == 'S')
-	{
-		sc->player->dirX = 1;
-		sc->player->dirY = 0;
-		sc->cam->planeX = 0;
-		sc->cam->planeY = -0.66f;
-		//sc->player->angle = PI / 2;
-	}
+		set_player_south(sc);
 	else if (dir == 'W')
-	{
-		sc->player->dirX = 0;
-		sc->player->dirY = -1;
-		sc->cam->planeX = -0.66f;
-		sc->cam->planeY = 0;
-		//sc->player->angle = PI;
-	}
+		set_player_west(sc);
 	else if (dir == 'E')
-	{
-		sc->player->dirX = 0;
-		sc->player->dirY = 1;
-		sc->cam->planeX = 0.66f;
-		sc->cam->planeY = 0;
-		//sc->player->angle = 0;
-	}
+		set_player_east(sc);
 	sc->player->posX = (double)x + 0.2f;
 	sc->player->posY = (double)y;
-	
 }
 
 int	count_map_cols(char *r)
@@ -115,112 +124,82 @@ void	check_file_extension(t_scene *sc, char *path)
 	
 }
 
-void	skip_empty_lines(char *row, int *fd)
+void	skip_empty_lines(char **row, int *fd)
 {
-	while (empty_line(row))
+	while (empty_line(*row))
 	{
-		free(row);
-		row = get_next_line(*fd);
+		free(*row);
+		*row = get_next_line(*fd);
+	}	
+}
+
+
+void read_config_lines(t_scene *sc, char **row, int *lines)
+{
+	int i;
+	
+	i = 0;
+	while (*row[i] == ' ' || *row[i] == '\t')
+		i++;
+	if (*row[i] == 'F' || *row[i] == 'C')
+	{
+		init_floor_ceiling_colors(sc, *row, i);
+		(*lines)++;
 	}
+	else if (is_texture_row(*row,i))
+	{
+		init_texture(sc, *row, i);
+		(*lines)++;
+	}
+	else if (*lines < 6)
+		free_wrong_key(sc, *row);
 }
 
 void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 {
-	int i;
 	char *row;
 	int lines = 0;
 	
-	i = 0;
+	//i = 0;
 	*fd = open(path, O_RDONLY);
 	if (*fd == -1)
 		printf("Error while opening file\n");
 	check_file_extension(sc, path);
 	while (*fd != -1)
 	{
-		i = 0;
+		//i = 0;
 		row = get_next_line(*fd);
-		//skip_empty_lines(row, fd);
-		while (empty_line(row))
-		{
-			free(row);
-			row = get_next_line(*fd);
-		}
+		skip_empty_lines(&row, fd);
 		if (!row)
 			free_empty_file(sc);
-		while (row[i] == ' ' || row[i] == '\t')
-			i++;
-		if (row[i] == 'F' || row[i] == 'C')
-		{
-			init_floor_ceiling_colors(sc, row, i);
-			lines++;
-		}
-		else if (is_texture_row(row,i))
-		{
-			init_texture(sc, row, i);
-			lines++;
-		}
-		else if (lines < 6)
-			free_wrong_key(sc, row);
+		read_config_lines(sc, &row, &lines);
 		free(row);
 		if (lines == 6)
 			break;	
 	}	
 }
 
-
-
-int	read_map(t_scene *sc, char *path)
+void	skip_config_lines(char **row, int *fd)
 {
-	
-	int	fd;
-	int	num_row;
-	char *row;
-	int i;
-	int j;
+	int i; 
 	
 	i = 0;
-	
-	num_row = 0; 
-	// faccio ciclo che legge tutte le righe della tabella
-	// salvo ogni valore all' interno del mio array
-	fd = open(path, O_RDONLY);
-	// skippo righe texture e floor/ceiling
 	while (i < 6)
 	{
-		row = get_next_line(fd);
-		while(empty_line(row))
+		*row = get_next_line(*fd);
+		skip_empty_lines(row, fd);
+		if(*row)
 		{
-			free(row); 
-			row = get_next_line(fd); 
-		}
-		if(row)
-		{
-			free(row);
+			free(*row);
 			i++;
 		}
 	}
-	
-	while (fd != -1)
-	{
-		row = get_next_line(fd);
-		while(empty_line(row))
-		{
-			free(row); 
-			row = get_next_line(fd); 
-		}
-		if (row)
-		{
-			//check_row_validity(row);
-			save_map_row_values(sc, row, num_row);
-		}
-		else 
-			break;
-		num_row++;
-		free(row);
-	}
-	
-	i = 0; 
-	j = 0;
+}
+
+void	print_map(t_scene *sc)
+{
+	int i = 0; 
+	int j = 0;
 	
 	while (i < sc->map->mapX)
 	{
@@ -233,7 +212,34 @@ int	read_map(t_scene *sc, char *path)
 		printf("\n");
 		i++;
 	}
-	return (1);
+}
+
+
+void	read_map(t_scene *sc, char *path)
+{
+	int	fd;
+	int	num_row;
+	char *row;
+	
+	num_row = 0; 
+	fd = open(path, O_RDONLY);
+	skip_config_lines(&row, &fd);
+	while (fd != -1)
+	{
+		row = get_next_line(fd);
+		while(empty_line(row))
+		{
+			free(row); 
+			row = get_next_line(fd); 
+		}
+		if (row)
+			save_map_row_values(sc, row, num_row);
+		else 
+			break;
+		num_row++;
+		free(row);
+	}
+	print_map(sc);
 }
 
 

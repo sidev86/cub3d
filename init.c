@@ -9,6 +9,8 @@ void	init_player(t_scene *sc)
 	sc->player->posY = 7.0f;
 	sc->player->dirX = -1;
 	sc->player->dirY = 0;
+	sc->player->oldDirX = 0;
+	sc->player->oldPlaneX = 0;
 	sc->player->size = 10;
 	sc->player->angle = (3 * PI) / 2;
 	sc->player->deltaX = cos(sc->player->angle) * 5;
@@ -31,23 +33,23 @@ void	init_texture(t_scene *sc,char *row, int i)
 	//load_texture(sc);
 }
 
-void	read_map_for_init(t_scene *sc, char *row, int *fd)
+void	read_map_for_init(t_scene *sc, char **row, int *fd)
 {
 	while (*fd != -1)
 	{
-		row = get_next_line(*fd);
-		while(empty_line(row))
+		*row = get_next_line(*fd);
+		while(empty_line(*row))
 		{
-			free(row); 
-			row = get_next_line(*fd); 
+			free(*row); 
+			*row = get_next_line(*fd); 
 		}
-		if (!row && !sc->map->map_present)
+		if (!(*row) && !sc->map->map_present)
 		{
 			printf("Error! missing map\n");
-			free_missing_map(sc, row);
+			free_missing_map(sc, *row);
 			exit(0);
 		}
-		if (row)
+		if (*row)
 		{
 			sc->map->map_present = 1;
 			sc->map->rows++;
@@ -55,8 +57,8 @@ void	read_map_for_init(t_scene *sc, char *row, int *fd)
 		else
 			break;
 		if (sc->map->rows == 1)
-			sc->map->cols = count_map_cols(row);
-		free(row);
+			sc->map->cols = count_map_cols(*row);
+		free(*row);
 	}
 }
 
@@ -67,13 +69,13 @@ void	init_map(t_scene *sc, int *fd)
 	char *row;
 	int i;
 	
-	row = NULL;
+	//row = NULL;
 	sc->map = malloc(sizeof(t_map));
 	sc->map->rows = 0;
 	sc->map->cols = 0;
 	sc->map->map_present = 0;
 	
-	read_map_for_init(sc, row, fd);
+	read_map_for_init(sc, &row, fd);
 	
 	
 	sc->map->room = (int **)malloc(sizeof(int *) * sc->map->rows);

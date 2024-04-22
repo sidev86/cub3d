@@ -26,6 +26,8 @@ int	scene_loop(t_scene *sc)
 {
 	calculate_rays(sc);
 	draw_scene(sc);
+	//draw_map_2D(sc);
+	//draw_player(sc); 
 	return (1);
 }
 
@@ -71,9 +73,6 @@ int	main(int argc, char **argv)
 		init_scene(&s, argv[1]);
 		read_map(&s, argv[1]);
 		init_mlx(&s);
-		//draw_map_2D(&s);
-		//draw_player(&s); 
-		
 		mlx_loop_hook(s.mlx, &scene_loop, &s);
 		mlx_hook(s.win, 2, 1L << 0, key_press, &s); 
 		mlx_hook(s.win, 17, 0, &close_window, &s);
