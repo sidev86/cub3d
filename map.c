@@ -1,53 +1,5 @@
 #include "cub3d.h"
 
-
-void	set_player_north(t_scene *sc)
-{
-	sc->player->dirX = -1;
-	sc->player->dirY = 0;
-	sc->cam->planeX = 0;
-	sc->cam->planeY = 0.66f;
-}
-
-
-void	set_player_south(t_scene *sc)
-{
-	sc->player->dirX = 1;
-	sc->player->dirY = 0;
-	sc->cam->planeX = 0;
-	sc->cam->planeY = -0.66f;
-}
-
-void	set_player_west(t_scene *sc)
-{
-	sc->player->dirX = 0;
-	sc->player->dirY = -1;
-	sc->cam->planeX = -0.66f;
-	sc->cam->planeY = 0;
-}
-
-void	set_player_east(t_scene *sc)
-{
-	sc->player->dirX = 0;
-	sc->player->dirY = 1;
-	sc->cam->planeX = 0.66f;
-	sc->cam->planeY = 0;
-}
-
-void put_player_on_map(t_scene *sc, char dir, int x, int y)
-{
-	if (dir == 'N')
-		set_player_north(sc);
-	else if (dir == 'S')
-		set_player_south(sc);
-	else if (dir == 'W')
-		set_player_west(sc);
-	else if (dir == 'E')
-		set_player_east(sc);
-	sc->player->posX = (double)x + 0.2f;
-	sc->player->posY = (double)y;
-}
-
 int	count_map_cols(char *r)
 {
 	int i;
@@ -88,132 +40,34 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 	}
 }
 
-
-int	is_texture_row(char *row, int i)
+void	read_map_for_init(t_scene *sc, char **row, int *fd)
 {
-	if (row[i] == 'N' && row[i + 1] == 'O')
-		return(1);
-	else if (row[i] == 'S' && row[i + 1] == 'O')
-		return(1);
-	else if (row[i] == 'E' && row[i + 1] == 'A')
-		return(1);
-	else if (row[i] == 'W' && row[i + 1] == 'E')
-		return(1);
-	else
-		return(0);
-}
-
-void	check_file_extension(t_scene *sc, char *path)
-{
-	int i = 0;
-	
-	while(path[i] != '.' && path[i])
-		i++;
-	if (path[i] == '.')
-	{
-		if (path[i+1] == 'c' && path[i+2] == 'u' && path[i+3] == 'b')
-		{
-			if (path[i+4] != '\0' && path[i+4] != ' ')
-				free_invalid_map(sc);	
-		}
-		else
-			free_invalid_map(sc);
-	}
-	else
-		free_invalid_map(sc);
-	
-}
-
-void	skip_empty_lines(char **row, int *fd)
-{
-	while (empty_line(*row))
-	{
-		free(*row);
-		*row = get_next_line(*fd);
-	}	
-}
-
-
-void read_config_lines(t_scene *sc, char **row, int *lines)
-{
-	int i;
-	
-	i = 0;
-	while (*row[i] == ' ' || *row[i] == '\t')
-		i++;
-	if (*row[i] == 'F' || *row[i] == 'C')
-	{
-		init_floor_ceiling_colors(sc, *row, i);
-		(*lines)++;
-	}
-	else if (is_texture_row(*row,i))
-	{
-		init_texture(sc, *row, i);
-		(*lines)++;
-	}
-	else if (*lines < 6)
-		free_wrong_key(sc, *row);
-}
-
-void 	read_data_before_map(t_scene *sc, char *path, int *fd)
-{
-	char *row;
-	int lines = 0;
-	
-	//i = 0;
-	*fd = open(path, O_RDONLY);
-	if (*fd == -1)
-		printf("Error while opening file\n");
-	check_file_extension(sc, path);
 	while (*fd != -1)
 	{
-		//i = 0;
-		row = get_next_line(*fd);
-		skip_empty_lines(&row, fd);
-		if (!row)
-			free_empty_file(sc);
-		read_config_lines(sc, &row, &lines);
-		free(row);
-		if (lines == 6)
-			break;	
-	}	
-}
-
-void	skip_config_lines(char **row, int *fd)
-{
-	int i; 
-	
-	i = 0;
-	while (i < 6)
-	{
 		*row = get_next_line(*fd);
-		skip_empty_lines(row, fd);
-		if(*row)
+		while(empty_line(*row))
 		{
-			free(*row);
-			i++;
+			free(*row); 
+			*row = get_next_line(*fd); 
 		}
+		if (!(*row) && !sc->map->map_present)
+		{
+			printf("Error! missing map\n");
+			free_missing_map(sc, *row);
+			exit(0);
+		}
+		if (*row)
+		{
+			sc->map->map_present = 1;
+			sc->map->rows++;
+		}
+		else
+			break;
+		if (sc->map->rows == 1)
+			sc->map->cols = count_map_cols(*row);
+		free(*row);
 	}
 }
-
-void	print_map(t_scene *sc)
-{
-	int i = 0; 
-	int j = 0;
-	
-	while (i < sc->map->mapX)
-	{
-		j = 0;
-		while(j < sc->map->mapY)
-		{
-			printf("%d", sc->map->room[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-}
-
 
 void	read_map(t_scene *sc, char *path)
 {
@@ -241,9 +95,3 @@ void	read_map(t_scene *sc, char *path)
 	}
 	print_map(sc);
 }
-
-
-
-
-
-

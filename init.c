@@ -17,51 +17,46 @@ void	init_player(t_scene *sc)
 	sc->player->deltaY = sin(sc->player->angle) * 5;
 }
 
-void	init_texture(t_scene *sc,char *row, int i)
+void	init_config_flags(t_scene *sc)
 {
-	static int init_tex = 0;
-	
-	if (!init_tex)
+	sc->f = 0;
+	sc->c = 0;
+	sc->no = 0;
+	sc->so = 0;
+	sc->we = 0;
+	sc->ea = 0;
+	int i = 0;
+	while (i < 3)
 	{
-		init_tex = 1; 
-		sc->texture = (int **)malloc(sizeof(int *) * 8);
-		if (!sc->texture)
-			printf("Error in texture allocation\n");
-		texture_cycle(sc);
+		sc->floor[i] = 0;
+		sc->ceil[i] = 0;
+		i++;
 	}
-	read_texture_file_data(sc, row, i);
-	//load_texture(sc);
 }
 
-void	read_map_for_init(t_scene *sc, char **row, int *fd)
+void 	read_data_before_map(t_scene *sc, char *path, int *fd)
 {
+	char *row;
+	int lines = 0;
+	
+	//i = 0;
+	*fd = open(path, O_RDONLY);
+	if (*fd == -1)
+		printf("Error while opening file\n");
+	check_file_extension(sc, path);
 	while (*fd != -1)
 	{
-		*row = get_next_line(*fd);
-		while(empty_line(*row))
-		{
-			free(*row); 
-			*row = get_next_line(*fd); 
-		}
-		if (!(*row) && !sc->map->map_present)
-		{
-			printf("Error! missing map\n");
-			free_missing_map(sc, *row);
-			exit(0);
-		}
-		if (*row)
-		{
-			sc->map->map_present = 1;
-			sc->map->rows++;
-		}
-		else
-			break;
-		if (sc->map->rows == 1)
-			sc->map->cols = count_map_cols(*row);
-		free(*row);
-	}
+		//i = 0;
+		row = get_next_line(*fd);
+		skip_empty_lines(&row, fd);
+		if (!row)
+			free_empty_file(sc);
+		read_config_lines(sc, &row, &lines);
+		free(row);
+		if (lines == 6)
+			break;	
+	}	
 }
-
 
 void	init_map(t_scene *sc, int *fd)
 {
@@ -91,45 +86,6 @@ void	init_map(t_scene *sc, int *fd)
 	sc->map->mapY = sc->map->cols;
 	sc->map->mapSize = sc->map->cols * sc->map->rows;
 	close(*fd);
-}
-
-void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
-{
-	
-	if (row[i] == 'F' && sc->f == 0)
-	{
-		sc->f = 1;
-		get_rgb_values(sc, row, ++i, 'f');
-	}
-	else if (row[i] == 'C' && sc->c == 0)
-	{
-		sc->c = 1;
-		get_rgb_values(sc, row, ++i, 'c');
-	}
-	else
-	{
-		printf("Error! Double key rows(floor/ceiling)\n");
-		free_doublerow_ceilfloor(sc, row);
-		exit(0);
-	}
-}
-
-
-void	init_config_flags(t_scene *sc)
-{
-	sc->f = 0;
-	sc->c = 0;
-	sc->no = 0;
-	sc->so = 0;
-	sc->we = 0;
-	sc->ea = 0;
-	int i = 0;
-	while (i < 3)
-	{
-		sc->floor[i] = 0;
-		sc->ceil[i] = 0;
-		i++;
-	}
 }
 
 void	init_scene(t_scene *sc, char *path)

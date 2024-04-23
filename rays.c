@@ -1,17 +1,5 @@
 #include "cub3d.h"
 
-void	set_initial_ray_data(t_scene *sc, int x)
-{
-	sc->cam->x = 2 * x / (double)W_WIDTH - 1;
-	sc->ray->dirX = sc->player->dirX + sc->cam->planeX * sc->cam->x;
-	sc->ray->dirY = sc->player->dirY + sc->cam->planeY * sc->cam->x;
-	sc->map->mapX = (int)sc->player->posX;
-	sc->map->mapY = (int)sc->player->posY;
-	sc->ray->deltaDistX = fabs(1 / sc->ray->dirX);
-	sc->ray->deltaDistY = fabs(1 / sc->ray->dirY);
-	sc->ray->hit = 0; 
-}
-
 void	set_ray_steps(t_scene *sc)
 {
 	if (sc->ray->dirX < 0)

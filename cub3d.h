@@ -117,6 +117,8 @@ typedef struct s_scene
 void	init_scene(t_scene *sc, char *path);
 void	init_floor_ceiling_colors(t_scene *sc, char *row, int i);
 void	init_texture(t_scene *sc,char *row, int i);
+void	init_floor_ceiling_colors(t_scene *sc, char *row, int i);
+void	set_initial_ray_data(t_scene *sc, int x);
 
 //DRAW
 void	put_pixel(t_scene *sc, int x, int y, int color);
@@ -126,11 +128,17 @@ void	draw_tile_map(t_scene *sc, int x, int y, int mapSize);
 void	draw_map_2D(t_scene *sc);
 void	draw_player(t_scene *sc);
 void	calculate_rays(t_scene *sc);
+void	print_map(t_scene *sc);
 
-//MAP
+//READ DATA (SETTINGS + MAP)
 void	read_map(t_scene *sc, char *path);
+void	read_map_for_init(t_scene *sc, char **row, int *fd);
 void 	read_data_before_map(t_scene *sc, char *path, int *fd);
+void	check_file_extension(t_scene *sc, char *path);
 int	count_map_cols(char *r);
+void	skip_empty_lines(char **row, int *fd);
+void	read_config_lines(t_scene *sc, char **row, int *lines);
+void	skip_config_lines(char **row, int *fd);
 int	empty_line(char *row);
 
 //TEXTURES
@@ -144,8 +152,21 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type);
 //CONTROLS
 int	key_press(int keycode, void *param);
 
+//PLAYER
+
+void	move_up(t_scene *sc);
+void	move_down(t_scene *sc);
+void	move_left(t_scene *sc);
+void	move_right(t_scene *sc);
+void	rotate_left(t_scene *sc);
+void	rotate_right(t_scene *sc);
+void	put_player_on_map(t_scene *sc, char dir, int x, int y);
+
 //UTILS
 void	ft_bzero(void *s, size_t n);
+int	no_value(char *row, int i);
+int	missing_commas(char *row);
+int	get_len(char *row, int i);
 
 //FREE
 void	free_doublerow_ceilfloor(t_scene *sc, char *row);

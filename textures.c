@@ -51,19 +51,6 @@ void texture_cycle(t_scene *sc)
 	}
 }
 
-int	get_len(char *row, int i)
-{
-	int len;
-	
-	len = 0;
-	while(row[i] != ' ' && row[i] != '\t' && row[i] != '\0')
-	{
-		len++;
-		i++;
-	}
-	return (len);
-
-}
 char *get_texture_path(char *row, int i)
 {
 	//int i = 0;

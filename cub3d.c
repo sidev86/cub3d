@@ -21,7 +21,6 @@ void	draw_scene(t_scene *sc)
 	mlx_put_image_to_window(sc->mlx, sc->win, sc->img.img, 0, 0);
 }
 
-
 int	scene_loop(t_scene *sc)
 {
 	calculate_rays(sc);

@@ -3,17 +3,24 @@ CC        := gcc
 FLAGS    := -g -Wall -Wextra -Werror 
 
 SRCS        :=      cub3d.c \
+			init.c \
+			init_extra.c \
 			draw.c \
 			draw_line.c \
 			draw_extra.c \
 			rays.c \
 			controls.c \
-			init.c \
+			player_move.c \
+			player_direction.c \
+			player_rotate.c \
 			map.c \
 			textures.c \
+			floor_ceil.c \
+			file_read_utils.c \
   			get_next_line.c \
   			get_next_line_utils.c \
 			utils.c \
+			utils_extra.c \
 			free.c
                        
                           

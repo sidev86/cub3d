@@ -71,3 +71,19 @@ void	clear_buffer(t_scene *sc)
 		x++;
 	}
 }
+
+int	get_len(char *row, int i)
+{
+	int len;
+	
+	len = 0;
+	while(row[i] != ' ' && row[i] != '\t' && row[i] != '\0')
+	{
+		len++;
+		i++;
+	}
+	return (len);
+
+}
+
+

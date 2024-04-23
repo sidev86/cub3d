@@ -20,7 +20,6 @@ void	put_pixel(t_scene *sc, int x, int y, int color)
 	}
 }
 
-
 void	draw_background(t_scene *sc)
 {
 	int	*image;
@@ -35,7 +34,6 @@ void	draw_background(t_scene *sc)
 		i++;
 	}
 }
-
 
 void draw_tile_map(t_scene *sc, int x, int y, int mapSize)
 {
