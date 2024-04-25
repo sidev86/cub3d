@@ -28,14 +28,17 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 		while (row[y] == ' ' || row[y] == '\t')
 			y++;
 		if (row[y] == '0')
-			sc->map->room[x][y] = 0;
+			sc->map->room[x][y] = '0';
 		else if (row[y] == '1')
-			sc->map->room[x][y] = 1;
+			sc->map->room[x][y] = '1';
 		else if (row[y] == 'N' || row[y] == 'S' || row[y] == 'W' || row[y] == 'E')
 		{
-			sc->map->room[x][y] = 0;
+			//sc->map->room[x][y] = 0;
+			sc->map->room[x][y] = row[y];
 			put_player_on_map(sc, row[y], x, y);
 		}
+		else 
+			sc->map->room[x][y] = '2';
 		y++;
 	}
 }
@@ -63,7 +66,7 @@ void	read_map_for_init(t_scene *sc, char **row, int *fd)
 		}
 		else
 			break;
-		if (sc->map->rows == 1)
+		if (count_map_cols(*row) > sc->map->cols)
 			sc->map->cols = count_map_cols(*row);
 		free(*row);
 	}

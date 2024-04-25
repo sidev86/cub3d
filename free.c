@@ -41,7 +41,8 @@ void free_doublerow_texture(t_scene *sc, char *row, char *path)
 void free_wrong_key(t_scene *sc, char *row)
 {
 	printf("Error in data file read: missing or wrong key row in texture and/or floor-ceiling config\n");
-	free_texture(sc);
+	if (sc->text_init)
+		free_texture(sc);
 	free(row);
 	free(sc->player);
 	mlx_destroy_display(sc->mlx);

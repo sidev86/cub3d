@@ -41,7 +41,7 @@ void	check_shortest_hit(t_scene *sc)
 			sc->map->mapY += sc->ray->stepY;
 			sc->ray->side = 1; // L'intersezione è verticale
 	    	}
-    		if (sc->map->room[sc->map->mapX][sc->map->mapY] > 0)
+    		if (sc->map->room[sc->map->mapX][sc->map->mapY] == '1')
 		sc->ray->hit = 1;
 	}
 }

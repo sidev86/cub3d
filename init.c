@@ -25,6 +25,7 @@ void	init_config_flags(t_scene *sc)
 	sc->so = 0;
 	sc->we = 0;
 	sc->ea = 0;
+	sc->text_init = 0;
 	int i = 0;
 	while (i < 3)
 	{

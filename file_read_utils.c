@@ -49,6 +49,7 @@ void read_config_lines(t_scene *sc, char **row, int *lines)
 	}
 	else if (is_texture_row(*row,i))
 	{
+		sc->text_init = 1;
 		init_texture(sc, *row, i);
 		(*lines)++;
 	}

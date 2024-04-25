@@ -52,7 +52,7 @@ void	print_map(t_scene *sc)
 		j = 0;
 		while(j < sc->map->mapY)
 		{
-			printf("%d", sc->map->room[i][j]);
+			printf("%c", sc->map->room[i][j]);
 			j++;
 		}
 		printf("\n");
