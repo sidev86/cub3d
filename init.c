@@ -73,11 +73,11 @@ void	init_map(t_scene *sc, int *fd)
 	read_map_for_init(sc, &row, fd);
 	
 	
-	sc->map->room = (int **)malloc(sizeof(int *) * sc->map->rows);
+	sc->map->room = (char **)malloc(sizeof(char *) * sc->map->rows);
 	i = 0;
 	while (i < sc->map->rows)
 	{
-		sc->map->room[i] = (int *)malloc(sizeof(int) * sc->map->cols);
+		sc->map->room[i] = (char *)malloc(sizeof(char) * sc->map->cols);
 		i++;
 	}
 	//printf("map rows = %d\n", rows);

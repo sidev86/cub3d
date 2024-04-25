@@ -32,7 +32,7 @@ typedef struct s_map
 	int mapX; 
 	int mapY;
 	int mapSize;
-	int **room;
+	char **room;
 	int rows;
 	int cols; 
 	int map_present;
