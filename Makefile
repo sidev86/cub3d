@@ -21,7 +21,8 @@ SRCS        :=      cub3d.c \
   			get_next_line_utils.c \
 			utils.c \
 			utils_extra.c \
-			free.c
+			free.c \
+			checker.c
                        
                           
 OBJS        := $(SRCS:.c=.o)

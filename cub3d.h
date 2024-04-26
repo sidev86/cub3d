@@ -135,12 +135,14 @@ void	print_map(t_scene *sc);
 void	read_map(t_scene *sc, char *path);
 void	read_map_for_init(t_scene *sc, char **row, int *fd);
 void 	read_data_before_map(t_scene *sc, char *path, int *fd);
+void	check_map_validity(t_scene *sc);
 void	check_file_extension(t_scene *sc, char *path);
 int	count_map_cols(char *r);
 void	skip_empty_lines(char **row, int *fd);
 void	read_config_lines(t_scene *sc, char **row, int *lines);
 void	skip_config_lines(char **row, int *fd);
 int	empty_line(char *row);
+
 
 //TEXTURES
 void	texture_cycle(t_scene *sc);
@@ -154,7 +156,6 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type);
 int	key_press(int keycode, void *param);
 
 //PLAYER
-
 void	move_up(t_scene *sc);
 void	move_down(t_scene *sc);
 void	move_left(t_scene *sc);

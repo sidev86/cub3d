@@ -25,11 +25,13 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 	
 	while (y < sc->map->mapY)
 	{
-		while (row[y] == ' ' || row[y] == '\t')
+		while (row[y] == '\t')
 			y++;
 		if (row[y] == '0')
 			sc->map->room[x][y] = '0';
 		else if (row[y] == '1')
+			sc->map->room[x][y] = '1';
+		else if (row[y] == ' ')
 			sc->map->room[x][y] = '1';
 		else if (row[y] == 'N' || row[y] == 'S' || row[y] == 'W' || row[y] == 'E')
 		{
@@ -72,6 +74,22 @@ void	read_map_for_init(t_scene *sc, char **row, int *fd)
 	}
 }
 
+void	check_row_validity(char *row)
+{
+	int i; 
+	
+	i = 0;
+	while (row[i] != '\n' && row[i])
+	{
+		if (row[i] != '1' && row[i] != '0' && row[i] != ' ' && row[i] != '\t' && row[i] != 'N' && row[i] != 'S' && row[i] != 'W' && row[i] != 'E')
+		{
+			printf("Error! Map with wrong characters\n");
+			exit(0);
+		}
+		i++;
+	}
+}
+
 void	read_map(t_scene *sc, char *path)
 {
 	int	fd;
@@ -90,7 +108,10 @@ void	read_map(t_scene *sc, char *path)
 			row = get_next_line(fd); 
 		}
 		if (row)
+		{
+			check_row_validity(row);
 			save_map_row_values(sc, row, num_row);
+		}
 		else 
 			break;
 		num_row++;

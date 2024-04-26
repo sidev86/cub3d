@@ -71,6 +71,7 @@ int	main(int argc, char **argv)
 		s.mlx = mlx_init();
 		init_scene(&s, argv[1]);
 		read_map(&s, argv[1]);
+		check_map_validity(&s);
 		init_mlx(&s);
 		mlx_loop_hook(s.mlx, &scene_loop, &s);
 		mlx_hook(s.win, 2, 1L << 0, key_press, &s); 
