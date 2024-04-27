@@ -14,11 +14,7 @@ void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
 		get_rgb_values(sc, row, ++i, 'c');
 	}
 	else
-	{
-		printf("Error! Double key rows(floor/ceiling)\n");
-		free_doublerow_ceilfloor(sc, row);
-		exit(0);
-	}
+		free_doublerow_ceilfloor(sc, row, 'd');	
 }
 
 void	set_initial_ray_data(t_scene *sc, int x)

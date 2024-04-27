@@ -1,22 +1,20 @@
-WE textures/purplestone.xpm
+WE       textures/purplestone.xpm
+EA            textures/purplestone.xpm
 
-EA textures/purplestone.xpm
 
+F 0     ,  0, 200      
 NO textures/purplestone.xpm
-
-F 0, 0, 0
-C 255,255,255
-
 SO textures/redbrick.xpm
 
+   
 
-111111
-100001
-100001
-100001
-1000011111111111111
+C 255,255, 200
+
+11111111111111111111
+1N0001111111111111111
 1000000000000000001
-1000000000000000001
-1000000N00000000001
+10000000  000000001
+10000 0000000000001
 1111111111111111111
+
 

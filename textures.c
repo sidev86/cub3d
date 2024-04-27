@@ -70,24 +70,24 @@ char *get_texture_path(char *row, int i)
 
 void	texture_to_load(t_scene *sc, char **row, int i, t_img *img)
 {
-	while(*row[i] == ' ' || *row[i] == '\t')
+	while((*row)[i] == ' ' || (*row)[i] == '\t')
 		i++;
-	if (*row[i] == 'N' && (*row)[i + 1] == 'O' && sc->no == 0)
+	if ((*row)[i] == 'N' && (*row)[i + 1] == 'O' && sc->no == 0)
 	{
 		sc->no = 1;
 		load_image(sc, sc->texture[1], sc->t_path, img, *row);
 	}
-	else if (*row[i] == 'S' && (*row)[i + 1] == 'O' && sc->so == 0)
+	else if ((*row)[i] == 'S' && (*row)[i + 1] == 'O' && sc->so == 0)
 	{
 		sc->so = 1;
 		load_image(sc, sc->texture[0], sc->t_path, img, *row);
 	}
-	else if (*row[i] == 'E' && (*row)[i + 1] == 'A' && sc->ea == 0)
+	else if ((*row)[i] == 'E' && (*row)[i + 1] == 'A' && sc->ea == 0)
 	{
 		sc->ea = 1;
 		load_image(sc, sc->texture[2], sc->t_path, img, *row);
 	}
-	else if (*row[i] == 'W' && (*row)[i + 1] == 'E' && sc->we == 0)
+	else if ((*row)[i] == 'W' && (*row)[i + 1] == 'E' && sc->we == 0)
 	{
 		sc->we = 1;
 		load_image(sc, sc->texture[3], sc->t_path, img, *row);

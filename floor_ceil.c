@@ -26,17 +26,19 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 		j = 0;
 		while (row[i] == ' ' || row[i] == '\t')
 			i++;
-		while (row[i] != ',' && row[i] != '\n' && row[i] != '\0')
+		while (row[i] != ',' && row[i] != ' ' && row[i] != '\n' && row[i] != '\0')
 			rgb_str[j++] = row[i++];
+		while (row[i] == ' ' || row[i] == '\t')
+			i++;
 		i++;
 		if (no_value(row, i) || missing_commas(row))
-			free_doublerow_ceilfloor(sc, row);
+			free_doublerow_ceilfloor(sc, row, 'm');
 		if (type == 'f')
 			sc->floor[t] = atoi(rgb_str);
 		else if (type == 'c')
 			sc->ceil[t] = atoi(rgb_str);
 		if (sc->floor[t] < 0 || sc->ceil[t] < 0 || sc->floor[t] > 255 || sc->ceil[t] > 255)
-			free_doublerow_ceilfloor(sc, row);
+			free_doublerow_ceilfloor(sc, row, 'v');
 		init_rgbstr(rgb_str);
 		t++;
 	}

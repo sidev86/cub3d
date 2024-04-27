@@ -14,6 +14,7 @@ SRCS        :=      cub3d.c \
 			player_direction.c \
 			player_rotate.c \
 			map.c \
+			map_checker.c \
 			textures.c \
 			floor_ceil.c \
 			file_read_utils.c \
@@ -22,7 +23,7 @@ SRCS        :=      cub3d.c \
 			utils.c \
 			utils_extra.c \
 			free.c \
-			checker.c
+			free_more.c
                        
                           
 OBJS        := $(SRCS:.c=.o)

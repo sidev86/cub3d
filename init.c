@@ -11,6 +11,8 @@ void	init_player(t_scene *sc)
 	sc->player->dirY = 0;
 	sc->player->oldDirX = 0;
 	sc->player->oldPlaneX = 0;
+	sc->player->moveSpeed = 0.05f;
+	sc->player->rotSpeed = 0.05f;
 	sc->player->size = 10;
 	sc->player->angle = (3 * PI) / 2;
 	sc->player->deltaX = cos(sc->player->angle) * 5;

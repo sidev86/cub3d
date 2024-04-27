@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-static void free_texture(t_scene *sc)
+void free_texture(t_scene *sc)
 {
 	int i;
 	i = 0;
@@ -13,11 +13,16 @@ static void free_texture(t_scene *sc)
 	free(sc->texture);
 }
 
-void free_doublerow_ceilfloor(t_scene *sc, char *row)
+void free_doublerow_ceilfloor(t_scene *sc, char *row, char message)
 {
-	printf("Error in file data read! Missing color\n");
-	printf("Error in file data read! invalid rgb color values\n");
-	free_texture(sc);
+	if (message == 'm')
+		printf("Error in file data read! Missing color\n");
+	else if (message == 'v')
+		printf("Error in file data read! invalid rgb color values\n");
+	else
+		printf("Error! Double key rows(floor/ceiling)\n");
+	if (sc->text_init)
+		free_texture(sc);
 	free(sc->player);
 	free(row);
 	mlx_destroy_display(sc->mlx);
@@ -52,42 +57,16 @@ void free_wrong_key(t_scene *sc, char *row)
 
 void free_missing_map(t_scene *sc, char *row)
 {
+	printf("Error! missing map\n");
 	free_texture(sc);
 	free(sc->player);
 	free(sc->map);
 	free(row);
 	mlx_destroy_display(sc->mlx);
 	free(sc->mlx);
-}
-
-
-void free_empty_file(t_scene *sc)
-{
-	printf("Error in data file read: empty file\n");
-	mlx_destroy_display(sc->mlx);
-	free(sc->player);
-	free(sc->mlx);
 	exit(0);
 }
 
 
-void free_invalid_map(t_scene *sc)
-{
-	perror("Error! Invalid file map format (.cub extension needed)");
-	free(sc->player);
-	mlx_destroy_display(sc->mlx);
-	free(sc->mlx);
-	exit(0);
-}
 
-
-void free_missing_file(t_scene *sc, char *row, char *path)
-{
-	free_texture(sc);
-	mlx_destroy_display(sc->mlx);
-	free(sc->mlx);
-	free(sc->player);
-	free(row);
-	free(path);
-}
 

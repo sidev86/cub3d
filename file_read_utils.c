@@ -40,9 +40,9 @@ void read_config_lines(t_scene *sc, char **row, int *lines)
 	int i;
 	
 	i = 0;
-	while (*row[i] == ' ' || *row[i] == '\t')
+	while ((*row)[i] == ' ' || (*row)[i] == '\t')
 		i++;
-	if (*row[i] == 'F' || *row[i] == 'C')
+	if ((*row)[i] == 'F' || (*row)[i] == 'C')
 	{
 		init_floor_ceiling_colors(sc, *row, i);
 		(*lines)++;

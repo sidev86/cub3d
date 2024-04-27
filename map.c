@@ -9,9 +9,9 @@ int	count_map_cols(char *r)
 	cols = 0;
 	while (r[i] != '\0' && r[i] != '\n')
 	{
-		while (r[i] == ' ' || r[i] == '\t')
+		while (r[i] == '\t')
 			i++; 
-		if (r[i] == '0' || r[i] == '1' || r[i] == 'N' || r[i] == 'S' || r[i] == 'E' || r[i] == 'W')
+		if (r[i] == '0' || r[i] == '1' || r[i] == 'N' || r[i] == 'S' || r[i] == 'E' || r[i] == 'W' || r[i] == ' ')
 			cols++;
 		i++;
 	}
@@ -20,10 +20,12 @@ int	count_map_cols(char *r)
 
 void	save_map_row_values(t_scene *sc, char *row, int x)
 {
-	
 	int y = 0;
+	int cols;
 	
-	while (y < sc->map->mapY)
+	cols = count_map_cols(row);
+	//printf("numero colonne : %d\n", cols);
+	while (y < cols)
 	{
 		while (row[y] == '\t')
 			y++;
@@ -39,10 +41,10 @@ void	save_map_row_values(t_scene *sc, char *row, int x)
 			sc->map->room[x][y] = row[y];
 			put_player_on_map(sc, row[y], x, y);
 		}
-		else 
-			sc->map->room[x][y] = '2';
 		y++;
 	}
+	while (y < sc->map->cols)
+		sc->map->room[x][y++] = '2';
 }
 
 void	read_map_for_init(t_scene *sc, char **row, int *fd)
@@ -56,11 +58,7 @@ void	read_map_for_init(t_scene *sc, char **row, int *fd)
 			*row = get_next_line(*fd); 
 		}
 		if (!(*row) && !sc->map->map_present)
-		{
-			printf("Error! missing map\n");
 			free_missing_map(sc, *row);
-			exit(0);
-		}
 		if (*row)
 		{
 			sc->map->map_present = 1;
@@ -74,7 +72,7 @@ void	read_map_for_init(t_scene *sc, char **row, int *fd)
 	}
 }
 
-void	check_row_validity(char *row)
+void	check_row_validity(t_scene *sc, char *row)
 {
 	int i; 
 	
@@ -83,12 +81,12 @@ void	check_row_validity(char *row)
 	{
 		if (row[i] != '1' && row[i] != '0' && row[i] != ' ' && row[i] != '\t' && row[i] != 'N' && row[i] != 'S' && row[i] != 'W' && row[i] != 'E')
 		{
-			printf("Error! Map with wrong characters\n");
-			exit(0);
+			free_map_wrong(sc, row);
 		}
 		i++;
 	}
 }
+
 
 void	read_map(t_scene *sc, char *path)
 {
@@ -109,7 +107,7 @@ void	read_map(t_scene *sc, char *path)
 		}
 		if (row)
 		{
-			check_row_validity(row);
+			check_row_validity(sc, row);
 			save_map_row_values(sc, row, num_row);
 		}
 		else 
@@ -117,5 +115,5 @@ void	read_map(t_scene *sc, char *path)
 		num_row++;
 		free(row);
 	}
-	print_map(sc);
+	//print_map(sc);
 }

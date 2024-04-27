@@ -43,5 +43,5 @@ void put_player_on_map(t_scene *sc, char dir, int x, int y)
 	else if (dir == 'E')
 		set_player_east(sc);
 	sc->player->posX = (double)x + 0.2f;
-	sc->player->posY = (double)y;
+	sc->player->posY = (double)y + 0.2f;
 }
