@@ -3,42 +3,42 @@
 static int	is_texture_row(char *row, int i)
 {
 	if (row[i] == 'N' && row[i + 1] == 'O')
-		return(1);
+		return (1);
 	else if (row[i] == 'S' && row[i + 1] == 'O')
-		return(1);
+		return (1);
 	else if (row[i] == 'E' && row[i + 1] == 'A')
-		return(1);
+		return (1);
 	else if (row[i] == 'W' && row[i + 1] == 'E')
-		return(1);
+		return (1);
 	else
-		return(0);
+		return (0);
 }
 
 void	check_file_extension(t_scene *sc, char *path)
 {
-	int i = 0;
-	
-	while(path[i] != '.' && path[i])
+	int	i;
+
+	i = 0;
+	while (path[i] != '.' && path[i])
 		i++;
 	if (path[i] == '.')
 	{
-		if (path[i+1] == 'c' && path[i+2] == 'u' && path[i+3] == 'b')
+		if (path[i + 1] == 'c' && path[i + 2] == 'u' && path[i + 3] == 'b')
 		{
-			if (path[i+4] != '\0' && path[i+4] != ' ')
-				free_invalid_map(sc);	
+			if (path[i + 4] != '\0' && path[i + 4] != ' ')
+				free_invalid_map(sc);
 		}
 		else
 			free_invalid_map(sc);
 	}
 	else
 		free_invalid_map(sc);
-	
 }
 
-void read_config_lines(t_scene *sc, char **row, int *lines)
+void	read_config_lines(t_scene *sc, char **row, int *lines)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while ((*row)[i] == ' ' || (*row)[i] == '\t')
 		i++;
@@ -47,7 +47,7 @@ void read_config_lines(t_scene *sc, char **row, int *lines)
 		init_floor_ceiling_colors(sc, *row, i);
 		(*lines)++;
 	}
-	else if (is_texture_row(*row,i))
+	else if (is_texture_row(*row, i))
 	{
 		sc->text_init = 1;
 		init_texture(sc, *row, i);
@@ -59,19 +59,17 @@ void read_config_lines(t_scene *sc, char **row, int *lines)
 
 void	skip_config_lines(char **row, int *fd)
 {
-	int i; 
-	
+	int	i;
+
 	i = 0;
 	while (i < 6)
 	{
 		*row = get_next_line(*fd);
 		skip_empty_lines(row, fd);
-		if(*row)
+		if (*row)
 		{
 			free(*row);
 			i++;
 		}
 	}
 }
-
-

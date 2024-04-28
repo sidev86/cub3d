@@ -2,30 +2,31 @@
 
 void	rotate_left(t_scene *sc)
 {
-	double r;
-	
-	r = sc->player->rotSpeed;
-	sc->player->oldDirX = sc->player->dirX;
-	sc->player->dirX = sc->player->dirX * cos(r) - sc->player->dirY
-		* sin(r);
-	sc->player->dirY = sc->player->oldDirX * sin(r) + sc->player->dirY * cos(r);
-	sc->player->oldPlaneX = sc->cam->planeX;
-	sc->cam->planeX = sc->cam->planeX * cos(r) - sc->cam->planeY
-		* sin(r);
-	sc->cam->planeY = sc->player->oldPlaneX * sin(r) + sc->cam->planeY * cos(r);
+	double	r;
+
+	r = sc->player->rot_speed;
+	sc->player->olddir_x = sc->player->dir_x;
+	sc->player->dir_x = sc->player->dir_x * cos(r) - sc->player->dir_y * sin(r);
+	sc->player->dir_y = sc->player->olddir_x * sin(r) + sc->player->dir_y
+		* cos(r);
+	sc->player->old_plane_x = sc->cam->plane_x;
+	sc->cam->plane_x = sc->cam->plane_x * cos(r) - sc->cam->plane_y * sin(r);
+	sc->cam->plane_y = sc->player->old_plane_x * sin(r) + sc->cam->plane_y
+		* cos(r);
 }
 
 void	rotate_right(t_scene *sc)
 {
-	double r;
-	
-	r = sc->player->rotSpeed;
-	sc->player->oldDirX = sc->player->dirX;
-	sc->player->dirX = sc->player->dirX * cos(-r) - sc->player->dirY
+	double	r;
+
+	r = sc->player->rot_speed;
+	sc->player->olddir_x = sc->player->dir_x;
+	sc->player->dir_x = sc->player->dir_x * cos(-r) - sc->player->dir_y
 		* sin(-r);
-	sc->player->dirY = sc->player->oldDirX * sin(-r) + sc->player->dirY * cos(-r);
-	sc->player->oldPlaneX = sc->cam->planeX;
-	sc->cam->planeX = sc->cam->planeX * cos(-r) - sc->cam->planeY
-		* sin(-r);
-	sc->cam->planeY = sc->player->oldPlaneX * sin(-r) + sc->cam->planeY * cos(-r);
+	sc->player->dir_y = sc->player->olddir_x * sin(-r) + sc->player->dir_y
+		* cos(-r);
+	sc->player->old_plane_x = sc->cam->plane_x;
+	sc->cam->plane_x = sc->cam->plane_x * cos(-r) - sc->cam->plane_y * sin(-r);
+	sc->cam->plane_y = sc->player->old_plane_x * sin(-r) + sc->cam->plane_y
+		* cos(-r);
 }

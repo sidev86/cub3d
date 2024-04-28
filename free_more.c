@@ -1,17 +1,15 @@
 #include "cub3d.h"
 
-
-void free_empty_file(t_scene *sc)
+void	free_empty_file(t_scene *sc)
 {
-	printf("Error in data file read: empty file\n");
+	perror("Error in data file read: empty file\n");
 	mlx_destroy_display(sc->mlx);
 	free(sc->player);
 	free(sc->mlx);
 	exit(0);
 }
 
-
-void free_invalid_map(t_scene *sc)
+void	free_invalid_map(t_scene *sc)
 {
 	perror("Error! Invalid file map format (.cub extension needed)");
 	free(sc->player);
@@ -20,15 +18,14 @@ void free_invalid_map(t_scene *sc)
 	exit(0);
 }
 
-
-void free_map_wrong(t_scene *sc, char *row)
+void	free_map_wrong(t_scene *sc, char *row)
 {
-	int i; 
-	
+	int	i;
+
 	i = 0;
-	printf("Error! Map with wrong characters\n");
+	perror("Error! Map with wrong characters\n");
 	while (i < sc->map->rows)
-		free(sc->map->room[i++]); 
+		free(sc->map->room[i++]);
 	free(sc->map->room);
 	free(sc->map);
 	free_texture(sc);
@@ -41,19 +38,19 @@ void free_map_wrong(t_scene *sc, char *row)
 	exit(0);
 }
 
-void free_map_validity_check(t_scene *sc, char message)
+void	free_map_validity_check(t_scene *sc, char message)
 {
-	int i; 
-	
+	int	i;
+
 	i = 0;
 	if (message == 'o')
-		printf("Map check error! Map open (not completely surronded by walls)\n");
+		perror("Map check error, not completely surronded by walls\n");
 	else if (message == 'n')
-		printf("Map check error! Missing player position\n");
+		perror("Map check error! Missing player position\n");
 	else if (message == 'p')
-		printf("Map check error! More than one player position on map\n");
+		perror("Map check error! More than one player position on map\n");
 	while (i < sc->map->rows)
-		free(sc->map->room[i++]); 
+		free(sc->map->room[i++]);
 	free(sc->map->room);
 	free(sc->map);
 	free_texture(sc);
@@ -65,7 +62,7 @@ void free_map_validity_check(t_scene *sc, char message)
 	exit(0);
 }
 
-void free_missing_file(t_scene *sc, char *row, char *path)
+void	free_missing_file(t_scene *sc, char *row, char *path)
 {
 	if (sc->text_init)
 		free_texture(sc);

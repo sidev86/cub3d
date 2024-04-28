@@ -2,102 +2,113 @@
 
 void	set_ray_steps(t_scene *sc)
 {
-	if (sc->ray->dirX < 0)
+	if (sc->ray->dir_x < 0)
 	{
-    		sc->ray->stepX = -1;
-    		sc->ray->sideDistX = (sc->player->posX - sc->map->mapX) * sc->ray->deltaDistX;
+		sc->ray->step_x = -1;
+		sc->ray->side_dist_x = (sc->player->pos_x - sc->map->map_x)
+			* sc->ray->delta_dist_x;
 	}
 	else
 	{
-    		sc->ray->stepX = 1;
-    		sc->ray->sideDistX = (sc->map->mapX + 1.0f - sc->player->posX) * sc->ray->deltaDistX;
+		sc->ray->step_x = 1;
+		sc->ray->side_dist_x = (sc->map->map_x + 1.0f - sc->player->pos_x)
+			* sc->ray->delta_dist_x;
 	}
-	if (sc->ray->dirY < 0)
+	if (sc->ray->dir_y < 0)
 	{
-	    sc->ray->stepY = -1;
-	    sc->ray->sideDistY = (sc->player->posY - sc->map->mapY) * sc->ray->deltaDistY;
+		sc->ray->step_y = -1;
+		sc->ray->side_dist_y = (sc->player->pos_y - sc->map->map_y)
+			* sc->ray->delta_dist_y;
 	}
 	else
 	{
-   		sc->ray->stepY = 1;
-    		sc->ray->sideDistY = (sc->map->mapY + 1.0 - sc->player->posY) * sc->ray->deltaDistY;
+		sc->ray->step_y = 1;
+		sc->ray->side_dist_y = (sc->map->map_y + 1.0 - sc->player->pos_y)
+			* sc->ray->delta_dist_y;
 	}
 }
-
 
 void	check_shortest_hit(t_scene *sc)
 {
 	while (!sc->ray->hit)
 	{
-		if (sc->ray->sideDistX < sc->ray->sideDistY)
+		if (sc->ray->side_dist_x < sc->ray->side_dist_y)
 		{
-			sc->ray->sideDistX += sc->ray->deltaDistX;
-			sc->map->mapX += sc->ray->stepX;
-			sc->ray->side = 0; // L'intersezione è orizzontale
+			sc->ray->side_dist_x += sc->ray->delta_dist_x;
+			sc->map->map_x += sc->ray->step_x;
+			sc->ray->side = 0;
 		}
-	    	else
-	    	{
-			sc->ray->sideDistY += sc->ray->deltaDistY;
-			sc->map->mapY += sc->ray->stepY;
-			sc->ray->side = 1; // L'intersezione è verticale
-	    	}
-    		if (sc->map->room[sc->map->mapX][sc->map->mapY] == '1')
-		sc->ray->hit = 1;
+		else
+		{
+			sc->ray->side_dist_y += sc->ray->delta_dist_y;
+			sc->map->map_y += sc->ray->step_y;
+			sc->ray->side = 1;
+		}
+		if (sc->map->room[sc->map->map_x][sc->map->map_y] == '1')
+			sc->ray->hit = 1;
 	}
 }
 
 void	calculate_for_draw(t_scene *sc)
 {
 	if (sc->ray->side == 0)
-    		sc->ray->perpWallDist = (sc->map->mapX - sc->player->posX + (1 - sc->ray->stepX) / 2) / sc->ray->dirX;
+		sc->ray->perp_wall_dist = (sc->map->map_x - sc->player->pos_x + (1
+					- sc->ray->step_x) / 2) / sc->ray->dir_x;
 	else
-    		sc->ray->perpWallDist = (sc->map->mapY - sc->player->posY + (1 - sc->ray->stepY) / 2) / sc->ray->dirY;
-
-	sc->ray->lineHeight = (int)(W_HEIGHT / sc->ray->perpWallDist);
-	sc->ray->drawStart = -sc->ray->lineHeight / 2 + W_HEIGHT / 2;
-	if (sc->ray->drawStart < 0)
-    		sc->ray->drawStart = 0;
-	sc->ray->drawEnd = sc->ray->lineHeight / 2 + W_HEIGHT / 2;
-	if (sc->ray->drawEnd >= W_HEIGHT)
-    		sc->ray->drawEnd = W_HEIGHT - 1;
+		sc->ray->perp_wall_dist = (sc->map->map_y - sc->player->pos_y + (1
+					- sc->ray->step_y) / 2) / sc->ray->dir_y;
+	sc->ray->line_height = (int)(W_HEIGHT / sc->ray->perp_wall_dist);
+	sc->ray->draw_start = -sc->ray->line_height / 2 + W_HEIGHT / 2;
+	if (sc->ray->draw_start < 0)
+		sc->ray->draw_start = 0;
+	sc->ray->draw_end = sc->ray->line_height / 2 + W_HEIGHT / 2;
+	if (sc->ray->draw_end >= W_HEIGHT)
+		sc->ray->draw_end = W_HEIGHT - 1;
 	if (sc->ray->side == 0)
-		sc->wallX = sc->player->posY + sc->ray->perpWallDist * sc->ray->dirY;
+		sc->wall_x = sc->player->pos_y + sc->ray->perp_wall_dist
+			* sc->ray->dir_y;
 	else
-		sc->wallX = sc->player->posX + sc->ray->perpWallDist * sc->ray->dirX;
-	sc->wallX -= floor(sc->wallX);
-	sc->texX = (int)(sc->wallX * (double)T_WIDTH);
-	if (sc->ray->side == 0 && sc->ray->dirX > 0)
-		sc->texX = T_WIDTH - sc->texX - 1;
-	if (sc->ray->side == 1 && sc->ray->dirY < 0)
-		sc->texX = T_WIDTH - sc->texX - 1;
-	sc->step = 1.0 * T_HEIGHT / sc->ray->lineHeight;
-	sc->texPos = (sc->ray->drawStart - W_HEIGHT / 2 + sc->ray->lineHeight / 2) * sc->step;
+		sc->wall_x = sc->player->pos_x + sc->ray->perp_wall_dist
+			* sc->ray->dir_x;
+	sc->wall_x -= floor(sc->wall_x);
+	sc->tex_x = (int)(sc->wall_x * (double)T_WIDTH);
+	if (sc->ray->side == 0 && sc->ray->dir_x > 0)
+		sc->tex_x = T_WIDTH - sc->tex_x - 1;
+	if (sc->ray->side == 1 && sc->ray->dir_y < 0)
+		sc->tex_x = T_WIDTH - sc->tex_x - 1;
+	sc->step = 1.0 * T_HEIGHT / sc->ray->line_height;
+	sc->tex_pos = (sc->ray->draw_start - W_HEIGHT / 2 + sc->ray->line_height
+			/ 2) * sc->step;
 }
 
 void	texture_to_draw(t_scene *sc, int x)
 {
-	for (int y = sc->ray->drawStart; y < sc->ray->drawEnd; y++)
+	int		y;
+
+	y = sc->ray->draw_start;
+	while (y < sc->ray->draw_end)
 	{
-		sc->texY = (int)sc->texPos & (T_HEIGHT - 1);
-		sc->texPos += sc->step;
-		if (sc->ray->side == 0 && sc->map->mapX >= sc->player->posX)
-			sc->color = sc->texture[0][T_HEIGHT * sc->texY + sc->texX];
-		else if (sc->ray->side == 0 && sc->map->mapX < sc->player->posX)
-			sc->color = sc->texture[1][T_HEIGHT * sc->texY + sc->texX];
-		else if (sc->ray->side == 1 && sc->map->mapY >= sc->player->posY)
-			sc->color = sc->texture[2][T_HEIGHT * sc->texY + sc->texX];
-		else if (sc->ray->side == 1 && sc->map->mapY < sc->player->posY)
-			sc->color = sc->texture[3][T_HEIGHT * sc->texY + sc->texX];
+		sc->tex_y = (int)sc->tex_pos & (T_HEIGHT - 1);
+		sc->tex_pos += sc->step;
+		if (sc->ray->side == 0 && sc->map->map_x >= sc->player->pos_x)
+			sc->color = sc->texture[0][T_HEIGHT * sc->tex_y + sc->tex_x];
+		else if (sc->ray->side == 0 && sc->map->map_x < sc->player->pos_x)
+			sc->color = sc->texture[1][T_HEIGHT * sc->tex_y + sc->tex_x];
+		else if (sc->ray->side == 1 && sc->map->map_y >= sc->player->pos_y)
+			sc->color = sc->texture[2][T_HEIGHT * sc->tex_y + sc->tex_x];
+		else if (sc->ray->side == 1 && sc->map->map_y < sc->player->pos_y)
+			sc->color = sc->texture[3][T_HEIGHT * sc->tex_y + sc->tex_x];
 		if (sc->ray->side == 1)
 			sc->color = (sc->color >> 1) & 8355711;
 		sc->buff[y][x] = sc->color;
 		sc->re_buf = 1;
+		y++;
 	}
 }
 
 void	calculate_rays(t_scene *sc)
 {
-	int x;
+	int	x;
 
 	x = 0;
 	if (sc->re_buf == 1)
@@ -112,7 +123,4 @@ void	calculate_rays(t_scene *sc)
 		texture_to_draw(sc, x);
 		x++;
 	}
-
 }
-
-

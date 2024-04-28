@@ -6,22 +6,20 @@ int	key_press(int keycode, void *param)
 
 	sc = (t_scene *)param;
 	printf("keycode = %d\n ", keycode);
-	if (keycode == 119) // W
+	if (keycode == 119)
 		move_up(sc);
-	else if (keycode == 97) // A
+	else if (keycode == 97)
 		move_left(sc);
-	else if (keycode == 100) // D
+	else if (keycode == 100)
 		move_right(sc);
-	else if (keycode == 115) // S
-		move_down(sc); 
-	else if (keycode == 65361) // left arrow
+	else if (keycode == 115)
+		move_down(sc);
+	else if (keycode == 65361)
 		rotate_left(sc);
-	else if (keycode == 65363) // right arrow
+	else if (keycode == 65363)
 		rotate_right(sc);
 	else if (keycode == 65307)
 		close_window(sc);
-	// draw_map_2D(sc);
-	// draw_player(sc);
 	mlx_clear_window(sc->mlx, sc->win);
 	scene_loop(sc);
 	return (0);
