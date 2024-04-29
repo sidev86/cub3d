@@ -73,20 +73,27 @@ void	read_map_for_init(t_scene *sc, char **row, int *fd)
 	}
 }
 
-void	check_row_validity(t_scene *sc, char *row)
+int	read_map_extra(t_scene *sc, char *row, int fd, int num_row)
 {
-	int	i;
+	int	empty_flag;
 
-	i = 0;
-	while (row[i] != '\n' && row[i])
+	empty_flag = 0;
+	while (empty_line(row))
 	{
-		if (row[i] != '1' && row[i] != '0' && row[i] != ' ' && row[i] != '\t'
-			&& row[i] != 'N' && row[i] != 'S' && row[i] != 'W' && row[i] != 'E')
-		{
-			free_map_wrong(sc, row);
-		}
-		i++;
+		empty_flag = 1;
+		free(row);
+		row = get_next_line(fd);
 	}
+	if (empty_flag && !(empty_line(row)) && row)
+		free_map_wrong(sc, row);
+	if (row)
+	{
+		check_row_validity(sc, row);
+		save_map_row_values(sc, row, num_row);
+	}
+	else
+		return (1);
+	return (0);
 }
 
 void	read_map(t_scene *sc, char *path)
@@ -98,19 +105,18 @@ void	read_map(t_scene *sc, char *path)
 	num_row = 0;
 	fd = open(path, O_RDONLY);
 	skip_config_lines(&row, &fd);
-	//skip_empty_lines(&row, &fd);
+	row = get_next_line(fd);
+	while (empty_line(row))
+	{
+		free(row);
+		row = get_next_line(fd);
+	}
 	while (fd != -1)
 	{
-		row = get_next_line(fd);
-		skip_empty_lines(&row, &fd);
-		if (row)
-		{
-			check_row_validity(sc, row);
-			save_map_row_values(sc, row, num_row);
-		}
-		else
+		if (read_map_extra(sc, row, fd, num_row))
 			break ;
 		num_row++;
 		free(row);
+		row = get_next_line(fd);
 	}
 }

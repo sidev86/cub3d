@@ -47,7 +47,7 @@ static void	read_data_before_map(t_scene *sc, char *path, int *fd)
 	lines = 0;
 	*fd = open(path, O_RDONLY);
 	if (*fd == -1)
-		perror("Error while opening file\n");
+		free_invalid_map(sc, 'f');
 	check_file_extension(sc, path);
 	while (*fd != -1)
 	{

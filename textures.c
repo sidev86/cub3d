@@ -1,17 +1,17 @@
 #include "cub3d.h"
 
-void	load_image(t_scene *sc, int *texture, char *path, t_img *img, char *row)
+void	load_image(t_scene *sc, int *texture, t_img *img, char *row)
 {
 	int	x;
 	int	y;
 
 	x = 0;
 	y = 0;
-	img->img = mlx_xpm_file_to_image(sc->mlx, path, &img->img_w, &img->img_h);
+	img->img = mlx_xpm_file_to_image(sc->mlx, sc->t_path, &img->img_w, &img->img_h);
 	if (img->img == NULL)
 	{
 		perror("Error while loading texture! missing file or invalid path\n");
-		free_missing_file(sc, row, path);
+		free_missing_file(sc, row, sc->t_path);
 		exit(0);
 	}
 	img->data_addr = (int *)mlx_get_data_addr(img->img, &img->bpp,
@@ -75,22 +75,22 @@ void	texture_to_load(t_scene *sc, char **row, int i, t_img *img)
 	if ((*row)[i] == 'N' && (*row)[i + 1] == 'O' && sc->no == 0)
 	{
 		sc->no = 1;
-		load_image(sc, sc->texture[1], sc->t_path, img, *row);
+		load_image(sc, sc->texture[1], img, *row);
 	}
 	else if ((*row)[i] == 'S' && (*row)[i + 1] == 'O' && sc->so == 0)
 	{
 		sc->so = 1;
-		load_image(sc, sc->texture[0], sc->t_path, img, *row);
+		load_image(sc, sc->texture[0], img, *row);
 	}
 	else if ((*row)[i] == 'E' && (*row)[i + 1] == 'A' && sc->ea == 0)
 	{
 		sc->ea = 1;
-		load_image(sc, sc->texture[2], sc->t_path, img, *row);
+		load_image(sc, sc->texture[2], img, *row);
 	}
 	else if ((*row)[i] == 'W' && (*row)[i + 1] == 'E' && sc->we == 0)
 	{
 		sc->we = 1;
-		load_image(sc, sc->texture[3], sc->t_path, img, *row);
+		load_image(sc, sc->texture[3], img, *row);
 	}
 	else
 		free_doublerow_texture(sc, *row, sc->t_path);

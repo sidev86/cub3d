@@ -1,7 +1,5 @@
 #include "cub3d.h"
 
-#define VISITED 'x'
-
 static void	flood_fill(t_scene *sc, int x, int y)
 {
 	if (x < 0 || x >= sc->map->rows || y < 0 || y >= sc->map->cols)
@@ -117,4 +115,5 @@ void	check_map_validity(t_scene *sc)
 		}
 		i++;
 	}
+	print_map(sc);
 }

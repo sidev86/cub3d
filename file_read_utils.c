@@ -26,13 +26,13 @@ void	check_file_extension(t_scene *sc, char *path)
 		if (path[i + 1] == 'c' && path[i + 2] == 'u' && path[i + 3] == 'b')
 		{
 			if (path[i + 4] != '\0' && path[i + 4] != ' ')
-				free_invalid_map(sc);
+				free_invalid_map(sc, 'm');
 		}
 		else
-			free_invalid_map(sc);
+			free_invalid_map(sc, 'm');
 	}
 	else
-		free_invalid_map(sc);
+		free_invalid_map(sc, 'm');
 }
 
 void	read_config_lines(t_scene *sc, char **row, int *lines)

@@ -1,16 +1,20 @@
-#include "get_next_line.h"
-#include "mlx_linux/mlx.h"
-#include <fcntl.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef CUB3D_H
+# define CUB3D_H
 
-#define W_WIDTH 640
-#define W_HEIGHT 480
-#define T_WIDTH 64
-#define T_HEIGHT 64
-#define PI 3.1415926535
-#define DGR 0.0174533
+# include "get_next_line.h"
+# include "mlx_linux/mlx.h"
+# include <fcntl.h>
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+
+# define W_WIDTH 640
+# define W_HEIGHT 480
+# define T_WIDTH 64
+# define T_HEIGHT 64
+# define PI 3.1415926535
+# define DGR 0.0174533
+# define VISITED 'x'
 
 typedef struct s_player
 {
@@ -131,10 +135,12 @@ void			skip_empty_lines(char **row, int *fd);
 void			read_config_lines(t_scene *sc, char **row, int *lines);
 void			skip_config_lines(char **row, int *fd);
 int				empty_line(char *row);
+void			check_row_validity(t_scene *sc, char *row);
 
 // TEXTURES
 void			texture_cycle(t_scene *sc);
 void			read_texture_file_data(t_scene *sc, char *row, int j);
+void			texture_to_draw(t_scene *sc, int x);
 
 // FLOOR - CEILING
 void			draw_floor_ceiling(t_scene *sc);
@@ -144,7 +150,6 @@ void			get_rgb_values(t_scene *sc, char *row, int i, char type);
 int				key_press(int keycode, void *param);
 
 // PLAYER
-
 void			move_up(t_scene *sc);
 void			move_down(t_scene *sc);
 void			move_left(t_scene *sc);
@@ -157,6 +162,7 @@ void			put_player_on_map(t_scene *sc, char dir, int x, int y);
 int				no_value(char *row, int i);
 int				missing_commas(char *row);
 int				get_len(char *row, int i);
+int				ft_atoi(const char *str);
 
 // FREE
 void			free_doublerow_ceilfloor(t_scene *sc, char *row, char message);
@@ -164,7 +170,7 @@ void			free_doublerow_texture(t_scene *sc, char *row, char *path);
 void			free_wrong_key(t_scene *sc, char *row);
 void			free_missing_map(t_scene *sc, char *row);
 void			free_empty_file(t_scene *sc);
-void			free_invalid_map(t_scene *sc);
+void			free_invalid_map(t_scene *sc, char message);
 void			free_missing_file(t_scene *sc, char *row, char *path);
 void			free_map_wrong(t_scene *sc, char *row);
 void			free_map_validity_check(t_scene *sc, char message);
@@ -173,3 +179,4 @@ void			free_texture(t_scene *sc);
 void			clear_buffer(t_scene *sc);
 int				scene_loop(t_scene *sc);
 int				close_window(void *param);
+#endif

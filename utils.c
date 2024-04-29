@@ -75,3 +75,19 @@ int	get_len(char *row, int i)
 	}
 	return (len);
 }
+
+void	check_row_validity(t_scene *sc, char *row)
+{
+	int	i;
+
+	i = 0;
+	while (row[i] != '\n' && row[i])
+	{
+		if (row[i] != '1' && row[i] != '0' && row[i] != ' ' && row[i] != '\t'
+			&& row[i] != 'N' && row[i] != 'S' && row[i] != 'W' && row[i] != 'E')
+		{
+			free_map_wrong(sc, row);
+		}
+		i++;
+	}
+}

@@ -9,9 +9,12 @@ void	free_empty_file(t_scene *sc)
 	exit(0);
 }
 
-void	free_invalid_map(t_scene *sc)
+void	free_invalid_map(t_scene *sc, char message)
 {
-	perror("Error! Invalid file map format (.cub extension needed)");
+	if (message == 'm')
+		perror("Error! Invalid file map format (.cub extension needed)");
+	else if (message == 'f')
+		perror("Error while opening file\n");
 	free(sc->player);
 	mlx_destroy_display(sc->mlx);
 	free(sc->mlx);
@@ -23,7 +26,7 @@ void	free_map_wrong(t_scene *sc, char *row)
 	int	i;
 
 	i = 0;
-	perror("Error! Map with wrong characters\n");
+	perror("Error! Invalid map\n");
 	while (i < sc->map->rows)
 		free(sc->map->room[i++]);
 	free(sc->map->room);

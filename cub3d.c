@@ -31,19 +31,19 @@ void	init_mlx(t_scene *sc)
 {
 	if (!sc->mlx)
 	{
-		printf("Error in mlx init\n");
+		perror("Error in mlx init\n");
 		exit(1);
 	}
 	sc->win = mlx_new_window(sc->mlx, W_WIDTH, W_HEIGHT, "cub3d");
 	if (!sc->win)
 	{
-		printf("Error in win init\n");
+		perror("Error in win init\n");
 		exit(1);
 	}
 	sc->img.img = mlx_new_image(sc->mlx, W_WIDTH, W_HEIGHT);
 	if (!sc->img.img)
 	{
-		printf("Error in img init\n");
+		perror("Error in img init\n");
 		exit(1);
 	}
 	sc->img.data_addr = (int *)mlx_get_data_addr(sc->img.img, &(sc->img.bpp),
@@ -72,6 +72,6 @@ int	main(int argc, char **argv)
 		mlx_loop(s.mlx);
 	}
 	else
-		printf("Error: invalid number of arguments-> Exit Program\n");
+		perror("Error: invalid number of arguments-> Exit Program\n");
 	return (0);
 }

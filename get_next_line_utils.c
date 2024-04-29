@@ -1,4 +1,3 @@
-
 #include "get_next_line.h"
 
 char	*f_strchr(char *s, int c)

@@ -19,6 +19,7 @@ SRCS        :=      cub3d.c \
   			get_next_line_utils.c \
 			utils.c \
 			utils_extra.c \
+			ft_atoi.c \
 			free.c \
 			free_more.c
                        
