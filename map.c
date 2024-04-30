@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int	count_map_cols(char *r)
+static int	count_map_cols(char *r)
 {
 	int	i;
 	int	cols;
@@ -19,7 +19,7 @@ int	count_map_cols(char *r)
 	return (cols);
 }
 
-void	save_map_row_values(t_scene *sc, char *row, int x)
+static void	save_map_row_values(t_scene *sc, char *row, int x)
 {
 	int	y;
 	int	cols;
@@ -73,7 +73,7 @@ void	read_map_for_init(t_scene *sc, char **row, int *fd)
 	}
 }
 
-int	read_map_extra(t_scene *sc, char *row, int fd, int num_row)
+static int	read_map_extra(t_scene *sc, char *row, int fd, int num_row)
 {
 	int	empty_flag;
 

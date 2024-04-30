@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	load_image(t_scene *sc, int *texture, t_img *img, char *row)
+static void	load_image(t_scene *sc, int *texture, t_img *img, char *row)
 {
 	int	x;
 	int	y;
@@ -51,7 +51,7 @@ void	texture_cycle(t_scene *sc)
 	}
 }
 
-char	*get_texture_path(char *row, int i)
+static char	*get_texture_path(char *row, int i)
 {
 	int		j;
 	char	*path;
@@ -68,7 +68,7 @@ char	*get_texture_path(char *row, int i)
 	return (path);
 }
 
-void	texture_to_load(t_scene *sc, char **row, int i, t_img *img)
+static void	texture_to_load(t_scene *sc, char **row, int i, t_img *img)
 {
 	while ((*row)[i] == ' ' || (*row)[i] == '\t')
 		i++;

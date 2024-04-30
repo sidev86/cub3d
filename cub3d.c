@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	draw_scene(t_scene *sc)
+static void	draw_scene(t_scene *sc)
 {
 	int	x;
 	int	y;
@@ -27,7 +27,7 @@ int	scene_loop(t_scene *sc)
 	return (1);
 }
 
-void	init_mlx(t_scene *sc)
+static void	init_mlx(t_scene *sc)
 {
 	if (!sc->mlx)
 	{

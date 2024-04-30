@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	init_player(t_scene *sc)
+static void	init_player(t_scene *sc)
 {
 	sc->player = malloc(sizeof(t_player));
 	if (!sc->player)
@@ -19,7 +19,7 @@ void	init_player(t_scene *sc)
 	sc->player->delta_y = sin(sc->player->angle) * 5;
 }
 
-void	init_config_flags(t_scene *sc)
+static void	init_config_flags(t_scene *sc)
 {
 	int	i;
 
@@ -62,7 +62,7 @@ static void	read_data_before_map(t_scene *sc, char *path, int *fd)
 	}
 }
 
-void	init_map(t_scene *sc, int *fd)
+static void	init_map(t_scene *sc, int *fd)
 {
 	char	*row;
 	int		i;

@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-int	ft_malloc_count(char *stock)
+int	ft_get_stock_len(char *stock)
 {
 	int	i;
 
@@ -12,14 +12,14 @@ int	ft_malloc_count(char *stock)
 	return (i + 1);
 }
 
-char	*ft_get_the_line(char *stock)
+char	*ft_get_line(char *stock)
 {
 	char	*line;
 	int		i;
 	int		len;
 
 	line = NULL;
-	len = ft_malloc_count(stock);
+	len = ft_get_stock_len(stock);
 	line = malloc(sizeof(char) * (len + 1));
 	if (!line)
 		return (NULL);
@@ -33,26 +33,26 @@ char	*ft_get_the_line(char *stock)
 	return (line);
 }
 
-void	ft_get_the_spare(char *buffer)
+void	ft_get_spare(char *buf)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (buffer[i] != '\n')
+	while (buf[i] != '\n')
 		i++;
 	i = i + 1;
 	j = 0;
 	while (i < BUFFER_SIZE)
 	{
-		buffer[j] = buffer[i];
+		buf[j] = buf[i];
 		i++;
 		j++;
 	}
-	buffer[j] = '\0';
+	buf[j] = '\0';
 }
 
-char	*ft_line_results(int ret, char *stock, char *buffer)
+char	*ft_line_results(int ret, char *stock, char *buf)
 {
 	char		*line;
 
@@ -62,34 +62,34 @@ char	*ft_line_results(int ret, char *stock, char *buffer)
 		free(stock);
 		return (NULL);
 	}
-	line = ft_get_the_line(stock);
+	line = ft_get_line(stock);
 	if (ret > 0)
-		ft_get_the_spare(buffer);
+		ft_get_spare(buf);
 	free(stock);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
+	static char	buf[BUFFER_SIZE + 1];
 	char		*stock;
 	int			ret;
 
 	stock = NULL;
-	if ((read(fd, buffer, 0) == -1) || BUFFER_SIZE <= 0)
+	if ((read(fd, buf, 0) == -1) || BUFFER_SIZE <= 0)
 		return (NULL);
 	ret = 1;
-	stock = f_strjoin(stock, buffer);
+	stock = f_strjoin(stock, buf);
 	while (f_strchr(stock, '\n') == NULL && ret > 0)
 	{
-		ret = read(fd, buffer, BUFFER_SIZE);
+		ret = read(fd, buf, BUFFER_SIZE);
 		if (ret < 0)
 		{
 			free(stock);
 			return (NULL);
 		}
-		buffer[ret] = '\0';
-		stock = f_strjoin(stock, buffer);
+		buf[ret] = '\0';
+		stock = f_strjoin(stock, buf);
 	}
-	return (ft_line_results(ret, stock, buffer));
+	return (ft_line_results(ret, stock, buf));
 }

@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	set_ray_steps(t_scene *sc)
+static void	set_ray_steps(t_scene *sc)
 {
 	if (sc->ray->dir_x < 0)
 	{
@@ -28,7 +28,7 @@ void	set_ray_steps(t_scene *sc)
 	}
 }
 
-void	check_shortest_hit(t_scene *sc)
+static void	check_shortest_hit(t_scene *sc)
 {
 	while (!sc->ray->hit)
 	{
@@ -49,7 +49,7 @@ void	check_shortest_hit(t_scene *sc)
 	}
 }
 
-void	calculate_wall_dist(t_scene *sc)
+static void	calculate_wall_dist(t_scene *sc)
 {
 	if (sc->ray->side == 0)
 		sc->ray->perp_wall_dist = (sc->map->map_x - sc->player->pos_x + (1
@@ -59,7 +59,7 @@ void	calculate_wall_dist(t_scene *sc)
 					- sc->ray->step_y) / 2) / sc->ray->dir_y;
 }
 
-void	calculate_for_draw(t_scene *sc)
+static void	calculate_for_draw(t_scene *sc)
 {
 	calculate_wall_dist(sc);
 	sc->ray->line_height = (int)(W_HEIGHT / sc->ray->perp_wall_dist);

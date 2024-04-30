@@ -130,7 +130,6 @@ void			print_map(t_scene *sc);
 void			read_map(t_scene *sc, char *path);
 void			read_map_for_init(t_scene *sc, char **row, int *fd);
 void			check_file_extension(t_scene *sc, char *path);
-int				count_map_cols(char *r);
 void			skip_empty_lines(char **row, int *fd);
 void			read_config_lines(t_scene *sc, char **row, int *lines);
 void			skip_config_lines(char **row, int *fd);

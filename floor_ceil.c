@@ -14,7 +14,7 @@ static void	init_rgbstr(char *rgb)
 		rgb[j++] = 0;
 }
 
-void	get_rgb_digits(char *row, char *rgb_str, int *i)
+static void	get_rgb_digits(char *row, char *rgb_str, int *i)
 {
 	int	j;
 
