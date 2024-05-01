@@ -30,9 +30,12 @@ void	free_doublerow_ceilfloor(t_scene *sc, char *row, char message)
 	exit(0);
 }
 
-void	free_doublerow_texture(t_scene *sc, char *row, char *path)
+void	free_doublerow_texture(t_scene *sc, char *row, char *path, char message)
 {
-	perror("Error! Double key row(textures)\n");
+	if (message == 'd')
+		perror("Error! Double key row(textures)\n");
+	else if (message == 'w')
+		perror("Error! Missing attributes on row\n");
 	free_texture(sc);
 	free(sc->player);
 	free(row);

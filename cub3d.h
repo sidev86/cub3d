@@ -165,7 +165,7 @@ int				ft_atoi(const char *str);
 
 // FREE
 void			free_doublerow_ceilfloor(t_scene *sc, char *row, char message);
-void			free_doublerow_texture(t_scene *sc, char *row, char *path);
+void			free_doublerow_texture(t_scene *sc, char *row, char *path, char message);
 void			free_wrong_key(t_scene *sc, char *row);
 void			free_missing_map(t_scene *sc, char *row);
 void			free_empty_file(t_scene *sc);

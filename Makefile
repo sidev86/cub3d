@@ -1,5 +1,5 @@
 NAME        := cub3D
-CC        := gcc
+CC        := cc
 FLAGS    := -g -Wall -Wextra -Werror 
 
 SRCS        :=      cub3d.c \

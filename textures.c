@@ -51,16 +51,18 @@ void	texture_cycle(t_scene *sc)
 	}
 }
 
-static char	*get_texture_path(char *row, int i)
+static char	*get_texture_path(t_scene *sc, char *row, int i)
 {
 	int		j;
 	char	*path;
 
 	j = 0;
-	while (row[i] != ' ' && row[i] != '\t')
+	while (row[i] != ' ' && row[i] != '\t' && row[i] != '\n')
 		i++;
 	while (row[i] == ' ' || row[i] == '\t')
 		i++;
+	if (row[i] == '\n' || row[i] == '\0')
+		free_doublerow_texture(sc, row, sc->t_path, 'w');
 	path = malloc(sizeof(char) * get_len(row, i) + 1);
 	while (row[i] != ' ' && row[i] != '\t' && row[i] != '\n')
 		path[j++] = row[i++];
@@ -93,7 +95,7 @@ static void	texture_to_load(t_scene *sc, char **row, int i, t_img *img)
 		load_image(sc, sc->texture[3], img, *row);
 	}
 	else
-		free_doublerow_texture(sc, *row, sc->t_path);
+		free_doublerow_texture(sc, *row, sc->t_path, 'd');
 }
 
 void	read_texture_file_data(t_scene *sc, char *row, int i)
@@ -101,7 +103,7 @@ void	read_texture_file_data(t_scene *sc, char *row, int i)
 	t_img	img;
 
 	sc->t_path = 0;
-	sc->t_path = get_texture_path(row, i);
+	sc->t_path = get_texture_path(sc, row, i);
 	texture_to_load(sc, &row, i, &img);
 	free(sc->t_path);
 }
