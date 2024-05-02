@@ -2,7 +2,7 @@ WE textures/purplestone.xpm
 EA            textures/purplestone.xpm
 
 
-F 0, 255, 255    
+F      255,       25, 0      
 NO textures/purplestone.xpm 
 SO textures/redbrick.xpm
   

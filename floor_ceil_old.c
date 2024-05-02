@@ -14,39 +14,15 @@ static void	init_rgbstr(char *rgb)
 		rgb[j++] = 0;
 }
 
-static int	count_the_digits(t_scene *sc, char *row, int *i)
+static void	get_rgb_digits(char *row, char *rgb_str, int *i)
 {
 	int	j;
-	int	count;
-	
-	j = *i;
-	count = 0;
-	while (row[j] != ',' && row[j] != '\n' && row[j] != '\0')
-	{
-		if (row[j] != ' ' && row[j] != '\t')
-		{
-			count++;
-			if (row[j] < '0' || row[j] > '9')
-				free_doublerow_ceilfloor(sc, row, 'v');
-		}
-		j++;
-	}
-	return (count);
-}
-
-static void	get_rgb_digits(t_scene *sc, char *row, char *rgb_str, int *i)
-{
-	int	j;
-	int	count;
 
 	j = 0;
 	while (row[*i] == ' ' || row[*i] == '\t')
 		(*i)++;
-	count = count_the_digits(sc, row, i);
-	printf("count: %d\n", count);
-	if (count > 3)
-		free_doublerow_ceilfloor(sc, row, 'v');
-	while (row[*i] != ',' && row[*i] != ' ' && row[*i] != '\n' && row[*i] != '\0')
+	while (row[*i] != ',' && row[*i] != ' ' && row[*i] != '\n'
+		&& row[*i] != '\0')
 		rgb_str[j++] = row[(*i)++];
 	while (row[*i] == ' ' || row[*i] == '\t')
 		(*i)++;
@@ -62,7 +38,7 @@ void	get_rgb_values(t_scene *sc, char *row, int i, char type)
 	init_rgbstr(rgb_str);
 	while (t < 3)
 	{
-		get_rgb_digits(sc, row, rgb_str, &i);
+		get_rgb_digits(row, rgb_str, &i);
 		if (no_value(row, i) || missing_commas(row))
 			free_doublerow_ceilfloor(sc, row, 'm');
 		if (type == 'f')

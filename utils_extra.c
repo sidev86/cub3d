@@ -5,6 +5,8 @@ int	no_value(char *row, int i)
 	int	value;
 
 	value = 0;
+	if (row[i] == '\0')
+		return (0);
 	while (row[i] == ' ' || row[i] == '\t' || row[i] == '-')
 		i++;
 	while (row[i] != ',')
