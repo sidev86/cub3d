@@ -33,7 +33,7 @@ int	missing_commas(char *row)
 			commas++;
 		i++;
 	}
-	if (commas < 2)
+	if (commas != 2)
 		return (1);
 	return (0);
 }

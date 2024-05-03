@@ -16,11 +16,11 @@ void	free_texture(t_scene *sc)
 void	free_doublerow_ceilfloor(t_scene *sc, char *row, char message)
 {
 	if (message == 'm')
-		perror("Error in file data read! Missing color\n");
+		perror("Error\nMissing rgb ceil/floor color\n");
 	else if (message == 'v')
-		perror("Error in file data read! invalid rgb color values\n");
+		perror("Error\nInvalid rgb color values\n");
 	else
-		perror("Error! Double key rows(floor/ceiling)\n");
+		perror("Error\nDouble key rows(floor/ceiling)\n");
 	if (sc->text_init)
 		free_texture(sc);
 	free(sc->player);
@@ -33,9 +33,9 @@ void	free_doublerow_ceilfloor(t_scene *sc, char *row, char message)
 void	free_doublerow_texture(t_scene *sc, char *row, char *path, char message)
 {
 	if (message == 'd')
-		perror("Error! Double key row(textures)\n");
+		perror("Error\nDouble key row(textures)\n");
 	else if (message == 'w')
-		perror("Error! Missing attributes on row\n");
+		perror("Error\nMissing attributes on row\n");
 	free_texture(sc);
 	free(sc->player);
 	free(row);
@@ -47,7 +47,7 @@ void	free_doublerow_texture(t_scene *sc, char *row, char *path, char message)
 
 void	free_wrong_key(t_scene *sc, char *row)
 {
-	perror("Error: missing or wrong key row\n");
+	perror("Error\nMissing or wrong key row\n");
 	if (sc->text_init)
 		free_texture(sc);
 	free(row);
@@ -59,7 +59,7 @@ void	free_wrong_key(t_scene *sc, char *row)
 
 void	free_missing_map(t_scene *sc, char *row)
 {
-	perror("Error! missing map\n");
+	perror("Error\nMissing map\n");
 	free_texture(sc);
 	free(sc->player);
 	free(sc->map);

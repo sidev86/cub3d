@@ -9,11 +9,7 @@ static void	load_image(t_scene *sc, int *texture, t_img *img, char *row)
 	y = 0;
 	img->img = mlx_xpm_file_to_image(sc->mlx, sc->t_path, &img->img_w, &img->img_h);
 	if (img->img == NULL)
-	{
-		perror("Error while loading texture! missing file or invalid path\n");
 		free_missing_file(sc, row, sc->t_path);
-		exit(0);
-	}
 	img->data_addr = (int *)mlx_get_data_addr(img->img, &img->bpp,
 			&img->line_width, &img->endian);
 	while (y < img->img_h)

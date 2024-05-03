@@ -2,7 +2,7 @@
 
 void	free_empty_file(t_scene *sc)
 {
-	perror("Error in data file read: empty file\n");
+	perror("Error\nEmpty or incomplete file\n");
 	mlx_destroy_display(sc->mlx);
 	free(sc->player);
 	free(sc->mlx);
@@ -12,9 +12,9 @@ void	free_empty_file(t_scene *sc)
 void	free_invalid_map(t_scene *sc, char message)
 {
 	if (message == 'm')
-		perror("Error! Invalid file map format (.cub extension needed)");
+		perror("Error\nInvalid file map format (.cub extension needed)");
 	else if (message == 'f')
-		perror("Error while opening file\n");
+		perror("Error\nCannot open file\n");
 	free(sc->player);
 	mlx_destroy_display(sc->mlx);
 	free(sc->mlx);
@@ -26,7 +26,7 @@ void	free_map_wrong(t_scene *sc, char *row)
 	int	i;
 
 	i = 0;
-	perror("Error! Invalid map\n");
+	perror("Error\nInvalid map\n");
 	while (i < sc->map->rows)
 		free(sc->map->room[i++]);
 	free(sc->map->room);
@@ -47,11 +47,11 @@ void	free_map_validity_check(t_scene *sc, char message)
 
 	i = 0;
 	if (message == 'o')
-		perror("Map check error, not completely surronded by walls\n");
+		perror("Error\nMap not completely surronded by walls\n");
 	else if (message == 'n')
-		perror("Map check error! Missing player position\n");
+		perror("Error\nMissing player position on map\n");
 	else if (message == 'p')
-		perror("Map check error! More than one player position on map\n");
+		perror("Error\nMore than one player position on map\n");
 	while (i < sc->map->rows)
 		free(sc->map->room[i++]);
 	free(sc->map->room);
@@ -67,6 +67,7 @@ void	free_map_validity_check(t_scene *sc, char message)
 
 void	free_missing_file(t_scene *sc, char *row, char *path)
 {
+	perror("Error while loading texture! missing file or invalid path\n");
 	if (sc->text_init)
 		free_texture(sc);
 	free(sc->player);

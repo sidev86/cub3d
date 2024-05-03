@@ -144,6 +144,7 @@ void			texture_to_draw(t_scene *sc, int x);
 // FLOOR - CEILING
 void			draw_floor_ceiling(t_scene *sc);
 void			get_rgb_values(t_scene *sc, char *row, int i, char type);
+int			count_the_digits(t_scene *sc, char *row, int *i);
 
 // CONTROLS
 int				key_press(int keycode, void *param);

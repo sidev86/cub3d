@@ -14,6 +14,7 @@ SRCS        :=      cub3d.c \
 			map_checker.c \
 			textures.c \
 			floor_ceil.c \
+			floor_ceil_extra.c \
 			file_read_utils.c \
   			get_next_line.c \
   			get_next_line_utils.c \
