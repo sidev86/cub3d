@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rays.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:57:00 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:57:01 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	set_ray_steps(t_scene *sc)
@@ -68,7 +80,7 @@ static void	calculate_for_draw(t_scene *sc)
 		sc->ray->draw_start = 0;
 	sc->ray->draw_end = sc->ray->line_height / 2 + W_HEIGHT / 2;
 	if (sc->ray->draw_end >= W_HEIGHT)
-		sc->ray->draw_end = W_HEIGHT - 1;
+		sc->ray->draw_end = W_HEIGHT;
 	if (sc->ray->side == 0)
 		sc->wall_x = sc->player->pos_y + sc->ray->perp_wall_dist
 			* sc->ray->dir_y;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_extra.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:56:15 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:56:17 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	init_floor_ceiling_colors(t_scene *sc, char *row, int i)
@@ -37,7 +49,7 @@ void	init_texture(t_scene *sc, char *row, int i)
 		init_tex = 1;
 		sc->texture = (int **)malloc(sizeof(int *) * 8);
 		if (!sc->texture)
-			perror("Error in texture allocation\n");
+			perror("Error\nin texture allocation\n");
 		texture_cycle(sc);
 	}
 	read_texture_file_data(sc, row, i);

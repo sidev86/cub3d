@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_more.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:55:29 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:55:31 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	free_empty_file(t_scene *sc)
@@ -67,7 +79,7 @@ void	free_map_validity_check(t_scene *sc, char message)
 
 void	free_missing_file(t_scene *sc, char *row, char *path)
 {
-	perror("Error while loading texture! missing file or invalid path\n");
+	perror("Error\nwhile loading texture! missing file or invalid path\n");
 	if (sc->text_init)
 		free_texture(sc);
 	free(sc->player);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   floor_ceil.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:54:36 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:54:37 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static unsigned int	rgb_to_hex(int r, int g, int b)
@@ -23,10 +35,10 @@ static void	get_rgb_digits(t_scene *sc, char *row, char *rgb_str, int *i)
 	while (row[*i] == ' ' || row[*i] == '\t')
 		(*i)++;
 	count = count_the_digits(sc, row, i);
-	printf("count: %d\n", count);
 	if (count > 3)
 		free_doublerow_ceilfloor(sc, row, 'v');
-	while (row[*i] != ',' && row[*i] != ' ' && row[*i] != '\n' && row[*i] != '\0')
+	while (row[*i] != ',' && row[*i] != ' ' && row[*i] != '\n'
+		&& row[*i] != '\0')
 		rgb_str[j++] = row[(*i)++];
 	while (row[*i] == ' ' || row[*i] == '\t')
 		(*i)++;

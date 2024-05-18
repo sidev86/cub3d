@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_extra.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:57:23 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:57:24 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	no_value(char *row, int i)
@@ -44,26 +56,6 @@ void	skip_empty_lines(char **row, int *fd)
 	{
 		free(*row);
 		*row = get_next_line(*fd);
-	}
-}
-
-void	print_map(t_scene *sc)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < sc->map->map_x)
-	{
-		j = 0;
-		while (j < sc->map->map_y)
-		{
-			printf("%c", sc->map->room[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
 	}
 }
 

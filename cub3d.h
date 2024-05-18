@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:54:06 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:54:08 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -124,7 +136,6 @@ void			set_initial_ray_data(t_scene *sc, int x);
 
 // DRAW
 void			calculate_rays(t_scene *sc);
-void			print_map(t_scene *sc);
 
 // READ DATA (SETTINGS + MAP)
 void			read_map(t_scene *sc, char *path);
@@ -144,7 +155,7 @@ void			texture_to_draw(t_scene *sc, int x);
 // FLOOR - CEILING
 void			draw_floor_ceiling(t_scene *sc);
 void			get_rgb_values(t_scene *sc, char *row, int i, char type);
-int			count_the_digits(t_scene *sc, char *row, int *i);
+int				count_the_digits(t_scene *sc, char *row, int *i);
 
 // CONTROLS
 int				key_press(int keycode, void *param);
@@ -166,7 +177,8 @@ int				ft_atoi(const char *str);
 
 // FREE
 void			free_doublerow_ceilfloor(t_scene *sc, char *row, char message);
-void			free_doublerow_texture(t_scene *sc, char *row, char *path, char message);
+void			free_doublerow_texture(t_scene *sc, char *row,
+					char *path, char message);
 void			free_wrong_key(t_scene *sc, char *row);
 void			free_missing_map(t_scene *sc, char *row);
 void			free_empty_file(t_scene *sc);

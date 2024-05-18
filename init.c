@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:56:08 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:56:10 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	init_player(t_scene *sc)
 {
 	sc->player = malloc(sizeof(t_player));
 	if (!sc->player)
-		perror("Error in player allocation\n");
+		perror("Error\nin player allocation\n");
 	sc->player->pos_x = 2.0f;
 	sc->player->pos_y = 7.0f;
 	sc->player->dir_x = -1;

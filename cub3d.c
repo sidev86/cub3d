@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:53:54 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:53:57 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	draw_scene(t_scene *sc)
@@ -31,26 +43,26 @@ static void	init_mlx(t_scene *sc)
 {
 	if (!sc->mlx)
 	{
-		perror("Error in mlx init\n");
+		perror("Error\nin mlx init\n");
 		exit(1);
 	}
 	sc->win = mlx_new_window(sc->mlx, W_WIDTH, W_HEIGHT, "cub3d");
 	if (!sc->win)
 	{
-		perror("Error in win init\n");
+		perror("Error\nin win init\n");
 		exit(1);
 	}
 	sc->img.img = mlx_new_image(sc->mlx, W_WIDTH, W_HEIGHT);
 	if (!sc->img.img)
 	{
-		perror("Error in img init\n");
+		perror("Error\nin img init\n");
 		exit(1);
 	}
 	sc->img.data_addr = (int *)mlx_get_data_addr(sc->img.img, &(sc->img.bpp),
 			&(sc->img.line_width), &(sc->img.endian));
 	if (!sc->img.data_addr)
 	{
-		perror("Error in data_addr init\n");
+		perror("Error\nin data_addr init\n");
 		exit(1);
 	}
 }
@@ -72,6 +84,6 @@ int	main(int argc, char **argv)
 		mlx_loop(s.mlx);
 	}
 	else
-		perror("Error: invalid number of arguments-> Exit Program\n");
+		perror("Error\ninvalid number of arguments-> Exit Program\n");
 	return (0);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   controls.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:53:39 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:53:46 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	key_press(int keycode, void *param)
@@ -5,7 +17,6 @@ int	key_press(int keycode, void *param)
 	t_scene	*sc;
 
 	sc = (t_scene *)param;
-	printf("keycode = %d\n ", keycode);
 	if (keycode == 119)
 		move_up(sc);
 	else if (keycode == 97)

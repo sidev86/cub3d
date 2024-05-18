@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sibrahim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/04 11:57:07 by sibrahim          #+#    #+#             */
+/*   Updated: 2024/05/04 11:57:08 by sibrahim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	load_image(t_scene *sc, int *texture, t_img *img, char *row)
@@ -7,7 +19,8 @@ static void	load_image(t_scene *sc, int *texture, t_img *img, char *row)
 
 	x = 0;
 	y = 0;
-	img->img = mlx_xpm_file_to_image(sc->mlx, sc->t_path, &img->img_w, &img->img_h);
+	img->img = mlx_xpm_file_to_image(sc->mlx, sc->t_path, &img->img_w,
+			&img->img_h);
 	if (img->img == NULL)
 		free_missing_file(sc, row, sc->t_path);
 	img->data_addr = (int *)mlx_get_data_addr(img->img, &img->bpp,
@@ -36,7 +49,7 @@ void	texture_cycle(t_scene *sc)
 	{
 		sc->texture[i] = (int *)malloc(sizeof(int) * (T_WIDTH * T_HEIGHT));
 		if (!sc->texture[i])
-			perror("Error in texture allocation\n");
+			perror("Error\nin texture allocation\n");
 		while (j < T_WIDTH * T_HEIGHT)
 		{
 			sc->texture[i][j] = 0;
