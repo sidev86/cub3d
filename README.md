@@ -17,13 +17,13 @@ cub3D is a project inspired by the iconic video game Wolfenstein 3D. The goal is
   
 </ul>
 
-
+<br>
 <h2><code>.cub</code> Scene File</h2>
 
 A <code>.cub</code> file must contain the following elements:
 
 <ul>
-  <li><strong>Wall Textures</strong> Paths to texture files for each direction:</li>
+  <li><strong>Wall Textures:</strong> Paths to texture files for each direction:</li>
     <ul>
       <li>NO (North)</li>
       <li>SO (South)</li>
@@ -31,4 +31,7 @@ A <code>.cub</code> file must contain the following elements:
       <li>EA (East)</li> 
     </ul>
 </ul>
+
+
+<strong>Readme WIP ....</strong>
  
