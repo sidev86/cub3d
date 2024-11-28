@@ -11,4 +11,9 @@ cub3D is a project inspired by the iconic video game Wolfenstein 3D. The goal is
   <li><strong>Ray-Casting Engine:</strong> The 3D rendering technique used for this project, also used in 'Wolfenstein 3D" game.</li>
   <li><strong>Textured Walls:</strong> Supports different textures for walls based on their orientation (North, South, East, West).</li>
   <li><strong>Floor/Ceiling Colors:</strong> Configurable via RGB values.</li>
+  <li><strong>Smooth Navigation:</strong> Player can rotate the view, and moving in all directions into the 3D scene.</li>
+  <ul><strong>Scene Load File:</strong> Accepts <code>.cub</code> files defining:</ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
 </ul>
