@@ -13,6 +13,6 @@ cub3D is a project inspired by the iconic video game Wolfenstein 3D. The goal is
   <li><strong>Floor/Ceiling Colors:</strong> Configurable via RGB values.</li>
   <li><strong>Smooth Navigation:</strong> Player can rotate the view, and moving in all directions into the 3D scene.</li>
   <li><strong>Scene Files: </strong>The program accepts <code>.cub</code> files defining wall textures, floor and ceiling colors and the map layout with player starting position and orientation.</li>
-  <li><strong>Wall collisions:</strong>Collision detection of player with map walls.</li>
+  <li><strong>Wall collisions:</strong> Collision detection of player with map walls.</li>
   
 </ul>
