@@ -36,7 +36,7 @@ cub3D is a project inspired by the iconic videogame Wolfenstein 3D. The goal is 
       <li><code>C 225,30,0</code> (e.g for ceiling)</li>
     </ul>
   </li>
-  <li><strong>Maze Layout</strong>:
+  <li><strong>Map Layout</strong>:
     <ul>
       <li><code>0</code> for empty spaces.</li>
       <li><code>1</code> for walls.</li>
