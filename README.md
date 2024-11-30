@@ -30,6 +30,7 @@ A <code>.cub</code> file must contain the following elements:
       <li>WE (West)</li>
       <li>EA (East)</li> 
     </ul>
+  <li><strong>Floor/Ceiling colors:</strong> (e.g., <code>F 220,100,0</code> for the floor, <code>C 225, 30, 0</code> for the ceiling)</li>
 </ul>
 
 
