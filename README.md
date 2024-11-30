@@ -4,7 +4,7 @@
 
 cub3D is a project inspired by the iconic videogame Wolfenstein 3D. The goal is to recreate a similar scenario, featuring a realistic 3D representation of a maze from a first-person perspective. This is achieved using ray-casting techniques and the MiniLibX graphics library (a small graphics library, developed by 42). The project includes textured walls, customizable floor and ceiling colors, and smooth navigation, offering an immersive experience.
 
-<br>
+
 <h2>Features</h2>
 
 <ul>
@@ -17,7 +17,7 @@ cub3D is a project inspired by the iconic videogame Wolfenstein 3D. The goal is 
   
 </ul>
 
-<br>
+
 <h2><code>.cub</code> Scene File</h2>
 
 <p>A <code>.cub</code> file must contain the following elements:</p>
@@ -68,7 +68,7 @@ C 225,30,0
 1100N1
 111111
 </pre>
-<br>
+
 <h2>Controls</h2>
 
 <table>
@@ -110,7 +110,7 @@ C 225,30,0
     </tbody>
 </table>
   
-<br>
+
 <h2>Map Error Handling</h2>
 <p>The program exits with an error message in the following cases:</p>
 <ul>
@@ -118,12 +118,12 @@ C 225,30,0
   <li>Invalid maze layout or missing required elements (texture or floor/ceil color).</li>
   <li>File I/O issues.</li>
 </ul>
-<br>
+
  <h2>Compilation Instructions (linux systems)</h2>
   <ul>
     <li>Type <strong><code>make</code></strong> to generate the  <strong><code>cub3D</code></strong> executable file</li>
   </ul>
-<br>
+
  <h2>Usage</h2>
    <li>After compiling, execute the program by passing the path to the <strong><code>.cub</code></strong> map file as an argument. For example:</li>
     <pre><code>./cub3D ./maps/your_map_file.cub</code></pre>
