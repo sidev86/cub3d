@@ -24,7 +24,10 @@ cub3D is a project inspired by the iconic video game Wolfenstein 3D. The goal is
 <ol>
   <li><strong>Wall Textures</strong>: Paths to texture files for each direction:
     <ul>
-      <li><code>NO</code> (North), <code>SO</code> (South), <code>WE</code> (West), <code>EA</code> (East).</li>
+      <li><code>NO</code> (North)</li> 
+      <li><code>SO</code> (South)</li> 
+      <li><code>WE</code> (West)</li> 
+      <li><code>EA</code> (East)</li>
     </ul>
   </li>
   <li><strong>Floor and Ceiling Colors</strong>: RGB values (e.g., <code>F 220,100,0</code> for the floor).</li>
