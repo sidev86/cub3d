@@ -43,7 +43,7 @@ cub3D is a project inspired by the iconic videogame Wolfenstein 3D. The goal is 
       <li><code>N</code>, <code>S</code>, <code>E</code>, or <code>W</code> for the player’s starting position and orientation.</li>
     </ul>
   </li>
-  <li><strong>Rules</strong>:
+  <li><strong>Map File Rules</strong>:
     <ul>
       <li>The maze must be surrounded by walls.</li>
       <li>Elements must follow the specified format but can be separated by blank lines.</li>
