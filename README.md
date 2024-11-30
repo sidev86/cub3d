@@ -51,7 +51,7 @@ cub3D is a project inspired by the iconic video game Wolfenstein 3D. The goal is
     </ul>
   </li>
 </ol>
-
+<br>
 <p>Example <code>.cub</code> file:</p>
 <pre>
 NO ./textures/north_texture.xpm
