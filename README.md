@@ -71,6 +71,45 @@ C 225,30,0
 <br>
 <h2>Controls</h2>
 
+<table>
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Key Control</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Move Forward</td>
+        <td>W</td>
+      </tr>
+      <tr>
+        <td>Move Backward</td>
+        <td>S</td>
+      </tr>
+      <tr>
+        <td>Move Left</td>
+        <td>A</td>
+      </tr>
+      <tr>
+        <td>Move Right</td>
+        <td>D/td>
+      </tr>
+      <tr>
+        <td>Rotate Left</td>
+        <td>Left Arrow</td>
+      </tr>
+      <tr>
+        <td>Rotate Right</td>
+        <td>Right Arrow</td>
+      </tr>
+      <tr>
+        <td>Exit Program</td>
+        <td>ESC</td>
+      </tr>
+    </tbody>
+</table>
+  
 <ul>
   <li><strong>Arrow Keys:</strong> Rotate view</li>
   <li><strong>W, A, S, D:</strong> Move forward, backward, left, right</li>
@@ -84,6 +123,7 @@ C 225,30,0
   <li>Invalid maze layout or missing required elements (texture or floor/ceil color).</li>
   <li>File I/O issues.</li>
 </ul>
+
 
 <strong>Readme WIP ....</strong>
  
