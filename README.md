@@ -119,6 +119,13 @@ C 225,30,0
   <li>File I/O issues.</li>
 </ul>
 
+ <h2>Compilation Instructions (linux systems)</h2>
+  <ul>
+    <li>Type <strong><code>make</code></strong> to generate the  <strong><code>fdf</code></strong> executable file</li>
+  </ul>
+ <h2>Usage</h2>
+   <li>After compiling, execute the program by passing the path to the <strong><code>.cub</code></strong> map file as an argument. For example:</li>
+    <pre><code>./cub3D path/to/your_map_file.cub</code></pre>
 
 <strong>Readme WIP ....</strong>
  
