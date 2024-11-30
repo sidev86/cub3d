@@ -121,7 +121,7 @@ C 225,30,0
 
  <h2>Compilation Instructions (linux systems)</h2>
   <ul>
-    <li>Type <strong><code>make</code></strong> to generate the  <strong><code>fdf</code></strong> executable file</li>
+    <li>Type <strong><code>make</code></strong> to generate the  <strong><code>cub3D</code></strong> executable file</li>
   </ul>
  <h2>Usage</h2>
    <li>After compiling, execute the program by passing the path to the <strong><code>.cub</code></strong> map file as an argument. For example:</li>
