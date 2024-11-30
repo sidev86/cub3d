@@ -93,7 +93,7 @@ C 225,30,0
       </tr>
       <tr>
         <td>Move Right</td>
-        <td>D/td>
+        <td>D</td>
       </tr>
       <tr>
         <td>Rotate Left</td>
@@ -110,11 +110,6 @@ C 225,30,0
     </tbody>
 </table>
   
-<ul>
-  <li><strong>Arrow Keys:</strong> Rotate view</li>
-  <li><strong>W, A, S, D:</strong> Move forward, backward, left, right</li>
-  <li><strong>ESC:</strong> Exit program</li>
-</ul>
 <br>
 <h2>Map Error Handling</h2>
 <p>The program exits with an error message in the following cases:</p>
