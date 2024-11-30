@@ -58,9 +58,10 @@ NO ./textures/north_texture.xpm
 SO ./textures/south_texture.xpm
 WE ./textures/west_texture.xpm
 EA ./textures/east_texture.xpm
+<br>  
 F 220,100,0
 C 225,30,0
-
+<br>
 111111
 100101
 101001
@@ -68,7 +69,13 @@ C 225,30,0
 111111
 </pre>
 
+<h2>Controls</h2>
 
+<ul>
+  <li><strong>Arrow Keys:</strong> Rotate view</li>
+  <li><strong>W, A, S, D:</strong> Move forward, backward, left, right</li>
+  <li><strong>ESC:</strong> Exit Program</li>
+</ul>
 
 <strong>Readme WIP ....</strong>
  
