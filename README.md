@@ -30,8 +30,10 @@ cub3D is a project inspired by the iconic video game Wolfenstein 3D. The goal is
       <li><code>EA</code> (East)</li>
     </ul>
   </li>
-  <li><strong>Floor and Ceiling Colors</strong>: RGB values (e.g., <code>F 220,100,0</code> for the floor).</li>
-  <li><strong>Maze Layout</strong>: 
+  <ul><strong>Floor and Ceiling Colors</strong> (RGB values):
+    <li><code>F 220,100,0</code> (e.g for floor)</li>
+    <li><code>C 225,30,0</code> (e.g for ceiling)</li>
+  <li><strong>Maze Layout</strong>:
     <ul>
       <li><code>0</code> for empty spaces.</li>
       <li><code>1</code> for walls.</li>
