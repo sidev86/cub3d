@@ -68,15 +68,15 @@ C 225,30,0
 1100N1
 111111
 </pre>
-
+<br>
 <h2>Controls</h2>
 
 <ul>
   <li><strong>Arrow Keys:</strong> Rotate view</li>
   <li><strong>W, A, S, D:</strong> Move forward, backward, left, right</li>
-  <li><strong>ESC:</strong> Exit Program</li>
+  <li><strong>ESC:</strong> Exit program</li>
 </ul>
-
+<br>
 <h2>Map Error Handling</h2>
 <p>The program exits with an error message in the following cases:</p>
 <ul>
