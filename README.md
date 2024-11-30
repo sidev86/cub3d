@@ -125,7 +125,7 @@ C 225,30,0
   </ul>
  <h2>Usage</h2>
    <li>After compiling, execute the program by passing the path to the <strong><code>.cub</code></strong> map file as an argument. For example:</li>
-    <pre><code>./cub3D path/to/your_map_file.cub</code></pre>
+    <pre><code>./cub3D ./maps/your_map_file.cub</code></pre>
 
 <strong>Readme WIP ....</strong>
  
