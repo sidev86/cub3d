@@ -77,5 +77,13 @@ C 225,30,0
   <li><strong>ESC:</strong> Exit Program</li>
 </ul>
 
+<h2>Map Error Handling</h2>
+<p>he program exits with an error message in the following cases:</p>
+<ul>
+  <li>Misconfigured <code>.cub</code> file.</li>
+  <li>Invalid maze layout or missing required elements (texture or floor/ceil color).</li>
+  <li>File I/O issues.</li>
+</ul>
+
 <strong>Readme WIP ....</strong>
  
