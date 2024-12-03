@@ -1,7 +1,7 @@
 <h1>cub3D</h1>
 
 
-<img src="./screenshot.png">
+
 
 <h2>Description</h2>
 
